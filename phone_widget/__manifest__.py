@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Ont Phone Widget',
+    'name': 'Phone Widget',
     'version': "10.0.1.0.0,    
     'author': 'Odoo Nodriza Tech (ONT)',
     'website': 'https://nodrizatech.com/',

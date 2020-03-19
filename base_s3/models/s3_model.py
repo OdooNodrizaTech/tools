@@ -29,7 +29,7 @@ class S3Model(models.Model):
         if bucket_name!=None:
             AWS_BUCKET_NAME = bucket_name
         else:                  
-            AWS_BUCKET_NAME = self.env['ir.config_parameter'].sudo().get_param('ont_s3_bucket_name')
+            AWS_BUCKET_NAME = self.env['ir.config_parameter'].sudo().get_param('s3_bucket_name')
                 
         conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
         bucket = conn.get_bucket(AWS_BUCKET_NAME)
@@ -58,7 +58,7 @@ class S3Model(models.Model):
         if bucket_name!=None:
             AWS_BUCKET_NAME = bucket_name
         else:    
-            AWS_BUCKET_NAME = self.env['ir.config_parameter'].sudo().get_param('ont_s3_bucket_name')
+            AWS_BUCKET_NAME = self.env['ir.config_parameter'].sudo().get_param('s3_bucket_name')
                 
         conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
         bucket = conn.get_bucket(AWS_BUCKET_NAME)

@@ -43,7 +43,7 @@ class S3Backup(models.Model):
         
         filename = "odoo-server-%s-00-00.log" % (hour)
                         
-        AWS_BACKUP_PATH = self.env['ir.config_parameter'].sudo().get_param('ont_s3_backup_log_path')                
+        AWS_BACKUP_PATH = self.env['ir.config_parameter'].sudo().get_param('s3_backup_log_path')                
         date_test = datetime.today().strftime('%Y/%m/%d')
         destination_filename = AWS_BACKUP_PATH+date_test+"/"+filename
         #upload_to_s3
@@ -70,7 +70,7 @@ class S3Backup(models.Model):
         
         self.zipfiles(zip_filename)                                    
         #destination_filename                
-        AWS_BACKUP_PATH = self.env['ir.config_parameter'].sudo().get_param('ont_s3_backup_files_path')                
+        AWS_BACKUP_PATH = self.env['ir.config_parameter'].sudo().get_param('s3_backup_files_path')                
         date_test = datetime.today().strftime('%Y/%m/%d')
         destination_filename = AWS_BACKUP_PATH+date_test+"/"+filename
         #upload_to_s3        
