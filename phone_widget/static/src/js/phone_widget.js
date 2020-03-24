@@ -1,4 +1,4 @@
-odoo.define('account_doctorproperty.phone_widget', function (require) {
+odoo.define('phone_widget.phone_widget', function (require) {
     "use strict";
 
     var core = require('web.core');
