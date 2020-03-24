@@ -8,7 +8,6 @@
     'license': 'AGPL-3',
     'depends': ['base'],
     'data': [
-        'views/resources.xml',
         'web_phone.xml',
     ],
     'installable': True,
