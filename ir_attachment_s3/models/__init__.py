@@ -1,3 +1,2 @@
 import ir_attachment
-import s3_backup
 import s3_model
