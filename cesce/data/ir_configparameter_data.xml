@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="cesce_modalidad" model="ir.config_parameter">
+            <field name="key">cesce_modalidad</field>
+            <field name="value">341</field>
+        </record>
+        <record id="cesce_poliza" model="ir.config_parameter">
+            <field name="key">cesce_poliza</field>
+            <field name="value">09128845</field>                                
+        </record>
+        <record id="cesce_test_mode" model="ir.config_parameter">
+            <field name="key">cesce_test_mode</field>
+            <field name="value">True</field>
+        </record>
+        <record id="cesce_csv_delimiter" model="ir.config_parameter">
+            <field name="key">cesce_csv_delimiter</field>
+            <field name="value">;</field>
+        </record>        
+        <record id="cesce_ftp_folder_in" model="ir.config_parameter">
+            <field name="key">cesce_ftp_folder_in</field>
+            <field name="value">IN</field>
+        </record>
+        <record id="cesce_ftp_folder_out" model="ir.config_parameter">
+            <field name="key">cesce_ftp_folder_out</field>
+            <field name="value">OUT</field>
+        </record>
+        <record id="cesce_ftp_folder_error" model="ir.config_parameter">
+            <field name="key">cesce_ftp_folder_error</field>
+            <field name="value">ERR</field>
+        </record>
+        <record id="cesce_ftp_folder_processed" model="ir.config_parameter">
+            <field name="key">cesce_ftp_folder_processed</field>
+            <field name="value">PROCESADOS</field>
+        </record>
+        <record id="cesce_connection_risk_classification" model="ir.config_parameter">
+            <field name="key">cesce_connection_risk_classification</field>
+            <field name="value">ftp</field>
+        </record>
+        <record id="cesce_connection_sale" model="ir.config_parameter">
+            <field name="key">cesce_connection_sale</field>
+            <field name="value">ftp</field>
+        </record>                                                    
+    </data>
+</openerp>

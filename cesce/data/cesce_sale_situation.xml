@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cesce_sale_situation_data_1" model="cesce.sale.situation">
+        <field name="id">1</field>
+        <field name="code">1</field>
+        <field name="name">NO ADMITIDA</field>        
+    </record>
+    <record id="cesce_sale_situation_data_2" model="cesce.sale.situation">
+        <field name="id">2</field>
+        <field name="code">3</field>
+        <field name="name">CAPTURADO</field>        
+    </record>
+    <record id="cesce_sale_situation_data_3" model="cesce.sale.situation">
+        <field name="id">3</field>
+        <field name="code">4</field>
+        <field name="name">BAJA</field>        
+    </record>
+    <record id="cesce_sale_situation_data_4" model="cesce.sale.situation">
+        <field name="id">4</field>
+        <field name="code">5</field>
+        <field name="name">TARIFICADO</field>        
+    </record>
+    <record id="cesce_sale_situation_data_5" model="cesce.sale.situation">
+        <field name="id">5</field>
+        <field name="code">6</field>
+        <field name="name">ADMITIDA/PDTE. TARIFICAR</field>        
+    </record>
+    <record id="cesce_sale_situation_data_6" model="cesce.sale.situation">
+        <field name="id">6</field>
+        <field name="code">8</field>
+        <field name="name">ERRONEA</field>        
+    </record>
+    <record id="cesce_sale_situation_data_7" model="cesce.sale.situation">
+        <field name="id">7</field>
+        <field name="code">9</field>
+        <field name="name">RECHAZADA</field>        
+    </record>
+    <record id="cesce_sale_situation_data_8" model="cesce.sale.situation">
+        <field name="id">8</field>
+        <field name="code">10</field>
+        <field name="name">REHABILITADA</field>        
+    </record>
+    <record id="cesce_sale_situation_data_9" model="cesce.sale.situation">
+        <field name="id">9</field>
+        <field name="code">11</field>
+        <field name="name">ADMITIDA/PDTE.ACTUAL.ENTIDADES</field>        
+    </record>
+    <record id="cesce_sale_situation_data_10" model="cesce.sale.situation">
+        <field name="id">10</field>
+        <field name="code">13</field>
+        <field name="name">SUSPENDIDA COBERTURA</field>        
+    </record>
+    <record id="cesce_sale_situation_data_11" model="cesce.sale.situation">
+        <field name="id">11</field>
+        <field name="code">14</field>
+        <field name="name">PRORROGADO</field>        
+    </record>
+    <record id="cesce_sale_situation_data_12" model="cesce.sale.situation">
+        <field name="id">12</field>
+        <field name="code">15</field>
+        <field name="name">RETENIDO</field>        
+    </record>
+    <record id="cesce_sale_situation_data_13" model="cesce.sale.situation">
+        <field name="id">13</field>
+        <field name="code">16</field>
+        <field name="name">VENCIDO</field>        
+    </record>
+    <record id="cesce_sale_situation_data_14" model="cesce.sale.situation">
+        <field name="id">14</field>
+        <field name="code">19</field>
+        <field name="name">NCR CARGA INICIAL</field>        
+    </record>
+    <record id="cesce_sale_situation_data_15" model="cesce.sale.situation">
+        <field name="id">15</field>
+        <field name="code">20</field>
+        <field name="name">PENDIENTE ADMITIR PRORROGA</field>        
+    </record>        
+</odoo>
