@@ -1,0 +1,599 @@
+El módulo contiene el desarrollo que permite realizar toda la integración respecto a Cesce.
+
+Las horas en las que CESCE ‘procesa’ la información y la devuelve (o devuelve porque un riesgo ha cambiado) son: 08:15, 14:15, 17:15 y 21:00
+
+## odoo.conf
+```
+#cesce
+cesce_ftp_host=cesceconnect.cesce.es
+cesce_ftp_user=xxx
+cesce_ftp_password=xxx
+cesce_ftp_port=2022
+``` 
+
+## Parámetros de configuración
+```
+oniad_cesce_modalidad
+oniad_cesce_poliza
+oniad_cesce_test_mode
+oniad_cesce_csv_delimiter
+oniad_cesce_ftp_folder_in        
+oniad_cesce_ftp_folder_out                
+oniad_cesce_ftp_folder_error        
+oniad_cesce_ftp_folder_processed        
+oniad_cesce_connection_risk_classification        
+oniad_cesce_connection_sale
+``` 
+
+cesce.payment.term
+
+<record id="cesce_payment_term_data_1" model="cesce.payment.term">
+<field name="id">1</field>
+<field name="code">30</field>
+<field name="name">30 dias</field>
+</record>
+<record id="cesce_payment_term_data_2" model="cesce.payment.term">
+<field name="id">2</field>
+<field name="code">60</field>
+<field name="name">60 dias</field>
+</record>
+<record id="cesce_payment_term_data_3" model="cesce.payment.term">
+<field name="id">3</field>
+<field name="code">90</field>
+<field name="name">90 dias</field>
+</record>
+<record id="cesce_payment_term_data_4" model="cesce.payment.term">
+<field name="id">4</field>
+<field name="code">120</field>
+<field name="name">120 dias</field>
+</record>
+<record id="cesce_payment_term_data_5" model="cesce.payment.term">
+<field name="id">5</field>
+<field name="code">150</field>
+<field name="name">150 dias</field>
+</record>
+<record id="cesce_payment_term_data_6" model="cesce.payment.term">
+<field name="id">6</field>
+<field name="code">180</field>
+<field name="name">180 dias</field>
+</record>
+ 
+
+cesce.risk.classification.motive
+
+<record id="cesce_risk_classification_motive_data_1" model="cesce.risk.classification.motive">
+<field name="id">1</field>
+<field name="code">1</field>
+<field name="name">INSUFICIENTES DATOS PARA LA IDENTIFICACION</field>
+</record>
+<record id="cesce_risk_classification_motive_data_2" model="cesce.risk.classification.motive">
+<field name="id">2</field>
+<field name="code">3</field>
+<field name="name">SIN ACTIVIDAD COMERCIAL</field>
+</record>
+<record id="cesce_risk_classification_motive_data_3" model="cesce.risk.classification.motive">
+<field name="id">3</field>
+<field name="code">4</field>
+<field name="name">NO HA INICIADO ACTIVIDAD</field>
+</record>
+<record id="cesce_risk_classification_motive_data_4" model="cesce.risk.classification.motive">
+<field name="id">4</field>
+<field name="code">5</field>
+<field name="name">LA SOCIEDAD HA CESADO / CEDIDO SUS ACTIVIDADES</field>
+</record>
+<record id="cesce_risk_classification_motive_data_5" model="cesce.risk.classification.motive">
+<field name="id">5</field>
+<field name="code">6</field>
+<field name="name">DISOLUCION</field>
+</record>
+<record id="cesce_risk_classification_motive_data_6" model="cesce.risk.classification.motive">
+<field name="id">6</field>
+<field name="code">8</field>
+<field name="name">SOCIEDAD EN LIQUIDACION</field>
+</record>
+<record id="cesce_risk_classification_motive_data_7" model="cesce.risk.classification.motive">
+<field name="id">7</field>
+<field name="code">9</field>
+<field name="name">DEUDOR EN SITUACION CONCURSAL</field>
+</record>
+<record id="cesce_risk_classification_motive_data_8" model="cesce.risk.classification.motive">
+<field name="id">8</field>
+<field name="code">12</field>
+<field name="name">DATOS INSUFICIENTES</field>
+</record>
+<record id="cesce_risk_classification_motive_data_9" model="cesce.risk.classification.motive">
+<field name="id">9</field>
+<field name="code">21</field>
+<field name="name">INCIDENCIAS EN PAGOS</field>
+</record>
+<record id="cesce_risk_classification_motive_data_10" model="cesce.risk.classification.motive">
+<field name="id">10</field>
+<field name="code">23</field>
+<field name="name">DECISION CESCE</field>
+</record>
+<record id="cesce_risk_classification_motive_data_11" model="cesce.risk.classification.motive">
+<field name="id">11</field>
+<field name="code">29</field>
+<field name="name">PATRIMONIO NETO NEGATIVO</field>
+</record>
+<record id="cesce_risk_classification_motive_data_12" model="cesce.risk.classification.motive">
+<field name="id">12</field>
+<field name="code">31</field>
+<field name="name">DIMENSION ADECUADA</field>
+</record>
+<record id="cesce_risk_classification_motive_data_13" model="cesce.risk.classification.motive">
+<field name="id">13</field>
+<field name="code">32</field>
+<field name="name">DIMENSION REDUCIDA</field>
+</record>
+<record id="cesce_risk_classification_motive_data_14" model="cesce.risk.classification.motive">
+<field name="id">14</field>
+<field name="code">33</field>
+<field name="name">AUSENCIA DE DATOS FINANCIEROS DE LA SOCIEDAD</field>
+</record>
+<record id="cesce_risk_classification_motive_data_15" model="cesce.risk.classification.motive">
+<field name="id">15</field>
+<field name="code">35</field>
+<field name="name">EVOLUCION NEGATIVA DE RESULTADOS</field>
+</record>
+<record id="cesce_risk_classification_motive_data_16" model="cesce.risk.classification.motive">
+<field name="id">16</field>
+<field name="code">37</field>
+<field name="name">EVOLUCION NEGATIVA VENTAS</field>
+</record>
+<record id="cesce_risk_classification_motive_data_17" model="cesce.risk.classification.motive">
+<field name="id">17</field>
+<field name="code">46</field>
+<field name="name">SOLICITADO POR EL ASEGURADO</field>
+</record>
+<record id="cesce_risk_classification_motive_data_18" model="cesce.risk.classification.motive">
+<field name="id">18</field>
+<field name="code">53</field>
+<field name="name">CERRADA LA COBERTURA PARA EL PAIS</field>
+</record>
+<record id="cesce_risk_classification_motive_data_19" model="cesce.risk.classification.motive">
+<field name="id">19</field>
+<field name="code">66</field>
+<field name="name">REVISION RIESGO</field>
+</record>
+<record id="cesce_risk_classification_motive_data_20" model="cesce.risk.classification.motive">
+<field name="id">20</field>
+<field name="code">79</field>
+<field name="name">EVOLUCION POSITIVA DE LAS VENTAS</field>
+</record>
+<record id="cesce_risk_classification_motive_data_21" model="cesce.risk.classification.motive">
+<field name="id">21</field>
+<field name="code">80</field>
+<field name="name">SECTOR/EVOLUCION FINANCIERA</field>
+</record>
+<record id="cesce_risk_classification_motive_data_22" model="cesce.risk.classification.motive">
+<field name="id">22</field>
+<field name="code">81</field>
+<field name="name">PAIS CON RESTRICCIONES</field>
+</record>
+ 
+
+cesce.risk.classification.situation
+
+<record id="cesce_risk_classification_situation_data_1" model="cesce.risk.classification.situation">
+<field name="id">1</field>
+<field name="code">P</field>
+<field name="name">Pendiente de estudio</field>
+</record>
+<record id="cesce_risk_classification_situation_data_2" model="cesce.risk.classification.situation">
+<field name="id">2</field>
+<field name="code">PC</field>
+<field name="name">Clasificado pendiente de aceptacion por el cliente</field>
+</record>
+<record id="cesce_risk_classification_situation_data_3" model="cesce.risk.classification.situation">
+<field name="id">3</field>
+<field name="code">T</field>
+<field name="name">Preestudios</field>
+</record>
+<record id="cesce_risk_classification_situation_data_4" model="cesce.risk.classification.situation">
+<field name="id">4</field>
+<field name="code">C</field>
+<field name="name">Clasificado y en cobertura</field>
+</record>
+<record id="cesce_risk_classification_situation_data_5" model="cesce.risk.classification.situation">
+<field name="id">5</field>
+<field name="code">N</field>
+<field name="name">Clasificado y sin cobertura (anulado)</field>
+</record>
+<record id="cesce_risk_classification_situation_data_6" model="cesce.risk.classification.situation">
+<field name="id">6</field>
+<field name="code">PA</field>
+<field name="name">Clasificado pendiente de activacion (para contratos PPC)</field>
+</record>
+<record id="cesce_risk_classification_situation_data_7" model="cesce.risk.classification.situation">
+<field name="id">7</field>
+<field name="code">PN</field>
+<field name="name">Clasificado no asegurado (para contratos PPC)</field>
+</record>
+ 
+
+cesce.sale.motive.situation
+
+<record id="cesce_sale_motive_situation_data_1" model="cesce.sale.motive.situation">
+<field name="id">1</field>
+<field name="code">1</field>
+<field name="name">SUPLEMENTO INEXISTENTE/NO LOCALIZADO</field>
+</record>
+<record id="cesce_sale_motive_situation_data_2" model="cesce.sale.motive.situation">
+<field name="id">2</field>
+<field name="code">2</field>
+<field name="name">DEUDOR INEXISTENTE/NO LOCALIZADO</field>
+</record>
+<record id="cesce_sale_motive_situation_data_3" model="cesce.sale.motive.situation">
+<field name="id">3</field>
+<field name="code">3</field>
+<field name="name">F. ADQUISICION, NO EN PER.VALIDEZ SUPLTO.</field>
+</record>
+<record id="cesce_sale_motive_situation_data_4" model="cesce.sale.motive.situation">
+<field name="id">4</field>
+<field name="code">4</field>
+<field name="name">SUPLTO.ANUL.(F.ADQUSICION. > F.ANULAC.SUPLTO.)</field>
+</record>
+<record id="cesce_sale_motive_situation_data_5" model="cesce.sale.motive.situation">
+<field name="id">5</field>
+<field name="code">5</field>
+<field name="name">FECHA ADQUISICION > FECHA PROCESO/NOTIFICACION</field>
+</record>
+<record id="cesce_sale_motive_situation_data_6" model="cesce.sale.motive.situation">
+<field name="id">6</field>
+<field name="code">6</field>
+<field name="name">FECHA ADQUISICION menor F. EFECTO POLIZA</field>
+</record>
+<record id="cesce_sale_motive_situation_data_7" model="cesce.sale.motive.situation">
+<field name="id">7</field>
+<field name="code">7</field>
+<field name="name">FECHA ADQUISICION ANTERIOR 1 FECHA EFECTO SUPLEMENTO</field>
+</record>
+<record id="cesce_sale_motive_situation_data_8" model="cesce.sale.motive.situation">
+<field name="id">8</field>
+<field name="code">8</field>
+<field name="name">FECHA ADQUISICION ANTERIOR 1 FECHA EFECTO SUPLEMENTO</field>
+</record>
+<record id="cesce_sale_motive_situation_data_9" model="cesce.sale.motive.situation">
+<field name="id">9</field>
+<field name="code">9</field>
+<field name="name">PRIMA POLITICA > PRIMA UNICA ?</field>
+</record>
+<record id="cesce_sale_motive_situation_data_10" model="cesce.sale.motive.situation">
+<field name="id">10</field>
+<field name="code">10</field>
+<field name="name">COND. PAGO > MAXIMOS DEL SUPLEMENTO</field>
+</record>
+<record id="cesce_sale_motive_situation_data_11" model="cesce.sale.motive.situation">
+<field name="id">11</field>
+<field name="code">11</field>
+<field name="name">FUERA DE PLAZO</field>
+</record>
+<record id="cesce_sale_motive_situation_data_12" model="cesce.sale.motive.situation">
+<field name="id">12</field>
+<field name="code">12</field>
+<field name="name">NOTIFICAC. RECHAZADA</field>
+</record>
+<record id="cesce_sale_motive_situation_data_13" model="cesce.sale.motive.situation">
+<field name="id">13</field>
+<field name="code">13</field>
+<field name="name">EXISTE MAS DE UN DEUDOR PARA EL NIF DADO</field>
+</record>
+<record id="cesce_sale_motive_situation_data_14" model="cesce.sale.motive.situation">
+<field name="id">14</field>
+<field name="code">14</field>
+<field name="name">EXISTE MAS DE UN DEUDOR PARA EL NIF DADO</field>
+</record>
+<record id="cesce_sale_motive_situation_data_15" model="cesce.sale.motive.situation">
+<field name="id">15</field>
+<field name="code">15</field>
+<field name="name">SUPLTO. NO EN VIGOR</field>
+</record>
+<record id="cesce_sale_motive_situation_data_16" model="cesce.sale.motive.situation">
+<field name="id">16</field>
+<field name="code">16</field>
+<field name="name">ANULALIDAD PENDIENTE DE PAGO</field>
+</record>
+<record id="cesce_sale_motive_situation_data_20" model="cesce.sale.motive.situation">
+<field name="id">20</field>
+<field name="code">20</field>
+<field name="name">DEUDOR DESCONOCIDO</field>
+</record>
+<record id="cesce_sale_motive_situation_data_21" model="cesce.sale.motive.situation">
+<field name="id">21</field>
+<field name="code">21</field>
+<field name="name">DEUDOR NO CLASIFICADO</field>
+</record>
+<record id="cesce_sale_motive_situation_data_24" model="cesce.sale.motive.situation">
+<field name="id">24</field>
+<field name="code">24</field>
+<field name="name">NO DISPONE DE TASA PARA ESE PLAZO DE PAGO</field>
+</record>
+<record id="cesce_sale_motive_situation_data_27" model="cesce.sale.motive.situation">
+<field name="id">27</field>
+<field name="code">27</field>
+<field name="name">INSTRUMENTO/PLAZO PAGO INEXISTENTE</field>
+</record>
+<record id="cesce_sale_motive_situation_data_28" model="cesce.sale.motive.situation">
+<field name="id">28</field>
+<field name="code">28</field>
+<field name="name">DEUDOR SIN VENTAS PTES. DE VENCER</field>
+</record>
+<record id="cesce_sale_motive_situation_data_29" model="cesce.sale.motive.situation">
+<field name="id">29</field>
+<field name="code">29</field>
+<field name="name">DEUDOR SIN VENTAS</field>
+</record>
+<record id="cesce_sale_motive_situation_data_30" model="cesce.sale.motive.situation">
+<field name="id">30</field>
+<field name="code">30</field>
+<field name="name">PAIS EXCLUIDO</field>
+</record>
+<record id="cesce_sale_motive_situation_data_31" model="cesce.sale.motive.situation">
+<field name="id">31</field>
+<field name="code">31</field>
+<field name="name">RIESGOS EXCLUIDOS</field>
+</record>
+<record id="cesce_sale_motive_situation_data_32" model="cesce.sale.motive.situation">
+<field name="id">32</field>
+<field name="code">32</field>
+<field name="name">PLAZO PAGO > MAXIMO DE MODALIDAD</field>
+</record>
+<record id="cesce_sale_motive_situation_data_33" model="cesce.sale.motive.situation">
+<field name="id">33</field>
+<field name="code">33</field>
+<field name="name">NECESIDAD AUTORIZACION DE EMBARQUE</field>
+</record>
+<record id="cesce_sale_motive_situation_data_34" model="cesce.sale.motive.situation">
+<field name="id">34</field>
+<field name="code">34</field>
+<field name="name">DEUDOR CON IMPAGOS NOTIFICADO</field>
+</record>
+<record id="cesce_sale_motive_situation_data_37" model="cesce.sale.motive.situation">
+<field name="id">37</field>
+<field name="code">37</field>
+<field name="name">NO CONTEMPLADO EN CONDICIONES POLIZA</field>
+</record>
+<record id="cesce_sale_motive_situation_data_38" model="cesce.sale.motive.situation">
+<field name="id">38</field>
+<field name="code">38</field>
+<field name="name">DEUDORES EXCLUIDOS</field>
+</record>
+ 
+
+cesce.sale.situation
+
+<record id="cesce_sale_situation_data_1" model="cesce.sale.situation">
+<field name="id">1</field>
+<field name="code">1</field>
+<field name="name">NO ADMITIDA</field>
+</record>
+<record id="cesce_sale_situation_data_2" model="cesce.sale.situation">
+<field name="id">2</field>
+<field name="code">3</field>
+<field name="name">CAPTURADO</field>
+</record>
+<record id="cesce_sale_situation_data_3" model="cesce.sale.situation">
+<field name="id">3</field>
+<field name="code">4</field>
+<field name="name">BAJA</field>
+</record>
+<record id="cesce_sale_situation_data_4" model="cesce.sale.situation">
+<field name="id">4</field>
+<field name="code">5</field>
+<field name="name">TARIFICADO</field>
+</record>
+<record id="cesce_sale_situation_data_5" model="cesce.sale.situation">
+<field name="id">5</field>
+<field name="code">6</field>
+<field name="name">ADMITIDA/PDTE. TARIFICAR</field>
+</record>
+<record id="cesce_sale_situation_data_6" model="cesce.sale.situation">
+<field name="id">6</field>
+<field name="code">8</field>
+<field name="name">ERRONEA</field>
+</record>
+<record id="cesce_sale_situation_data_7" model="cesce.sale.situation">
+<field name="id">7</field>
+<field name="code">9</field>
+<field name="name">RECHAZADA</field>
+</record>
+<record id="cesce_sale_situation_data_8" model="cesce.sale.situation">
+<field name="id">8</field>
+<field name="code">10</field>
+<field name="name">REHABILITADA</field>
+</record>
+<record id="cesce_sale_situation_data_9" model="cesce.sale.situation">
+<field name="id">9</field>
+<field name="code">11</field>
+<field name="name">ADMITIDA/PDTE.ACTUAL.ENTIDADES</field>
+</record>
+<record id="cesce_sale_situation_data_10" model="cesce.sale.situation">
+<field name="id">10</field>
+<field name="code">13</field>
+<field name="name">SUSPENDIDA COBERTURA</field>
+</record>
+<record id="cesce_sale_situation_data_11" model="cesce.sale.situation">
+<field name="id">11</field>
+<field name="code">14</field>
+<field name="name">PRORROGADO</field>
+</record>
+<record id="cesce_sale_situation_data_12" model="cesce.sale.situation">
+<field name="id">12</field>
+<field name="code">15</field>
+<field name="name">RETENIDO</field>
+</record>
+<record id="cesce_sale_situation_data_13" model="cesce.sale.situation">
+<field name="id">13</field>
+<field name="code">16</field>
+<field name="name">VENCIDO</field>
+</record>
+<record id="cesce_sale_situation_data_14" model="cesce.sale.situation">
+<field name="id">14</field>
+<field name="code">19</field>
+<field name="name">NCR CARGA INICIAL</field>
+</record>
+<record id="cesce_sale_situation_data_15" model="cesce.sale.situation">
+<field name="id">15</field>
+<field name="code">20</field>
+<field name="name">PENDIENTE ADMITIR PRORROGA</field>
+</record>
+ 
+
+cesce.webservice.error
+
+<record id="cesce_webservice_error_data_1" model="cesce.webservice.error">
+<field name="id">1</field>
+<field name="code">SCU001</field>
+<field name="name">Usuario o Password incorrecto</field>
+<field name="area">security</field>
+</record>
+<record id="cesce_webservice_error_data_2" model="cesce.webservice.error">
+<field name="id">2</field>
+<field name="code">SCU002</field>
+<field name="name">Password caducada</field>
+<field name="area">none</field>
+</record>
+<record id="cesce_webservice_error_data_3" model="cesce.webservice.error">
+<field name="id">3</field>
+<field name="code">SCU003</field>
+<field name="name">Usuario desactivado (bloqueado) o Cliente no activo</field>
+<field name="area">none</field>
+</record>
+<record id="cesce_webservice_error_data_4" model="cesce.webservice.error">
+<field name="id">4</field>
+<field name="code">SCU004</field>
+<field name="name">Usuario no valido (para cliente indicado)</field>
+<field name="area">none</field>
+</record>
+<record id="cesce_webservice_error_data_5" model="cesce.webservice.error">
+<field name="id">5</field>
+<field name="code">CCC001</field>
+<field name="name">Contrato no localizado o invalido</field>
+<field name="area">none</field>
+</record>
+<record id="cesce_webservice_error_data_6" model="cesce.webservice.error">
+<field name="id">6</field>
+<field name="code">CCC002</field>
+<field name="name">(NumContrato) contrato y (UsuarioCliente) codigo cliente incorrectos</field>
+<field name="area">none</field>
+</record>
+<record id="cesce_webservice_error_data_7" model="cesce.webservice.error">
+<field name="id">7</field>
+<field name="code">RSC003</field>
+<field name="name">(Deudor.IdFiscal) Codigo fiscal no valido</field>
+<field name="area">risk</field>
+</record>
+<record id="cesce_webservice_error_data_8" model="cesce.webservice.error">
+<field name="id">8</field>
+<field name="code">RSC004</field>
+<field name="name">(Deudor.CodP) Codigo postal no valido</field>
+<field name="area">risk</field>
+</record>
+<record id="cesce_webservice_error_data_9" model="cesce.webservice.error">
+<field name="id">9</field>
+<field name="code">RSC005</field>
+<field name="name">(Deudor.CodP) Codigo Postal no valido</field>
+<field name="area">risk</field>
+</record>
+<record id="cesce_webservice_error_data_10" model="cesce.webservice.error">
+<field name="id">10</field>
+<field name="code">RSC006</field>
+<field name="name">(Deudor.Tel) Telefono no valido</field>
+<field name="area">risk</field>
+</record>
+<record id="cesce_webservice_error_data_11" model="cesce.webservice.error">
+<field name="id">11</field>
+<field name="code">RSC007</field>
+<field name="name">(Deudor.Mail) Email no valido</field>
+<field name="area">risk</field>
+</record>
+<record id="cesce_webservice_error_data_12" model="cesce.webservice.error">
+<field name="id">12</field>
+<field name="code">RSC008</field>
+<field name="name">(Deudor.ImpS) Importe no puede ser cero</field>
+<field name="area">risk</field>
+</record>
+<record id="cesce_webservice_error_data_13" model="cesce.webservice.error">
+<field name="id">13</field>
+<field name="code">RSC009</field>
+<field name="name">(Deudor.Mon) Codigo moneda ISO no valido</field>
+<field name="area">risk</field>
+</record>
+<record id="cesce_webservice_error_data_14" model="cesce.webservice.error">
+<field name="id">14</field>
+<field name="code">RSC010</field>
+<field name="name">(Deudor.PzoS) Plazo de pago invalido (ejem: 30, 60, 90, 120, 150, 180)</field>
+<field name="area">risk</field>
+</record>
+<record id="cesce_webservice_error_data_15" model="cesce.webservice.error">
+<field name="id">15</field>
+<field name="code">RSC011</field>
+<field name="name">(Deudor.Impagos) no valido, opciones posibles: Y,N</field>
+<field name="area">risk</field>
+</record>
+<record id="cesce_webservice_error_data_16" model="cesce.webservice.error">
+<field name="id">16</field>
+<field name="code">RSC012</field>
+<field name="name">(Deudor.ImpImpagos) Si Deudor.Impagos='Y' importe no puede ser 0</field>
+<field name="area">risk</field>
+</record>
+<record id="cesce_webservice_error_data_17" model="cesce.webservice.error">
+<field name="id">17</field>
+<field name="code">RSC013</field>
+<field name="name">(Deudor.InsPagoS) plazo de pago invalido</field>
+<field name="area">risk</field>
+</record>
+<record id="cesce_webservice_error_data_18" model="cesce.webservice.error">
+<field name="id">18</field>
+<field name="code">RSC014</field>
+<field name="name">(Deudor.Nif, Deudor.Nom) Campo obligatorio</field>
+<field name="area">risk</field>
+</record>
+<record id="cesce_webservice_error_data_19" model="cesce.webservice.error">
+<field name="id">19</field>
+<field name="code">RSC015</field>
+<field name="name">(Deudor.Pais) codigo ISO pais no valido</field>
+<field name="area">risk</field>
+</record>
+<record id="cesce_webservice_error_data_20" model="cesce.webservice.error">
+<field name="id">20</field>
+<field name="code">RAD0001</field>
+<field name="name">Clasificacion o Empresa no localizada</field>
+<field name="area">risk</field>
+</record>
+<record id="cesce_webservice_error_data_21" model="cesce.webservice.error">
+<field name="id">21</field>
+<field name="code">RAD0002</field>
+<field name="name">Empresa.Pais y Empresa.Nif o Empresa.Spto, o Empresa.RC obligatorios</field>
+<field name="area">risk</field>
+</record>
+
+
+## Crones
+
+### Cron Cesce Risk Classsification Check File Out 
+
+### Cron Cesce Sale Generate File 
+
+### Cron Cesce Sale Check File Out 
+
+### Cron Cesce Risk Classification Fecha Renovacion 
+
+### Cron Cesce Risk Classification Cambiar Fecha Renovacion 
+
+
+En el apartado Contabilidad > Ventas se añade el apartado "Cesce" con los apuntes contables que correspondería para exportara a Cesce.
+
+Para instalarlo será necesario eliminar estas líneas en res_partner_view.xml
+```
+                <div>
+                    <button type="action" class="btn-link" name="%(oniad_cesce.cesce_risk_classification_action)d" context="{'search_default_partner_id': active_id}">
+                        <field string="Cesce clasificaciones de riesgo" name="cesce_risk_classification_count" widget="statinfo"/>
+                    </button>
+                </div>
+```                
+y una vez instalado, colocarlas de nuevo y actualizar el addon
+
+ 
+Aplicar permisos 777 a la carpeta /ont/tools/cesce/
