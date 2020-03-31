@@ -1,0 +1,1 @@
+El módulo contiene el desarrollo mediante el cual si existe un elemento del menú que tiene una acción que es una URL y contiene 'intranet' el sistema enviará odoo_password_crypt del usuario con el objetivo de que https://intranet.oniad.com o https://intranet.grupoarelux.com haga el auto-login y muestre los datos correspondientes.
