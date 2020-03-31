@@ -35,121 +35,33 @@ id | code | name
 5 | 150 | 150 días
 6 | 180 | 180 días 
 
-cesce.risk.classification.motive
+### cesce.risk.classification.motive
+id | code | name
+--- | --- | ---
+1 | 1 | INSUFICIENTES DATOS PARA LA IDENTIFICACION
+2 | 3 | SIN ACTIVIDAD COMERCIAL
+3 | 4 | NO HA INICIADO ACTIVIDAD
+4 | 5 | LA SOCIEDAD HA CESADO / CEDIDO SUS ACTIVIDADES
+5 | 6 | DISOLUCION
+6 | 8 | SOCIEDAD EN LIQUIDACION
+7 | 9 | DEUDOR EN SITUACION CONCURSAL
+8 | 12 | DATOS INSUFICIENTES
+9 | 21 | INCIDENCIAS EN PAGOS
+10 | 23 | DECISION CESCE
+11 | 29 | PATRIMONIO NETO NEGATIVO
+12 | 31 | DIMENSION ADECUADA
+13 | 32 | DIMENSION REDUCIDA
+14 | 33 | AUSENCIA DE DATOS FINANCIEROS DE LA SOCIEDAD
+15 | 35 | EVOLUCION NEGATIVA DE RESULTADOS
+16 | 37 | EVOLUCION NEGATIVA VENTAS
+17 | 46 | SOLICITADO POR EL ASEGURADO<
+18 | 53 | CERRADA LA COBERTURA PARA EL PAIS
+19 | 66 | REVISION RIESGO
+20 | 79 | EVOLUCION POSITIVA DE LAS VENTAS
+21 | 80 | SECTOR/EVOLUCION FINANCIERA
+22 | 81 | PAIS CON RESTRICCIONES
 
-<record id="cesce_risk_classification_motive_data_1" model="cesce.risk.classification.motive">
-<field name="id">1</field>
-<field name="code">1</field>
-<field name="name">INSUFICIENTES DATOS PARA LA IDENTIFICACION</field>
-</record>
-<record id="cesce_risk_classification_motive_data_2" model="cesce.risk.classification.motive">
-<field name="id">2</field>
-<field name="code">3</field>
-<field name="name">SIN ACTIVIDAD COMERCIAL</field>
-</record>
-<record id="cesce_risk_classification_motive_data_3" model="cesce.risk.classification.motive">
-<field name="id">3</field>
-<field name="code">4</field>
-<field name="name">NO HA INICIADO ACTIVIDAD</field>
-</record>
-<record id="cesce_risk_classification_motive_data_4" model="cesce.risk.classification.motive">
-<field name="id">4</field>
-<field name="code">5</field>
-<field name="name">LA SOCIEDAD HA CESADO / CEDIDO SUS ACTIVIDADES</field>
-</record>
-<record id="cesce_risk_classification_motive_data_5" model="cesce.risk.classification.motive">
-<field name="id">5</field>
-<field name="code">6</field>
-<field name="name">DISOLUCION</field>
-</record>
-<record id="cesce_risk_classification_motive_data_6" model="cesce.risk.classification.motive">
-<field name="id">6</field>
-<field name="code">8</field>
-<field name="name">SOCIEDAD EN LIQUIDACION</field>
-</record>
-<record id="cesce_risk_classification_motive_data_7" model="cesce.risk.classification.motive">
-<field name="id">7</field>
-<field name="code">9</field>
-<field name="name">DEUDOR EN SITUACION CONCURSAL</field>
-</record>
-<record id="cesce_risk_classification_motive_data_8" model="cesce.risk.classification.motive">
-<field name="id">8</field>
-<field name="code">12</field>
-<field name="name">DATOS INSUFICIENTES</field>
-</record>
-<record id="cesce_risk_classification_motive_data_9" model="cesce.risk.classification.motive">
-<field name="id">9</field>
-<field name="code">21</field>
-<field name="name">INCIDENCIAS EN PAGOS</field>
-</record>
-<record id="cesce_risk_classification_motive_data_10" model="cesce.risk.classification.motive">
-<field name="id">10</field>
-<field name="code">23</field>
-<field name="name">DECISION CESCE</field>
-</record>
-<record id="cesce_risk_classification_motive_data_11" model="cesce.risk.classification.motive">
-<field name="id">11</field>
-<field name="code">29</field>
-<field name="name">PATRIMONIO NETO NEGATIVO</field>
-</record>
-<record id="cesce_risk_classification_motive_data_12" model="cesce.risk.classification.motive">
-<field name="id">12</field>
-<field name="code">31</field>
-<field name="name">DIMENSION ADECUADA</field>
-</record>
-<record id="cesce_risk_classification_motive_data_13" model="cesce.risk.classification.motive">
-<field name="id">13</field>
-<field name="code">32</field>
-<field name="name">DIMENSION REDUCIDA</field>
-</record>
-<record id="cesce_risk_classification_motive_data_14" model="cesce.risk.classification.motive">
-<field name="id">14</field>
-<field name="code">33</field>
-<field name="name">AUSENCIA DE DATOS FINANCIEROS DE LA SOCIEDAD</field>
-</record>
-<record id="cesce_risk_classification_motive_data_15" model="cesce.risk.classification.motive">
-<field name="id">15</field>
-<field name="code">35</field>
-<field name="name">EVOLUCION NEGATIVA DE RESULTADOS</field>
-</record>
-<record id="cesce_risk_classification_motive_data_16" model="cesce.risk.classification.motive">
-<field name="id">16</field>
-<field name="code">37</field>
-<field name="name">EVOLUCION NEGATIVA VENTAS</field>
-</record>
-<record id="cesce_risk_classification_motive_data_17" model="cesce.risk.classification.motive">
-<field name="id">17</field>
-<field name="code">46</field>
-<field name="name">SOLICITADO POR EL ASEGURADO</field>
-</record>
-<record id="cesce_risk_classification_motive_data_18" model="cesce.risk.classification.motive">
-<field name="id">18</field>
-<field name="code">53</field>
-<field name="name">CERRADA LA COBERTURA PARA EL PAIS</field>
-</record>
-<record id="cesce_risk_classification_motive_data_19" model="cesce.risk.classification.motive">
-<field name="id">19</field>
-<field name="code">66</field>
-<field name="name">REVISION RIESGO</field>
-</record>
-<record id="cesce_risk_classification_motive_data_20" model="cesce.risk.classification.motive">
-<field name="id">20</field>
-<field name="code">79</field>
-<field name="name">EVOLUCION POSITIVA DE LAS VENTAS</field>
-</record>
-<record id="cesce_risk_classification_motive_data_21" model="cesce.risk.classification.motive">
-<field name="id">21</field>
-<field name="code">80</field>
-<field name="name">SECTOR/EVOLUCION FINANCIERA</field>
-</record>
-<record id="cesce_risk_classification_motive_data_22" model="cesce.risk.classification.motive">
-<field name="id">22</field>
-<field name="code">81</field>
-<field name="name">PAIS CON RESTRICCIONES</field>
-</record>
- 
-
-cesce.risk.classification.situation
+### cesce.risk.classification.situation
 
 <record id="cesce_risk_classification_situation_data_1" model="cesce.risk.classification.situation">
 <field name="id">1</field>
@@ -188,7 +100,7 @@ cesce.risk.classification.situation
 </record>
  
 
-cesce.sale.motive.situation
+### cesce.sale.motive.situation
 
 <record id="cesce_sale_motive_situation_data_1" model="cesce.sale.motive.situation">
 <field name="id">1</field>
@@ -337,7 +249,7 @@ cesce.sale.motive.situation
 </record>
  
 
-cesce.sale.situation
+### cesce.sale.situation
 
 <record id="cesce_sale_situation_data_1" model="cesce.sale.situation">
 <field name="id">1</field>
@@ -416,7 +328,7 @@ cesce.sale.situation
 </record>
  
 
-cesce.webservice.error
+### cesce.webservice.error
 
 <record id="cesce_webservice_error_data_1" model="cesce.webservice.error">
 <field name="id">1</field>
