@@ -25,39 +25,15 @@ oniad_cesce_connection_risk_classification
 oniad_cesce_connection_sale
 ``` 
 
-cesce.payment.term
-
-<record id="cesce_payment_term_data_1" model="cesce.payment.term">
-<field name="id">1</field>
-<field name="code">30</field>
-<field name="name">30 dias</field>
-</record>
-<record id="cesce_payment_term_data_2" model="cesce.payment.term">
-<field name="id">2</field>
-<field name="code">60</field>
-<field name="name">60 dias</field>
-</record>
-<record id="cesce_payment_term_data_3" model="cesce.payment.term">
-<field name="id">3</field>
-<field name="code">90</field>
-<field name="name">90 dias</field>
-</record>
-<record id="cesce_payment_term_data_4" model="cesce.payment.term">
-<field name="id">4</field>
-<field name="code">120</field>
-<field name="name">120 dias</field>
-</record>
-<record id="cesce_payment_term_data_5" model="cesce.payment.term">
-<field name="id">5</field>
-<field name="code">150</field>
-<field name="name">150 dias</field>
-</record>
-<record id="cesce_payment_term_data_6" model="cesce.payment.term">
-<field name="id">6</field>
-<field name="code">180</field>
-<field name="name">180 dias</field>
-</record>
- 
+### cesce.payment.term
+id | code | name
+--- | --- | ---
+1 | 30 | 30 días
+2 | 60 | 60 días
+3 | 90 | 90 días
+4 | 120 | 120 días
+5 | 150 | 150 días
+6 | 180 | 180 días 
 
 cesce.risk.classification.motive
 
