@@ -570,19 +570,6 @@ cesce.webservice.error
 </record>
 
 
-## Crones
-
-### Cron Cesce Risk Classsification Check File Out 
-
-### Cron Cesce Sale Generate File 
-
-### Cron Cesce Sale Check File Out 
-
-### Cron Cesce Risk Classification Fecha Renovacion 
-
-### Cron Cesce Risk Classification Cambiar Fecha Renovacion 
-
-
 En el apartado Contabilidad > Ventas se añade el apartado "Cesce" con los apuntes contables que correspondería para exportara a Cesce.
 
 Para instalarlo será necesario eliminar estas líneas en res_partner_view.xml
@@ -597,3 +584,55 @@ y una vez instalado, colocarlas de nuevo y actualizar el addon
 
  
 Aplicar permisos 777 a la carpeta /ont/tools/cesce/
+
+## Crones
+
+### Cron Cesce Risk Classsification Check File Out 
+Frecuencia: 1 vez cada 3 horas
+
+Descripción:
+
+Revisa los errores de Clasificaciones de riesgo (la información que CESCE nos ha dejado en el FTP y que no habíamos gestionado)
+Revisa los OUT de Clasifiaciones de riesgo (la información que CESCE nos ha dejado en el FTP y que no habíamos gestionado)
+
+Toda esta información siempre será respecto a lo que previamente le hemos pedido (enviado Clasifiaciones de riesgo) o cambios que Cesce ha hecho (le ha modificado -aumentado, dismimuido o eliminado- el riesgo concedido) respecto a un cliente
+
+### Cron Cesce Sale Generate File 
+Frecuencia: 1 vez al mes
+
+Día: 15/xx/xxxx
+
+Descripción: 
+
+Revisa todos los apuntes contables de la cuenta contable de Clientes del diario de "Facturas de cliente" con debit > 0, cliente que tenga riesgo > 0, 'Estado venta cesce' = 'ninguno' y con la fecha de factura de la factura vinculado >= hoy -1 mes (dia 1) y <= día1 del mes actual + 1 mes - 1 dia
+De todos los apuntes contables que corresponde se "declara la venta" (genera el archivo en el FTP) y se cambia el estado "Venta enviada"
+
+### Cron Cesce Sale Check File Out 
+Frecuencia: 1 vez al día
+
+Descripción:
+
+Revisa los errores de Declaracion de ventas (la información que CESCE nos ha dejado en el FTP y que no habíamos gestionado)
+Revisa los OUT de Declaracion de ventas (la información que CESCE nos ha dejado en el FTP y que no habíamos gestionado)
+
+Toda esta información lo mas probable es que solo nos la de 1 vez al mes puesto que si SOLO notificamos ventas desde Odoo y las notificamos 1 vez al mes es "poco probable" que nos notifiquen otras cosas en otros días, pero por si acaso.
+
+### Cron Cesce Risk Classification Fecha Renovacion 
+Frecuencia: 1 vez cada mes
+
+Día: 15/xxx/xxxx
+
+Descripción:
+
+Revisa todas las clasificaciones de riesgo filtrando por "fecha renovacion" >= hoy y <= hoy -30 dias, clientes activos y clientes cuyo "Estado riesgo cesce" sea ("Clasificacion enviada", "Clasificacion Ok" o "Clasificación error"
+De las clasificaciones de riesgo que se encuentran se busca la suma de la BI de factura de venta de los últimos 6 meses y se envia esa información al canal de Slack para "actuar" sobre ellos
+
+### Cron Cesce Risk Classification Cambiar Fecha Renovacion 
+Frecuencia: 1 vez al mes
+
+Día: 06/xx/xxxx
+
+Descripción:
+
+Revisa todas las clasifiaciones de riesgo cuya fecha de renovacion sea < hoy - 2 meses, que el cliente tiene un riesgo > 0€ y que el estado de "Clasificacion de riesgo" sea "Clasificacion Ok"
+De las clasifaciones de riesgo que encuentra con estos criterios le incrementa 1 año a la fecha de renovación que tuviera.
