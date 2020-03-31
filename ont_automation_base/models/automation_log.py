@@ -18,11 +18,16 @@ class AutomationLog(models.Model):
     category = fields.Selection(
         selection=[
             ('account_invoice','Account Invoice'),
-            ('crm_lead','Crm Lead'),
-            ('survey_user_input','Survey User Input'),                          
+            ('arelux_sale_report','Arelux Sale Report'),
+            ('account_banking_mandate','Account Banking Mandate'),
+            ('crm_lead','Crm Lead'),  
+            ('sale_order','Sale Order'),             
+            ('shipping_expedition','Shipping Expediotion'),             
+            ('survey_user_input','Survey User Input'),
+            ('stock_picking','Stock Picking'),             
         ],
         string='Categoria'
-    )    
+    )        
     action = fields.Char(        
         string='Accion'
     )
