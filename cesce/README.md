@@ -1,4 +1,4 @@
-El módulo contiene el desarrollo que permite realizar toda la integración respecto a Cesce.
+El módulo contiene el desarrollo que permite realizar toda la integración respecto a Cesce (https://www.cesce.es/).
 
 Las horas en las que CESCE ‘procesa’ la información y la devuelve (o devuelve porque un riesgo ha cambiado) son: 08:15, 14:15, 17:15 y 21:00
 
@@ -125,133 +125,29 @@ id | code | name
 15 | 20 | PENDIENTE ADMITIR PRORROGA
 
 ### cesce.webservice.error
-
-<record id="cesce_webservice_error_data_1" model="cesce.webservice.error">
-<field name="id">1</field>
-<field name="code">SCU001</field>
-<field name="name">Usuario o Password incorrecto</field>
-<field name="area">security</field>
-</record>
-<record id="cesce_webservice_error_data_2" model="cesce.webservice.error">
-<field name="id">2</field>
-<field name="code">SCU002</field>
-<field name="name">Password caducada</field>
-<field name="area">none</field>
-</record>
-<record id="cesce_webservice_error_data_3" model="cesce.webservice.error">
-<field name="id">3</field>
-<field name="code">SCU003</field>
-<field name="name">Usuario desactivado (bloqueado) o Cliente no activo</field>
-<field name="area">none</field>
-</record>
-<record id="cesce_webservice_error_data_4" model="cesce.webservice.error">
-<field name="id">4</field>
-<field name="code">SCU004</field>
-<field name="name">Usuario no valido (para cliente indicado)</field>
-<field name="area">none</field>
-</record>
-<record id="cesce_webservice_error_data_5" model="cesce.webservice.error">
-<field name="id">5</field>
-<field name="code">CCC001</field>
-<field name="name">Contrato no localizado o invalido</field>
-<field name="area">none</field>
-</record>
-<record id="cesce_webservice_error_data_6" model="cesce.webservice.error">
-<field name="id">6</field>
-<field name="code">CCC002</field>
-<field name="name">(NumContrato) contrato y (UsuarioCliente) codigo cliente incorrectos</field>
-<field name="area">none</field>
-</record>
-<record id="cesce_webservice_error_data_7" model="cesce.webservice.error">
-<field name="id">7</field>
-<field name="code">RSC003</field>
-<field name="name">(Deudor.IdFiscal) Codigo fiscal no valido</field>
-<field name="area">risk</field>
-</record>
-<record id="cesce_webservice_error_data_8" model="cesce.webservice.error">
-<field name="id">8</field>
-<field name="code">RSC004</field>
-<field name="name">(Deudor.CodP) Codigo postal no valido</field>
-<field name="area">risk</field>
-</record>
-<record id="cesce_webservice_error_data_9" model="cesce.webservice.error">
-<field name="id">9</field>
-<field name="code">RSC005</field>
-<field name="name">(Deudor.CodP) Codigo Postal no valido</field>
-<field name="area">risk</field>
-</record>
-<record id="cesce_webservice_error_data_10" model="cesce.webservice.error">
-<field name="id">10</field>
-<field name="code">RSC006</field>
-<field name="name">(Deudor.Tel) Telefono no valido</field>
-<field name="area">risk</field>
-</record>
-<record id="cesce_webservice_error_data_11" model="cesce.webservice.error">
-<field name="id">11</field>
-<field name="code">RSC007</field>
-<field name="name">(Deudor.Mail) Email no valido</field>
-<field name="area">risk</field>
-</record>
-<record id="cesce_webservice_error_data_12" model="cesce.webservice.error">
-<field name="id">12</field>
-<field name="code">RSC008</field>
-<field name="name">(Deudor.ImpS) Importe no puede ser cero</field>
-<field name="area">risk</field>
-</record>
-<record id="cesce_webservice_error_data_13" model="cesce.webservice.error">
-<field name="id">13</field>
-<field name="code">RSC009</field>
-<field name="name">(Deudor.Mon) Codigo moneda ISO no valido</field>
-<field name="area">risk</field>
-</record>
-<record id="cesce_webservice_error_data_14" model="cesce.webservice.error">
-<field name="id">14</field>
-<field name="code">RSC010</field>
-<field name="name">(Deudor.PzoS) Plazo de pago invalido (ejem: 30, 60, 90, 120, 150, 180)</field>
-<field name="area">risk</field>
-</record>
-<record id="cesce_webservice_error_data_15" model="cesce.webservice.error">
-<field name="id">15</field>
-<field name="code">RSC011</field>
-<field name="name">(Deudor.Impagos) no valido, opciones posibles: Y,N</field>
-<field name="area">risk</field>
-</record>
-<record id="cesce_webservice_error_data_16" model="cesce.webservice.error">
-<field name="id">16</field>
-<field name="code">RSC012</field>
-<field name="name">(Deudor.ImpImpagos) Si Deudor.Impagos='Y' importe no puede ser 0</field>
-<field name="area">risk</field>
-</record>
-<record id="cesce_webservice_error_data_17" model="cesce.webservice.error">
-<field name="id">17</field>
-<field name="code">RSC013</field>
-<field name="name">(Deudor.InsPagoS) plazo de pago invalido</field>
-<field name="area">risk</field>
-</record>
-<record id="cesce_webservice_error_data_18" model="cesce.webservice.error">
-<field name="id">18</field>
-<field name="code">RSC014</field>
-<field name="name">(Deudor.Nif, Deudor.Nom) Campo obligatorio</field>
-<field name="area">risk</field>
-</record>
-<record id="cesce_webservice_error_data_19" model="cesce.webservice.error">
-<field name="id">19</field>
-<field name="code">RSC015</field>
-<field name="name">(Deudor.Pais) codigo ISO pais no valido</field>
-<field name="area">risk</field>
-</record>
-<record id="cesce_webservice_error_data_20" model="cesce.webservice.error">
-<field name="id">20</field>
-<field name="code">RAD0001</field>
-<field name="name">Clasificacion o Empresa no localizada</field>
-<field name="area">risk</field>
-</record>
-<record id="cesce_webservice_error_data_21" model="cesce.webservice.error">
-<field name="id">21</field>
-<field name="code">RAD0002</field>
-<field name="name">Empresa.Pais y Empresa.Nif o Empresa.Spto, o Empresa.RC obligatorios</field>
-<field name="area">risk</field>
-</record>
+id | code | name | area
+--- | --- | --- | ---
+1 | SCU001 | Usuario o Password incorrecto | security
+2 | SCU002 | Password caducada | none
+3 | SCU003 | Usuario desactivado (bloqueado) o Cliente no activo | none
+4 | SCU004 | Usuario no valido (para cliente indicado) | none
+5 | CCC001 | Contrato no localizado o invalido | none
+6 | CCC002 | (NumContrato) contrato y (UsuarioCliente) codigo cliente incorrectos | none
+7 | RSC003 | (Deudor.IdFiscal) Codigo fiscal no valido | risk
+8 | RSC004 | (Deudor.CodP) Codigo postal no valido | risk
+9 | RSC005 | (Deudor.CodP) Codigo Postal no valido | risk
+10 | RSC006 | (Deudor.Tel) Telefono no valido | risk
+11 | RSC007 | (Deudor.Mail) Email no valido | risk
+12 | RSC008 | (Deudor.ImpS) Importe no puede ser cero | risk
+13 | RSC009 | (Deudor.Mon) Codigo moneda ISO no valido | risk
+14 | RSC010 | (Deudor.PzoS) Plazo de pago invalido (ejem: 30, 60, 90, 120, 150, 180) | risk
+15 | RSC011 | (Deudor.Impagos) no valido, opciones posibles: Y,N | risk
+16 | RSC012 | (Deudor.ImpImpagos) Si Deudor.Impagos='Y' importe no puede ser 0 | risk
+17 | RSC013 | (Deudor.InsPagoS) plazo de pago invalido | risk
+18 | RSC014 | (Deudor.Nif, Deudor.Nom) Campo obligatorio | risk
+19 | RSC015 | (Deudor.Pais) codigo ISO pais no valido | risk
+20 | RAD0001 | Clasificacion o Empresa no localizada | risk
+21 | RAD0002 | Empresa.Pais y Empresa.Nif o Empresa.Spto, o Empresa.RC obligatorios | risk
 
 
 En el apartado Contabilidad > Ventas se añade el apartado "Cesce" con los apuntes contables que correspondería para exportara a Cesce.
