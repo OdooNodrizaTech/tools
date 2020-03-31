@@ -62,43 +62,15 @@ id | code | name
 22 | 81 | PAIS CON RESTRICCIONES
 
 ### cesce.risk.classification.situation
-
-<record id="cesce_risk_classification_situation_data_1" model="cesce.risk.classification.situation">
-<field name="id">1</field>
-<field name="code">P</field>
-<field name="name">Pendiente de estudio</field>
-</record>
-<record id="cesce_risk_classification_situation_data_2" model="cesce.risk.classification.situation">
-<field name="id">2</field>
-<field name="code">PC</field>
-<field name="name">Clasificado pendiente de aceptacion por el cliente</field>
-</record>
-<record id="cesce_risk_classification_situation_data_3" model="cesce.risk.classification.situation">
-<field name="id">3</field>
-<field name="code">T</field>
-<field name="name">Preestudios</field>
-</record>
-<record id="cesce_risk_classification_situation_data_4" model="cesce.risk.classification.situation">
-<field name="id">4</field>
-<field name="code">C</field>
-<field name="name">Clasificado y en cobertura</field>
-</record>
-<record id="cesce_risk_classification_situation_data_5" model="cesce.risk.classification.situation">
-<field name="id">5</field>
-<field name="code">N</field>
-<field name="name">Clasificado y sin cobertura (anulado)</field>
-</record>
-<record id="cesce_risk_classification_situation_data_6" model="cesce.risk.classification.situation">
-<field name="id">6</field>
-<field name="code">PA</field>
-<field name="name">Clasificado pendiente de activacion (para contratos PPC)</field>
-</record>
-<record id="cesce_risk_classification_situation_data_7" model="cesce.risk.classification.situation">
-<field name="id">7</field>
-<field name="code">PN</field>
-<field name="name">Clasificado no asegurado (para contratos PPC)</field>
-</record>
- 
+id | code | name
+--- | --- | ---
+1 | P | Pendiente de estudio
+2 | PC | Clasificado pendiente de aceptacion por el cliente
+3 | T | Preestudios
+4 | C | Clasificado y en cobertura
+5 | N | Clasificado y sin cobertura (anulado)
+6 | PA | Clasificado pendiente de activacion (para contratos PPC)
+7 | PN | Clasificado no asegurado (para contratos PPC)
 
 ### cesce.sale.motive.situation
 
@@ -250,83 +222,23 @@ id | code | name
  
 
 ### cesce.sale.situation
-
-<record id="cesce_sale_situation_data_1" model="cesce.sale.situation">
-<field name="id">1</field>
-<field name="code">1</field>
-<field name="name">NO ADMITIDA</field>
-</record>
-<record id="cesce_sale_situation_data_2" model="cesce.sale.situation">
-<field name="id">2</field>
-<field name="code">3</field>
-<field name="name">CAPTURADO</field>
-</record>
-<record id="cesce_sale_situation_data_3" model="cesce.sale.situation">
-<field name="id">3</field>
-<field name="code">4</field>
-<field name="name">BAJA</field>
-</record>
-<record id="cesce_sale_situation_data_4" model="cesce.sale.situation">
-<field name="id">4</field>
-<field name="code">5</field>
-<field name="name">TARIFICADO</field>
-</record>
-<record id="cesce_sale_situation_data_5" model="cesce.sale.situation">
-<field name="id">5</field>
-<field name="code">6</field>
-<field name="name">ADMITIDA/PDTE. TARIFICAR</field>
-</record>
-<record id="cesce_sale_situation_data_6" model="cesce.sale.situation">
-<field name="id">6</field>
-<field name="code">8</field>
-<field name="name">ERRONEA</field>
-</record>
-<record id="cesce_sale_situation_data_7" model="cesce.sale.situation">
-<field name="id">7</field>
-<field name="code">9</field>
-<field name="name">RECHAZADA</field>
-</record>
-<record id="cesce_sale_situation_data_8" model="cesce.sale.situation">
-<field name="id">8</field>
-<field name="code">10</field>
-<field name="name">REHABILITADA</field>
-</record>
-<record id="cesce_sale_situation_data_9" model="cesce.sale.situation">
-<field name="id">9</field>
-<field name="code">11</field>
-<field name="name">ADMITIDA/PDTE.ACTUAL.ENTIDADES</field>
-</record>
-<record id="cesce_sale_situation_data_10" model="cesce.sale.situation">
-<field name="id">10</field>
-<field name="code">13</field>
-<field name="name">SUSPENDIDA COBERTURA</field>
-</record>
-<record id="cesce_sale_situation_data_11" model="cesce.sale.situation">
-<field name="id">11</field>
-<field name="code">14</field>
-<field name="name">PRORROGADO</field>
-</record>
-<record id="cesce_sale_situation_data_12" model="cesce.sale.situation">
-<field name="id">12</field>
-<field name="code">15</field>
-<field name="name">RETENIDO</field>
-</record>
-<record id="cesce_sale_situation_data_13" model="cesce.sale.situation">
-<field name="id">13</field>
-<field name="code">16</field>
-<field name="name">VENCIDO</field>
-</record>
-<record id="cesce_sale_situation_data_14" model="cesce.sale.situation">
-<field name="id">14</field>
-<field name="code">19</field>
-<field name="name">NCR CARGA INICIAL</field>
-</record>
-<record id="cesce_sale_situation_data_15" model="cesce.sale.situation">
-<field name="id">15</field>
-<field name="code">20</field>
-<field name="name">PENDIENTE ADMITIR PRORROGA</field>
-</record>
- 
+id | code | name
+--- | --- | ---
+1 | 1 | NO ADMITIDA
+2 | 2 | CAPTURADO
+3 | 4 | BAJA
+4 | 5 | TARIFICADO
+5 | 6 | ADMITIDA/PDTE. TARIFICAR
+6 | 8 | ERRONEA
+7 | 9 | RECHAZADA
+8 | 10 | REHABILITADA
+9 | 11 | ADMITIDA/PDTE.ACTUAL.ENTIDADES
+10 | 13 | SUSPENDIDA COBERTURA
+11 | 14 | PRORROGADO
+12 | 15 | RETENIDO
+13 | 16 | VENCIDO
+14 | 19 | NCR CARGA INICIAL
+15 | 20 | PENDIENTE ADMITIR PRORROGA
 
 ### cesce.webservice.error
 
