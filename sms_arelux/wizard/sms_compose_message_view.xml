@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="sms_compose_message_wizard_form">
+            <field name="name">sms_compose_message_wizard_form</field>
+            <field name="model">sms.compose.message</field>
+            <field name="groups_id" eval="[(4,ref('base.group_user'))]"/>
+            <field name="arch" type="xml">
+                <form string="Crear SMS">
+                    <field name="model" invisible="1" />
+                    <field name="res_id" invisible="1" />                                        
+                    <field name="country_id" invisible="1" />
+                    <field name="mobile" invisible="1" />                    
+                    <field name="sender" readonly="1" />
+                    <field name="message" options="{'style-inline': true}"/>
+                    <group col="4">
+                        <field name="sms_template_id" options="{'no_create': True}" domain="[('model_id.model','=', model)]" context="{'default_message': message, 'default_sender': sender}"/>
+                    </group>
+                    <footer>
+                        <button string="Enviar" name="send_sms_action" type="object" class="btn-primary"/>
+                        <button string="Cancelar" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

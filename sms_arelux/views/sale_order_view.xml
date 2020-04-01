@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sms_arelux_view_order_form" model="ir.ui.view">
+        <field name="name">sms_arelux_view_order_form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="priority" eval="20"/>                
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_confirm'][1]" position="after">
+                <button name="action_send_sms" type="object" class="o_open_quotation" string="Enviar sms"/>
+            </xpath>                                                            
+        </field>
+    </record>               
+</odoo>

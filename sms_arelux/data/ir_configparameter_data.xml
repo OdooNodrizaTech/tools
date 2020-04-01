@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">        
+        <record id="sms_template_id_default_sale_order" model="ir.config_parameter">
+            <field name="key">sms_template_id_default_sale_order</field>
+            <field name="value">0</field>
+        </record>
+        <record id="cbl_expedition_sms_info_template_id" model="ir.config_parameter">
+            <field name="key">cbl_expedition_sms_info_template_id</field>
+            <field name="value">0</field>
+        </record>
+        <record id="txt_expedition_sms_info_template_id" model="ir.config_parameter">
+            <field name="key">txt_expedition_sms_info_template_id</field>
+            <field name="value">0</field>
+        </record>                            
+    </data>
+</openerp>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sms_message_form_view" model="ir.ui.view">
+        <field name="name">SMS Mensaje</field>
+        <field name="model">sms.message</field>
+        <field name="arch" type="xml">
+            <form string="SMS Mensaje">
+                <header>                                                
+                    <field name="state" widget="statusbar" statusbar_colors='{}'/>
+                </header>                
+                <sheet string="child">
+                    <group>
+                        <field name="country_id" readonly="1"/>
+                        <field name="mobile" readonly="1"/>                             
+                        <field name="message" readonly="1"/>
+                        <field name="message" readonly="1"/>
+                        <field name="sender" readonly="1"/>
+                        <field name="message_id" readonly="1"/>
+                        <field name="model_id" readonly="1"/>
+                        <field name="res_id" readonly="1"/>
+                        <field name="delivery_status" readonly="1"/>
+                        <field name="price" readonly="1"/>
+                        <field name="part_number" readonly="1"/>
+                        <field name="total_parts" readonly="1"/>
+                        <field name="user_id" readonly="1"/>                                                 
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="sms_message_tree" model="ir.ui.view">
+        <field name="name">SMS Mensajes</field>
+        <field name="model">sms.message</field>            
+        <field name="arch" type="xml">
+            <tree string="SMS Mensajes">
+                <field name="create_date" string="Fecha"/>
+                <field name="message_id"/>                
+                <field name="country_id"/>
+                <field name="mobile"/>                
+                <field name="sender"/>                
+                <field name="user_id"/>
+                <field name="price"/>
+                <field name="model_id"/>
+                <field name="total_parts"/>                                
+                <field name="state"/>
+            </tree>
+        </field>            
+    </record>    
+    <record id="view_sms_message_search" model="ir.ui.view">
+        <field name="name">view_sms_message_search</field>
+        <field name="model">sms.message</field>
+        <field name="arch" type="xml">
+            <search string="SMS Mensajes">
+                <field name="user_id"/>
+                <filter string="Mis mensajes" domain="[('user_id','=',uid)]" name="my_sms_messages_filter"/>
+                <group expand="0" name="group_by" string="Agrupar por">
+                    <filter name="group_by_state" string="Estado" domain="[]" context="{'group_by' : 'state'}"/>
+                    <filter name="group_by_user_id" string="Comercial" domain="[]" context="{'group_by' : 'user_id'}"/>
+                    <filter name="group_by_model_id" string="Modelo" domain="[]" context="{'group_by' : 'model_id'}"/>                       
+               </group>                    
+            </search>
+        </field>
+    </record>
+    <record id="sms_message_action" model="ir.actions.act_window">
+        <field name="name">SMS Mensajes</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sms.message</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="sms_message_tree"/>
+        <field name="search_view_id" ref="view_sms_message_search"/>                
+    </record>
+    <record id="sms_template_form_view" model="ir.ui.view">
+        <field name="name">SMS Plantilla</field>
+        <field name="model">sms.template</field>
+        <field name="arch" type="xml">
+            <form string="SMS Plantilla">                                
+                <sheet string="child">
+                    <group>
+                        <field name="name"/>
+                        <field name="model_id"/>                             
+                        <field name="sender"/>
+                        <field name="message"/>
+                        <field name="lang"/>                                                                         
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="sms_template_tree" model="ir.ui.view">
+        <field name="name">SMS Plantillas</field>
+        <field name="model">sms.template</field>            
+        <field name="arch" type="xml">
+            <tree string="SMS Mensajes">
+                <field name="name"/>                
+                <field name="model_id"/>
+                <field name="sender"/>                
+                <field name="message"/>                
+                <field name="lang"/>                
+            </tree>
+        </field>            
+    </record>
+    <record id="view_sms_template_search" model="ir.ui.view">
+        <field name="name">view_sms_template_search</field>
+        <field name="model">sms.template</field>
+        <field name="arch" type="xml">
+            <search string="SMS Plantillas">
+                <field name="sender"/>
+                <group expand="0" name="group_by" string="Agrupar por">
+                    <filter name="group_by_sender" string="Sender" domain="[]" context="{'group_by' : 'sender'}"/>
+                    <filter name="group_by_model_id" string="Modelo" domain="[]" context="{'group_by' : 'model_id'}"/>                       
+               </group>                    
+            </search>
+        </field>
+    </record>        
+    <record id="sms_template_action" model="ir.actions.act_window">
+        <field name="name">SMS Plantillas</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sms.template</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="sms_template_tree"/>
+        <field name="search_view_id" ref="view_sms_template_search"/>                
+    </record>     
+    <menuitem 
+        id="menu_odoo_sms_arelux" 
+        name="SMS"
+        parent="base.menu_custom" 
+        sequence="47"
+    />
+    <menuitem 
+        action="sms_message_action" 
+        name="SMS Mensajes"
+        id="menuitem_odoo_sms_message" 
+        parent="menu_odoo_sms_arelux"
+    />
+    <menuitem 
+        action="sms_template_action" 
+        name="SMS Plantillas"
+        id="menuitem_odoo_sms_template" 
+        parent="menu_odoo_sms_arelux"
+    />                    
+</odoo>
