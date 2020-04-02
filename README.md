@@ -14,4 +14,5 @@ nombre | version
 [ont_freshdesk](ont_freshdesk/) | 10.0.1.0.0
 [ont_intranet](ont_intranet/) | 10.0.1.0.0
 [phone_widget](phone_widget/) | 10.0.1.0.0
+[tr_oniad](tr_oniad/) | 10.0.1.0.0
 [utm_websites](utm_websites/) | 10.0.1.0.0
