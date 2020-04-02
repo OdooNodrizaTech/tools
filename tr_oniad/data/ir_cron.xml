@@ -1,0 +1,15 @@
+<openerp>
+    <data noupdate="1">
+        <record id="cron_odoo_tr_oniad_api_call_update_session_data" model="ir.cron">
+            <field name="name">Odoo Tr ONiAd Api Call Update Session Data</field>
+            <field name="active" eval="False" />
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">months</field>
+            <field name="numbercall">-1</field>
+            <field name="model" eval="'crm.lead'" />
+            <field name="function" eval="'cron_odoo_tr_oniad_api_call_update_session_data'" />
+            <field name="args" eval="" />
+        </record>                        
+    </data>
+</openerp>
