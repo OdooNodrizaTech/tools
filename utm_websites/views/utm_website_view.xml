@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="utm_website_action_form_view" model="ir.ui.view">
+            <field name="name">Utm Website</field>
+            <field name="model">utm.website</field>
+            <field name="arch" type="xml">
+                <form string="Utm Website">
+                    <sheet string="child">
+                        <group>
+                            <field name="name"/>
+                            <field name="url"/>
+                            <field name="mail_template_id" domain="[('model_id.model', '=', 'crm.lead')]"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="utm_website_action_tree" model="ir.ui.view">
+            <field name="name">utm_website_action_tree</field>
+            <field name="model">utm.website</field>
+             <field name="arch" type="xml">
+                <tree string="Utm sitios web">
+                    <field name="name"/>
+                    <field name="url"/>
+                    <field name="mail_template_id"/>                    
+                </tree>
+            </field>            
+        </record>                
+        <record model="ir.actions.act_window" id="utm_website_action">
+            <field name="name">Utm sitios web</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">utm.website</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>        
+        <menuitem 
+            action="utm_website_action" 
+            name="Utm sitios web"
+            id="menuitem_utm_website" 
+            parent="sales_team.menu_localisation"
+        />                        
+    </data>
+</openerp>
