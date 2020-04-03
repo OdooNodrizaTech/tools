@@ -9,6 +9,7 @@ nombre | version
 --- | ---
 [cesce](cesce/) | 10.0.1.0.0
 [ir_attachment_s3](ir_attachment_s3/) | 10.0.1.0.0
+[news_custom](news_custom/) | 10.0.1.0.0
 [odoo_gdpr](odoo_gdpr/) | 10.0.1.0.0
 [ont_automation_base](ont_automation_base/) | 10.0.1.0.0
 [ont_automation_account_banking_mandate_auto_create](ont_automation_account_banking_mandate_auto_create/) | 10.0.1.0.0
