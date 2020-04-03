@@ -21,7 +21,7 @@ class IrAttachment(models.Model):
             if item.type=='url':
                 if 'amazonaws.com' in item.url:
                     destination_filename = 'ir_attachments/'+str(item.res_model)+'/'+str(item.res_id)+'/'+str(item.name.encode('ascii', 'ignore').decode('ascii'))
-                    self.env['s3.model'].sudo().remove_to_s3(destination_filename, None, ir_attachment_s3_bucket_name)
+                    self.env['s3.model'].sudo().remove_to_s3(destination_filename, ir_attachment_s3_bucket_name)
                 
         return models.Model.unlink(self)    
                     

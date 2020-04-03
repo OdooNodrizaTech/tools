@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="sms_arelux_base_delivery_carrier_expedition_shipping_expedition_form_view" model="ir.ui.view">
-        <field name="name">sms_arelux_base_delivery_carrier_expedition_shipping_expedition_form_view</field>
+    <record id="sms_arelux_shipping_expedition_form_view" model="ir.ui.view">
+        <field name="name">sms_arelux_shipping_expedition_form_view</field>
         <field name="model">shipping.expedition</field>
-        <field name="inherit_id" ref="base_delivery_carrier_expedition.shipping_expedition_form_view" />
+        <field name="inherit_id" ref="shipping_expedition.shipping_expedition_form_view" />
         <field name="priority" eval="20"/>                
         <field name="arch" type="xml">
-            <field name="date_send_mail_info" position="after">
+            <field name="date" position="after">
                 <field name="date_send_sms_info" readonly="1" />    
             </field>                                                                        
         </field>
