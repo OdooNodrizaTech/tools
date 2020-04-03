@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="phone_code_view_partner_tree" model="ir.ui.view">
+        <field name="name">phone_code_view_partner_tree</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <field name="phone" position="after">
+                <field name="mobile"/>
+            </field>            
+        </field>
+    </record>
+    <record id="phone_code_view_partner_form" model="ir.ui.view">
+        <field name="name">phone_code_view_partner_form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">            
+            <field name="phone" position="before">
+                <field name="phone_code_res_country_id" invisible="1" />                
+            </field>
+            <field name="phone" position="replace">
+                <label for="phone" />
+                <div>                    
+                    <field name="phone_code" class="oe_edit_only" nolabel="1" readonly="0" style="width:30%;" />
+                    <field name="phone" widget="phone" options="{'field_phone_code': 'phone_code'}" nolabel="1" readonly="0" style="width:70%;" />
+                </div>                                
+            </field>
+            <field name="mobile" position="before">
+                <field name="mobile_code_res_country_id" invisible="1" />                
+            </field>
+            <field name="mobile" position="replace">
+                <label for="mobile" />
+                <div>                    
+                    <field name="mobile_code" class="oe_edit_only" nolabel="1" readonly="0" style="width:30%;" />
+                    <field name="mobile" widget="phone" options="{'field_phone_code': 'mobile_code'}" nolabel="1" readonly="0" style="width:70%;" />
+                </div>                                
+            </field>                                                                                                                
+        </field>
+    </record>
+</odoo>
