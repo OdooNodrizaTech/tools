@@ -1,5 +1,0 @@
-import sms_compose_message
-import sms_message
-import sms_template
-import sale_order
-import shipping_expedition
