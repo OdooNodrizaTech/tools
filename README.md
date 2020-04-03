@@ -14,6 +14,7 @@ nombre | version
 [ont_automation_base](ont_automation_base/) | 10.0.1.0.0
 [ont_automation_account_banking_mandate_auto_create](ont_automation_account_banking_mandate_auto_create/) | 10.0.1.0.0
 [ont_automation_account_invoice_auto_send_mail](ont_automation_account_invoice_auto_send_mail/) | 10.0.1.0.0
+[ont_automation_account_invoice_not_paid_auto_send_mail](ont_automation_account_invoice_not_paid_auto_send_mail/) | 10.0.1.0.0
 [ont_freshdesk](ont_freshdesk/) | 10.0.1.0.0
 [ont_intranet](ont_intranet/) | 10.0.1.0.0
 [phone_code](phone_code/) | 10.0.1.0.0
