@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="automation_form_view" model="ir.ui.view">
+        <field name="name">Automation Log</field>
+        <field name="model">automation.log</field>
+        <field name="arch" type="xml">
+            <form string="Automation Log">
+                <sheet string="child">
+                    <group>
+                        <field name="model" readonly="1"/>
+                        <field name="res_id" readonly="1"/>
+                        <field name="category" readonly="1"/>
+                        <field name="action" readonly="1"/>
+                        <field name="create_date" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="automation_log_tree" model="ir.ui.view">
+        <field name="name">Automation Log</field>
+        <field name="model">automation.log</field>
+        <field name="arch" type="xml">
+            <tree string="Automation Logs">
+                <field name="model"/>
+                <field name="res_id"/>
+                <field name="category"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+    <record id="odoo_automation_log_action" model="ir.actions.act_window">
+        <field name="name">Automation Log</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">automation.log</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="automation_log_tree"/>
+    </record>
+    <menuitem
+        id="menu_odoo_automation"
+        name="Automation"
+        parent="base.menu_custom"
+        sequence="48"
+    />    
+    <menuitem
+        action="odoo_automation_log_action"
+        name="Automation Log"
+        id="menuitem_odoo_automation_log"
+        parent="menu_odoo_automation"
+    />
+</odoo>

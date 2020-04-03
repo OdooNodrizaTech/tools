@@ -7,7 +7,10 @@
     'category': 'Tools',
     'license': 'AGPL-3',
     'depends': ['base'],
-    'data': [],    
+    'data': [
+        'security/ir.model.access.csv',
+        'views/automation_view.xml',
+    ],    
     'installable': True,
     'auto_install': False,    
 }
