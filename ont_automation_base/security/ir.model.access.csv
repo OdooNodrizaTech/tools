@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_automation_log_admin,automation.log,model_automation_log,,1,1,1,1
-access_automation_log_group_user,automation.log.user,model_automation_log,base.group_user,1,1,1,1
