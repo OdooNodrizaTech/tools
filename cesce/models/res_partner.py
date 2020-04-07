@@ -27,6 +27,9 @@ class ResPartner(models.Model):
         default='none',
         track_visibility='onchange'
     )
+    cesce_error = fields.Char(
+        string='Cesce Error'
+    )
     cesce_risk_classification_count = fields.Integer(compute='_compute_cesce_risk_classification_count', string="Cesce clasificaciones de riesgo")
     
     @api.one
@@ -142,18 +145,4 @@ class ResPartner(models.Model):
     def action_partner_canceled_sent(self):
         _logger.info('action_partner_canceled_sent')
         _logger.info('Generamos el archivo .txt y lo enviamos a cesce para despues cambiar el estado de cesce_risk_state=canceled_sent')
-        return True
-        
-    @api.one    
-    def action_send_cesce_risk_classification_error_message_slack(self, vals):
-        _logger.info('action_send_cesce_risk_classification_error_message_slack (cesce)')
-        _logger.info(vals)
-        return True
-    
-    @api.one    
-    def action_send_cesce_risk_classification_message_slack(self, vals):
-        return True
-    
-    @api.one    
-    def action_send_cesce_risk_classification_update_message_slack(self, vals):
         return True                                                                                                                                                          

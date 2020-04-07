@@ -22,6 +22,9 @@ class AccountMoveLine(models.Model):
         string='Cesce Venta Estado',
         default='none'
     )
+    cesce_error = fields.Char(
+        string='Cesce Error'
+    )
     partner_vat = fields.Char(
         compute='_get_partner_vat',
         string='DNI',
@@ -112,8 +115,4 @@ class AccountMoveLine(models.Model):
         account_move_line_ids = self.env['account.move.line'].search([('cesce_sale_state', 'in', ('sale_sent','sale_error'))])
         if len(account_move_line_ids)>0:
             _logger.info('revisar estos ids')
-            _logger.info(account_move_line_ids)
-            
-    @api.one    
-    def action_send_cesce_sale_error_message_slack(self, vals):
-        return True                                                                                               
+            _logger.info(account_move_line_ids)                                                                                               

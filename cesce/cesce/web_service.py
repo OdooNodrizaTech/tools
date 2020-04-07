@@ -207,13 +207,8 @@ class CesceWebService():
                                     res_partner_id_obj = res_partner_ids[0]
                                     if res_partner_id_obj.cesce_risk_state=='classification_sent':
                                         res_partner_id_obj.cesce_risk_state = 'classification_error'
-
-                                    #slack_error
-                                    vals = {
-                                        'error' : texto_error,
-                                        'importe_solicitado': importe_solicitado,
-                                    }
-                                    res_partner_id_obj.action_send_cesce_risk_classification_error_message_slack(vals)
+                                    #cesce_error
+                                    res_partner_id_obj.cesce_error = texto_error                                    
                     #save cesce_file_check
                     cesce_file_check_vals = {
                         'folder': self.ftp_folder_error,
@@ -326,15 +321,6 @@ class CesceWebService():
                                                         if cesce_risk_classification_situation_id!=False:
                                                             cesce_risk_classification_id.cesce_risk_classification_situation_id = cesce_risk_classification_situation_id
 
-                                                #slack_vals
-                                                vals = {
-                                                    'cesce_risk_state' : res_partner_id_obj.cesce_risk_state,
-                                                    'importe_concedido' : importe_concedido,
-                                                    'fecha_efecto': fecha_efecto,
-                                                    'fecha_anulacion': fecha_anulacion
-                                                }
-                                                res_partner_id_obj.action_send_cesce_risk_classification_update_message_slack(vals)
-
                                             elif res_partner_id_obj.cesce_risk_state=='classification_sent':
                                                 #mercado
                                                 mercado = 'inside'
@@ -414,14 +400,9 @@ class CesceWebService():
                                                     #cesce_risk_state
                                                     if cesce_risk_clasification_obj.partner_id.credit_limit>0:
                                                         cesce_risk_clasification_obj.partner_id.cesce_risk_state = 'classification_ok'
+                                                        cesce_risk_clasification_obj.cesce_error = ''
                                                     else:
                                                         cesce_risk_clasification_obj.partner_id.cesce_risk_state = 'canceled_ok'
-                                                #slack_vals
-                                                vals = {
-                                                    'importe_solicitado' : importe_solicitado,
-                                                    'importe_concedido' : importe_concedido,
-                                                }
-                                                res_partner_id_obj.action_send_cesce_risk_classification_message_slack(vals)
                     #save cesce_file_check
                     cesce_file_check_vals = {
                         'folder': self.ftp_folder_out,
@@ -660,12 +641,8 @@ class CesceWebService():
                                     account_move_line_id_obj = account_move_line_ids[0]
                                     if account_move_line_id_obj.cesce_sale_state=='sale_sent':
                                         account_move_line_id_obj.cesce_sale_state = 'sale_error'
-
-                                    #slack_error
-                                    vals = {
-                                        'error' : texto_error,
-                                    }
-                                    account_move_line_id_obj.action_send_cesce_sale_error_message_slack(vals)
+                                    #cesce_error
+                                    account_move_line_id_obj.cesce_error = texto_error
                     #save cesce_file_check
                     cesce_file_check_vals = {
                         'folder': self.ftp_folder_error,
