@@ -8,6 +8,10 @@ from dateutil.relativedelta import relativedelta
 
 import odoo
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 def index_exists(ls, i):
     return (0 <= i < len(ls)) or (-len(ls) <= i < 0)
 
@@ -434,7 +438,7 @@ class CesceWebService():
                 cod_provincia = str(self.cod_provicnasi_esp[partner.state_id.code])                    
         #fix_partner_vat
         partner_vat = partner.vat.upper()            
-    
+        #txt_fields
         txt_fields = [
             {
                 'type': 'codigo_deudor_intero_compania',
