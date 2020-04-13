@@ -188,7 +188,7 @@ Revisa todos los apuntes contables de la cuenta contable de Clientes del diario 
 De todos los apuntes contables que corresponde se "declara la venta" (genera el archivo en el FTP) y se cambia el estado "Venta enviada"
 
 ### Cron Cesce Sale Check File Out 
-Frecuencia: 1 vez al día
+Frecuencia: 1 vez cada 3 horas
 
 Descripción:
 
