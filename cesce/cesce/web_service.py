@@ -138,7 +138,7 @@ class CesceWebService():
         file_name_err_tmp = os.path.dirname(os.path.abspath(__file__))+'/'+tmp_file
         if os.path.isfile(file_name_err_tmp):
             os.remove(file_name_err_tmp)
-        
+                
         with pysftp.Connection(host=self.connection_ftp_host, username=self.connection_ftp_user, password=self.connection_ftp_password, port=self.connection_ftp_port, cnopts=cnopts) as sftp:
             files_get = sftp.listdir(folder)
             if len(files_get)>0:                
@@ -148,13 +148,14 @@ class CesceWebService():
                     sftp.get(file_get_name, file_name_err_tmp)
                     
                     if os.path.isfile(file_name_err_tmp):
-                        fh = codecs.open(file_name_err_tmp, "r", "utf-8-sig")
-                        #fh = codecs.open(file_name_err_tmp, mode="r")
+                        #fh = codecs.open(file_name_err_tmp, "r", "utf-8-sig")
+                        fh = codecs.open(file_name_err_tmp, mode="r")
                         lines = fh.readlines()
                         
                         if len(lines)>0:
                             for line in lines:
-                                #line = unicode(line, errors='replace')#fix errors                                                                                                                                                
+                                #line = unicode(line, errors='replace')#fix errors
+                                line = line.decode('latin-1').encode("utf-8")                                                                                                                                                
                                 line_split = line.split(self.separator_fields)                                                                
                                 if len(line_split)>0:
                                     line_real = []
@@ -236,6 +237,8 @@ class CesceWebService():
         return_files_in_folder = self.get_files_in_folder_ftp(self.ftp_folder_out, tmp_file)        
         if len(return_files_in_folder)>0:
             for file_name, file_name_items_real in return_files_in_folder.items():
+                _logger.info(self.ftp_folder_out)
+                _logger.info(file_name)
                 cesce_file_check_ids = self.custom_env['cesce.file.check'].search([('folder', '=', str(self.ftp_folder_out)), ('file', '=', str(file_name))])
                 if len(cesce_file_check_ids) == 0:
                     # operations
