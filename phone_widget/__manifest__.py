@@ -8,9 +8,9 @@
     'license': 'AGPL-3',
     'depends': ['base'],
     'data': [
-        'web_phone.xml',
+        '/views/web_phone.xml',
     ],
     'installable': True,
     'auto_install': False,
-    'qweb': ['static/src/xml/*.xml'],    
+    'qweb': ['static/src/xml/phone.xml'],    
 }
