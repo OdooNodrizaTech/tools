@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="git_repository_view" model="ir.ui.view">
+        <field name="name">Git Repository</field>
+        <field name="model">git.repository</field>
+        <field name="arch" type="xml">
+            <form string="Git Repository">
+                <sheet string="child">
+                    <group>
+                        <field name="name"/>
+                        <field name="uuid" readonly="1"/>
+                        <field name="git_author_id" options='{"no_create": True, "no_create_edit": True}' />                        
+                        <field name="url" widget="url"/>
+                        <field name="path"/>
+                        <field name="branch"/>
+                        <field name="exclude"/>
+                        <field name="odoo_url" widget="url" readonly="1"/>
+                        <field name="odoo_url_odoo_reboot" widget="url" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="git_repository_tree" model="ir.ui.view">
+        <field name="name">Git Repository</field>
+        <field name="model">git.repository</field>
+        <field name="arch" type="xml">
+            <tree string="Git Repository">
+                <field name="name"/>
+                <field name="uuid"/>                
+                <field name="git_author_id"/>
+                <field name="branch"/>
+                <field name="path"/>
+            </tree>
+        </field>
+    </record>
+    <record id="odoo_git_repository_action" model="ir.actions.act_window">
+        <field name="name">Git Repository</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">git.repository</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="git_repository_tree"/>
+    </record>
+    <record id="git_author_view" model="ir.ui.view">
+        <field name="name">Git Author</field>
+        <field name="model">git.author</field>
+        <field name="arch" type="xml">
+            <form string="Git Author">
+                <sheet string="child">
+                    <group>
+                        <field name="name"/>
+                        <field name="url" widget="url"/>                        
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="git_author_tree" model="ir.ui.view">
+        <field name="name">Git Author</field>
+        <field name="model">git.author</field>
+        <field name="arch" type="xml">
+            <tree string="Git Author">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="odoo_git_author_action" model="ir.actions.act_window">
+        <field name="name">Git Author</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">git.author</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="git_author_tree"/>
+    </record>
+    <record id="git_repository_log_view" model="ir.ui.view">
+        <field name="name">Git Repository Log</field>
+        <field name="model">git.repository.log</field>
+        <field name="arch" type="xml">
+            <form string="Git Repository Log">
+                <sheet string="child">
+                    <group>
+                        <field name="git_repository_id" readonly="1" options='{"no_create": True, "no_create_edit": True}'/>
+                        <field name="odoo_reboot" readonly="1"/>
+                        <field name="date_start" readonly="1"/>
+                        <field name="date_end" readonly="1"/>
+                        <field name="create_uid" readonly="1"/>                        
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="git_repository_log_tree" model="ir.ui.view">
+        <field name="name">Git Repository Log</field>
+        <field name="model">git.repository.log</field>
+        <field name="arch" type="xml">
+            <tree string="Git Repository Log">
+                <field name="git_repository_id"/>
+                <field name="odoo_reboot"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="create_uid"/>
+            </tree>
+        </field>
+    </record>
+    <record id="odoo_git_repository_log_action" model="ir.actions.act_window">
+        <field name="name">Git Repository Log</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">git.repository.log</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="git_repository_log_tree"/>
+    </record>
+    <menuitem
+        id="menu_odoo_git"
+        name="Git"
+        parent="base.menu_custom"
+        sequence="48"
+    />    
+    <menuitem
+        action="odoo_git_repository_action"
+        name="Git Repository"
+        id="menuitem_odoo_git_repository"
+        parent="menu_odoo_git"
+    />
+    <menuitem
+        action="odoo_git_author_action"
+        name="Git Author"
+        id="menuitem_odoo_git_author"
+        parent="menu_odoo_git"
+    />
+    <menuitem
+        action="odoo_git_repository_log_action"
+        name="Git Repository Log"
+        id="menuitem_odoo_git_repository_log"
+        parent="menu_odoo_git"
+    />
+</odoo>
