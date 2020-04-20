@@ -7,9 +7,6 @@
     'category': 'Tools',
     'license': 'AGPL-3',
     'depends': ['base'],
-    'external_dependencies': {
-        'python' : ['gitpython'],
-    },
     'data': [
         'views/git_repository_view.xml',
         'security/ir.model.access.csv'
