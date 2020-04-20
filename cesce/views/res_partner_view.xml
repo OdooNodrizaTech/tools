@@ -26,6 +26,7 @@
                         <field string="Cesce clasificaciones de riesgo" name="cesce_risk_classification_count" widget="statinfo"/>
                     </button>
                 </div>
+                <field name="cesce_error" readonly="1" attrs="{'invisible': [('cesce_risk_state', '!=', 'classification_error')]}"/>
             </xpath>                        
         </field>
     </record>
