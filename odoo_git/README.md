@@ -34,23 +34,36 @@ Crearemos el archivo odoo_git.sh en /home/ubuntu/odoo_addons/odoo_git.sh con el 
 #!/bin/sh
 git_branch=$1
 git_url=$2
+git_repository="$(echo $git_url | sed -r 's/.+\/([^.]+)(\.git)?/\1/')"
 odoo_path=$3
 odoo_restart=$4
 #echo
 echo "Git branch: "$git_branch
 echo "Git url: "$git_url
+echo "Git repository: "$git_repository
 echo "Odoo path: "$odoo_path
 echo "Odoo restart: "$odoo_restart
-#create_dir (previously_remove)
-rm -rf $odoo_path
-mkdir $odoo_path
-chown ubuntu: $odoo_path
-cd $odoo_path
+#define
+temp_dir=/home/ubuntu/git_temp
+temp_dir2="$temp_dir/$git_repository"
+temp_dir2_git="$temp_dir2/.git"
+#create temp_dir 
+rm -rf $temp_dir
+mkdir $temp_dir
+cd $temp_dir
 #ssh
 eval "$(ssh-agent -s)"
 ssh-add /home/ubuntu/.ssh/odoo
 #git
 git clone -b $git_branch $git_url
+#remove .git folder
+rm -rf $temp_dir2_git
+#create_dir (previously_remove)
+rm -rf $odoo_path
+#copy content
+cp -R $temp_dir2 $odoo_path
+#change to ubuntu
+chown ubuntu: $odoo_path
 #retart_odoo
 if [ $odoo_restart = "True" ]
 then 
