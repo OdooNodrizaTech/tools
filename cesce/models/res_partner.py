@@ -77,7 +77,7 @@ class ResPartner(models.Model):
                                                 previously_insert = True
                                         #insert
                                         if previously_insert==False:
-                                            self.env.cr.execute("""INSERT INTO "mail_message_res_partner_starred_rel" ("mail_message_id", "res_partner_id") VALUES ('"""+str(mail_message_id.id)+"""', '"""+str(self.user_id.partner_id.id)+"""')""")            
+                                            mail_message_id.starred_partner_ids = [(4, self.user_id.partner_id.id)]            
         #return
         return return_write
     
