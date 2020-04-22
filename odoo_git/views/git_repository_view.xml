@@ -10,12 +10,14 @@
                         <field name="name"/>
                         <field name="uuid" readonly="1"/>
                         <field name="git_author_id" options='{"no_create": True, "no_create_edit": True}' />                        
-                        <field name="url" widget="url"/>
+                        <field name="url" widget="url" readonly="1"/>
                         <field name="path"/>
                         <field name="branch"/>
                         <field name="exclude"/>
                         <field name="odoo_url" widget="url" readonly="1"/>
                         <field name="odoo_url_odoo_reboot" widget="url" readonly="1"/>
+                        <field name="shell_command_without_odoo_reboot" readonly="1"/>
+                        <field name="shell_command_with_odoo_reboot" readonly="1"/>                                                
                     </group>
                 </sheet>
             </form>

@@ -24,3 +24,8 @@ class GirRepositoryLog(models.Model):
     date_end = fields.Datetime(        
         string='Date End'
     )
+    
+    @api.one
+    def action_finish(self):
+        if self.date_end==False:        
+            self.date_end = fields.datetime.now()
