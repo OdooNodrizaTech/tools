@@ -31,44 +31,59 @@ Crearemos el archivo odoo_git.sh en /home/ubuntu/odoo_addons/odoo_git.sh con el 
 
 ## odoo_git.sh
 ```
-#!/bin/sh
+#!/bin/bash
 git_branch=$1
 git_url=$2
 git_repository="$(echo $git_url | sed -r 's/.+\/([^.]+)(\.git)?/\1/')"
 odoo_path=$3
 odoo_restart=$4
+folders_exclude_string=$5
+odoo_url_finish=$6
 #echo
+echo "USER: "$USER
 echo "Git branch: "$git_branch
 echo "Git url: "$git_url
 echo "Git repository: "$git_repository
 echo "Odoo path: "$odoo_path
 echo "Odoo restart: "$odoo_restart
+echo "Odoo url_finish: "$odoo_url_finish
 #define
-temp_dir=/home/ubuntu/git_temp
-temp_dir2="$temp_dir/$git_repository"
-temp_dir2_git="$temp_dir2/.git"
-#create temp_dir 
-rm -rf $temp_dir
-mkdir $temp_dir
-cd $temp_dir
+odoo_path_repository="$odoo_path/$git_repository"
+#enter odoo_path
+cd $odoo_path
+#remove odoo_path_repository
+rm -rf $odoo_path_repository
+echo "Removing folder $odoo_path_repository"
 #ssh
 eval "$(ssh-agent -s)"
 ssh-add /home/ubuntu/.ssh/odoo
 #git
 git clone -b $git_branch $git_url
-#remove .git folder
-rm -rf $temp_dir2_git
-#create_dir (previously_remove)
-rm -rf $odoo_path
-#copy content
-cp -R $temp_dir2 $odoo_path
+echo "Cloning $git_url $git_branch"
 #change to ubuntu
-chown ubuntu: $odoo_path
+#chown ubuntu: $odoo_path_repository
+#echo "Change chwon to ubuntu $odoo_path_repository"
+#remove folders
+if [ $folders_exclude_string ]
+then
+for folder_exclude in $(echo $folders_exclude_string | tr "," "\n")
+do
+odoo_path_repository_exclude="$odoo_path_repository/$folder_exclude"
+rm -rf $odoo_path_repository_exclude
+echo "Removing folder $odoo_path_repository_exclude" 
+done
+fi
 #retart_odoo
 if [ $odoo_restart = "True" ]
 then 
 echo "Restarting odoo"
 sudo service odoo restart
+fi
+#curl odoo_url_finish
+if [ $odoo_url_finish ]
+then
+curl -s $odoo_url_finish > /dev/null
+echo "Curl $odoo_url_finish"
 fi
 ```
 
