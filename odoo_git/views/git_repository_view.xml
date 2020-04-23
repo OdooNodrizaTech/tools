@@ -5,6 +5,10 @@
         <field name="model">git.repository</field>
         <field name="arch" type="xml">
             <form string="Git Repository">
+                <header>                                                
+                    <button name="action_clone_without_reboot_multi" string="Clonar (sin reinicio Odoo)" type="object"/>
+                    <button name="action_clone_with_reboot_multi" string="Clonar (con reinicio Odoo)" type="object"/>                        
+                </header>
                 <sheet string="child">
                     <group>
                         <field name="name"/>
@@ -14,8 +18,6 @@
                         <field name="path"/>
                         <field name="branch"/>
                         <field name="exclude"/>
-                        <field name="odoo_url" widget="url" readonly="1"/>
-                        <field name="odoo_url_odoo_reboot" widget="url" readonly="1"/>
                         <field name="shell_command_without_odoo_reboot" readonly="1"/>
                         <field name="shell_command_with_odoo_reboot" readonly="1"/>                                                
                     </group>

@@ -44,16 +44,6 @@ class GirRepository(models.Model):
         string='Exclude'
     )
     #extra urls
-    odoo_url = fields.Char(        
-        compute='_get_odoo_url',
-        string='Odoo Url',
-        store=False
-    )
-    odoo_url_odoo_reboot = fields.Char(        
-        compute='_get_odoo_url',
-        string='Odoo Url (odoo reboot)',
-        store=False
-    )
     shell_command_without_odoo_reboot = fields.Text(        
         compute='_get_shell_command_without_odoo_reboot',
         string='Shell command',
@@ -73,14 +63,6 @@ class GirRepository(models.Model):
             if self.git_author_id.id>0 and self.name!=False:
                 if self.git_author_id.url!=False:
                     self.url = self.git_author_id.url+'/'+str(self.name)+'.git'
-    
-    @api.one        
-    def _get_odoo_url(self):
-        web_base_url = str(self.env['ir.config_parameter'].sudo().get_param('web.base.url'))        
-        #operations            
-        if self.id>0:                
-            self.odoo_url = str(web_base_url)+'/git/'+str(self.uuid)
-            self.odoo_url_odoo_reboot = str(web_base_url)+'/git/'+str(self.uuid)+'?odoo_reboot=1'
                 
     @api.model
     def define_url_log_finish(self, git_repository_log_id=0):
@@ -130,6 +112,16 @@ class GirRepository(models.Model):
             'error': stderr
         }
         
+    @api.multi
+    def action_clone_without_reboot_multi(self):
+        for obj in self:
+            obj.action_clone(False)        
+    
+    @api.multi
+    def action_clone_with_reboot_multi(self):
+        for obj in self:
+            obj.action_clone(True)
+            
     @api.one
     def action_clone(self, odoo_reboot=False):
         if self.path==False or self.url==False or self.branch==False:
