@@ -31,10 +31,13 @@ class IrAttachment(models.Model):
         source_path = '/var/lib/odoo/.local/share/Odoo/filestore/'+str(db_name)+'/'+str(self.store_fname)
         destination_filename = 'ir_attachments/'+str(self.res_model)+'/'+str(self.res_id)+'/'+str(self.name.encode('ascii', 'ignore').decode('ascii'))
         ir_attachment_s3_bucket_name = self.env['ir.config_parameter'].sudo().get_param('ir_attachment_s3_bucket_name')
-        
-        if isinstance(destination_filename, unicode):
-            destination_filename = unidecode.unidecode(destination_filename)        
-        
+        #decode
+        if isinstance(destination_filename, str):
+            decoded = False
+        else:
+            destination_filename = unicode_or_str.decode(destination_filename)
+            decoded = True        
+        #operations
         if not os.path.exists(source_path):
             self.unlink()
         else:
@@ -44,8 +47,8 @@ class IrAttachment(models.Model):
                 self.type = 'url'
                 self.url = return_url_s3
                 
-    @api.multi    
-    def cron_action_s3_upload_ir_attachments(self, cr=None, uid=False, context=None):            
+    @api.model    
+    def cron_action_s3_upload_ir_attachments(self):            
         ir_attachment_ids = self.env['ir.attachment'].search(
             [
                 ('type', '=', 'binary'),

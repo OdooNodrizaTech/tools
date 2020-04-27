@@ -4,7 +4,6 @@ import werkzeug
 
 from odoo import fields, http, _
 from odoo.http import request
-from odoo.addons.website_mail.controllers.main import _message_post_helper
 
 import logging
 _logger = logging.getLogger(__name__)

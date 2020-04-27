@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_news_custom_odoo_admin,new.custom,model_new_custom,base.group_system,1,1,1,1
-access_news_custom_odoo_group_user,new.custom.user,model_new_custom,base.group_user,1,0,0,0
-access_news_custom_user_odoo_admin,new.custom.user,model_new_custom_user,base.group_system,1,1,1,1
-access_news_custom_user_odoo_group_user,new.custom.user.user,model_new_custom_user,base.group_user,1,1,1,0
