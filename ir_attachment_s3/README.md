@@ -14,7 +14,8 @@ ir_attachment_s3_bucket_name
 ```
 
 En la acción de eliminar un adjunto, se revisa si es del tipo URL y si contiene amazonaws.com puesto que en ese caso será necesario eliminarlo de S3.
- 
+
+Importante que el bucket de S3 tenga permiso público.
 
 Existen diferentes crons para diferentes acciones:
 
