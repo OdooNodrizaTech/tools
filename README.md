@@ -8,8 +8,10 @@ Addons
 nombre | version
 --- | ---
 [ir_attachment_s3](ir_attachment_s3/) | 12.0.1.0.0
+[odoo_gdpr](odoo_gdpr/) | 12.0.1.0.0
 [odoo_git](odoo_git/) | 12.0.1.0.0
 [ont_freshdesk](ont_freshdesk/) | 12.0.1.0.0
+[ont_intranet](ont_intranet/) | 12.0.1.0.0
 
 ## Addons no soportados
 
