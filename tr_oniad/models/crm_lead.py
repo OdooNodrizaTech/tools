@@ -39,8 +39,11 @@ class CrmLead(models.Model):
                 "properties": {"lead_id": self.id}
             }
             url = 'https://tr.oniad.com/api/session/' + str(self.tracking_session_uuid) + '/addProperties'
-            response = requests.post(url, data=json.dumps(data), headers=headers)
-            return response.status_code       
+            try:
+                response = requests.post(url, data=json.dumps(data), headers=headers)
+                return response.status_code
+            except:
+                return 500       
     
     @api.multi    
     def cron_odoo_tr_oniad_api_call_update_session_data(self, cr=None, uid=False, context=None):
@@ -68,7 +71,13 @@ class CrmLead(models.Model):
                     "margin_invoices": margin
                 }}
                 url = 'https://tr.oniad.com/api/session/'+str(item.lead_id.tracking_session_uuid)+'/addProperties'
-                response = requests.post(url, data=json.dumps(data), headers=headers)
-                if response.status_code!=200:
-                    _logger.info(response.status_code)
-                    _logger.info(response.json())                
+                try:
+                    response = requests.post(url, data=json.dumps(data), headers=headers)
+                    #logger
+                    if response.status_code!=200:
+                        _logger.info(response.status_code)
+                        _logger.info(response.json())
+                    #return
+                    return response.status_code
+                except:
+                    return 500                                

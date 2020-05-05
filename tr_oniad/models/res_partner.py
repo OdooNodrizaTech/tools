@@ -39,5 +39,8 @@ class ResPartner(models.Model):
                 "identity": str(self.id)
             }
             url = 'https://tr.oniad.com/api/user/' + str(self.tracking_user_uuid) + '/identify'
-            response = requests.post(url, data=json.dumps(data), headers=headers)
-            return response.status_code
+            try:
+                response = requests.post(url, data=json.dumps(data), headers=headers)        
+                return response.status_code
+            except:
+                return 500
