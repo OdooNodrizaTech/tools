@@ -7,7 +7,7 @@
     'category': 'Tools',
     'license': 'AGPL-3',
     'external_dependencies': {
-        'python' : ['boto'],
+        'python3' : ['boto'],
     },
     'depends': ['base'],
     'data': [
