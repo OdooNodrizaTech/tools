@@ -7,6 +7,7 @@ Addons
 ----------------
 nombre | version
 --- | ---
+[cesce](cesce/) | 12.0.1.0.0
 [ir_attachment_s3](ir_attachment_s3/) | 12.0.1.0.0
 [odoo_gdpr](odoo_gdpr/) | 12.0.1.0.0
 [odoo_git](odoo_git/) | 12.0.1.0.0
