@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cesce_payment_term_admin,cesce.payment.term,model_cesce_payment_term,,1,1,1,1
+access_cesce_risk_classification_admin,cesce.risk.classification,model_cesce_risk_classification,,1,1,1,1
+access_cesce_risk_classification_group_user,cesce.risk.classification.user,model_cesce_risk_classification,base.group_user,1,1,1,1
+access_cesce_risk_classification_motive_admin,cesce.risk.classification.motive,model_cesce_risk_classification_motive,,1,1,1,1
+access_cesce_risk_classification_situation_admin,cesce.risk.classification.situation,model_cesce_risk_classification_situation,,1,1,1,1
+access_cesce_sale_admin,cesce.sale,model_cesce_sale,,1,1,1,1
+access_cesce_sale_motive_situation_admin,cesce.sale.motive.situation,model_cesce_sale_motive_situation,,1,1,1,1
+access_cesce_sale_situation_admin,cesce.sale.situation,model_cesce_sale_situation,,1,1,1,1
+access_cesce_webservice_error_admin,cesce.webservice.error,model_cesce_webservice_error,,1,1,1,1

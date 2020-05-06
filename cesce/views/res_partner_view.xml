@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>    
+    <record id="cesce_risk_classification_action" model="ir.actions.act_window">
+        <field name="name">Cesce Riesgo Clasificacion</field>
+        <field name="res_model">cesce.risk.classification</field>
+        <field name="view_mode">tree,form</field>                
+    </record>
+    <record id="cesce_risk_classification_motive_action" model="ir.actions.act_window">
+        <field name="name">Cesce Riesgo Motivos Clasificaciones</field>
+        <field name="res_model">cesce.risk.classification.motive</field>
+        <field name="view_mode">tree,form</field>                
+    </record>  
+    <record id="cesce_risk_classification_situation_action" model="ir.actions.act_window">
+        <field name="name">Cesce Riesgo Clasificacion Situaciones</field>
+        <field name="res_model">cesce.risk.classification.situation</field>
+        <field name="view_mode">tree,form</field>                
+    </record>
+    <record id="cesce_sale_action" model="ir.actions.act_window">
+        <field name="name">Cesce Ventas</field>
+        <field name="res_model">cesce.sale</field>
+        <field name="view_mode">tree,form</field>                
+    </record>
+    <record id="cesce_sale_situation_action" model="ir.actions.act_window">
+        <field name="name">Cesce Ventas Situaciones</field>
+        <field name="res_model">cesce.sale.situation</field>
+        <field name="view_mode">tree,form</field>                
+    </record>
+    <record id="cesce_sale_motive_situation_action" model="ir.actions.act_window">
+        <field name="name">Cesce Ventas Motivos Situaciones</field>
+        <field name="res_model">cesce.sale.motive.situation</field>
+        <field name="view_mode">tree,form</field>                
+    </record>            
+    <record id="cesce_classification_payment_term_action" model="ir.actions.act_window">
+        <field name="name">Cesce Plazos de pago</field>
+        <field name="res_model">cesce.payment.term</field>
+        <field name="view_mode">tree,form</field>                
+    </record>
+    <record id="cesce_webservice_error_action" model="ir.actions.act_window">
+        <field name="name">Cesce Webservice Error</field>
+        <field name="res_model">cesce.webservice.error</field>
+        <field name="view_mode">tree,form</field>                
+    </record>              
+    <menuitem 
+        id="menu_odoo_cesce" 
+        name="Cesce"
+        parent="base.menu_custom" 
+        sequence="47"
+    />
+    <menuitem 
+        action="cesce_risk_classification_action" 
+        name="Cesce Clasificacion de riesgo"
+        id="menuitem_cesce_risk_classification" 
+        parent="menu_odoo_cesce"
+    />
+    <menuitem 
+        action="cesce_risk_classification_situation_action" 
+        name="Cesce Riesgo Clasificacion Situaciones"
+        id="menuitem_cesce_risk_classification_situation" 
+        parent="menu_odoo_cesce"
+    />
+    <menuitem 
+        action="cesce_risk_classification_motive_action" 
+        name="Cesce Riesgo Motivos clasificacion"
+        id="menuitem_cesce_risk_classification_motive" 
+        parent="menu_odoo_cesce"
+    />
+    <menuitem 
+        action="cesce_sale_action" 
+        name="Cesce Ventas"
+        id="menuitem_cesce_sale" 
+        parent="menu_odoo_cesce"
+    />
+    <menuitem 
+        action="cesce_sale_situation_action" 
+        name="Cesce Situaciones Ventas"
+        id="menuitem_cesce_sale_situation" 
+        parent="menu_odoo_cesce"
+    />
+    <menuitem 
+        action="cesce_sale_motive_situation_action" 
+        name="Cesce Motivos Situaciones Ventas"
+        id="menuitem_cesce_sale_motive_situation" 
+        parent="menu_odoo_cesce"
+    />    
+    <menuitem 
+        action="cesce_classification_payment_term_action" 
+        name="Cesce Plazos de pago"
+        id="menuitem_cesce_payment_term" 
+        parent="menu_odoo_cesce"
+    />
+    <menuitem 
+        action="cesce_webservice_error_action" 
+        name="Cesce Webservie Error"
+        id="menuitem_cesce_webservie_error" 
+        parent="menu_odoo_cesce"
+    />
+    <record id="cesce_res_partner_view_risk" model="ir.ui.view">
+        <field name="name">cesce_res_partner_view_risk</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="partner_financial_risk.res_partner_view_risk"/>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <field name="credit_limit" widget="monetary" position="replace">
+                <button name="cesce_risk_state" invisible="1"/>
+                <field name="credit_limit" widget="monetary" readonly="1" />
+            </field>                    
+            <xpath expr="//page[@name='financial_risk']" position="inside">
+                <div>
+                    <label for="cesce_risk_state" string="Cesce Riesgo estado"/>
+                    <field name="cesce_risk_state" readonly="1" />
+                </div>
+                <div attrs="{'invisible': [('cesce_risk_state', 'not in', ('none','canceled_ok'))]}">
+                    <label for="cesce_amount_requested" string="Cesce importe solicitado"/>
+                    <field name="cesce_amount_requested" widget="monetary" />
+                </div>
+                <button name="action_partner_classification_sent" attrs="{'invisible': [('cesce_risk_state', 'in', ('classification_sent','classification_ok','classification_error','canceled_sent','canceled_error'))]}" string="Solicitar riesgo" type="object"/>
+                <button name="action_partner_canceled_sent" attrs="{'invisible': [('cesce_risk_state', 'in', ('none', 'classification_sent', 'classification_error', 'canceled_sent', 'canceled_ok', 'canceled_error'))]}" string="Cancelar riesgo" type="object"/>
+                <div>
+                    <button type="action" class="btn-link" name="%(cesce.cesce_risk_classification_action)d" context="{'search_default_partner_id': active_id}">
+                        <field string="Cesce clasificaciones de riesgo" name="cesce_risk_classification_count" widget="statinfo"/>
+                    </button>
+                </div>
+                <field name="cesce_error" readonly="1" attrs="{'invisible': [('cesce_risk_state', '!=', 'classification_error')]}"/>
+            </xpath>                        
+        </field>
+    </record>                        
+</odoo>
