@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_googleanalytics_result_beahavior_admin,googleanalytics.result.beahavior,model_googleanalytics_result_beahavior,,1,1,1,1
+access_googleanalytics_result_beahavior_group_user,googleanalytics.result.beahavior.user,model_googleanalytics_result_beahavior,base.group_user,1,1,1,1
+access_googleanalytics_result_campaignr_admin,googleanalytics.result.campaign,model_googleanalytics_result_campaign,,1,1,1,1
+access_googleanalytics_result_campaign_group_user,googleanalytics.result.campaign.user,model_googleanalytics_result_campaign,base.group_user,1,1,1,1
+access_googleanalytics_result_general_admin,googleanalytics.result.general,model_googleanalytics_result_general,,1,1,1,1
+access_googleanalytics_result_general_group_user,googleanalytics.result.general.user,model_googleanalytics_result_general,base.group_user,1,1,1,1
