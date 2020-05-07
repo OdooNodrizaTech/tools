@@ -12,7 +12,8 @@ import logging
 _logger = logging.getLogger(__name__)
 
 class S3Model(models.Model):
-    _name = 's3.model'                                
+    _name = 's3.model'
+    _description = 's3.model'                                
           
     def upload_to_s3(self, source_path, destination_filename, bucket_name, remove_file=True, public_read=False):
         return_url_s3 = False
