@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="tr_oniad_view_order_form" model="ir.ui.view">
+        <field name="name">tr_oniad_view_order_form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <group name="technical" position="after">
+                <group string="Tracking" name="tracking">
+                    <field name="tracking_profile_uuid" />
+                    <field name="tracking_cookie_uuid" /> 
+                    <field name="tracking_user_uuid" />
+                    <field name="tracking_session_uuid" />                   
+                </group>
+            </group>
+        </field>
+    </record>   
+</odoo>
