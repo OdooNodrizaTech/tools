@@ -13,6 +13,8 @@ nombre | version
 [odoo_git](odoo_git/) | 12.0.1.0.0
 [ont_freshdesk](ont_freshdesk/) | 12.0.1.0.0
 [ont_intranet](ont_intranet/) | 12.0.1.0.0
+[tr_oniad](tr_oniad/) | 12.0.1.0.0
+[utm_websites](utm_websites/) | 12.0.1.0.0
 
 ## Addons no soportados
 
