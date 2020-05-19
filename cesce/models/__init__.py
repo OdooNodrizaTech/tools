@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from . import account_move_line
 from . import cesce_file_check
 from . import cesce_risk_classification
