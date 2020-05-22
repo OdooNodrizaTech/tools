@@ -28,6 +28,7 @@ class IrAttachment(models.Model):
     
     @api.one        
     def remove_to_s3(self):
+        destination_filename = 'ir_attachments/' + str(self.res_model) + '/' + str(self.res_id) + '/' + str(self.name.encode('ascii', 'ignore').decode('ascii'))
         #decode
         if isinstance(destination_filename, str):
             decoded = False
@@ -40,7 +41,6 @@ class IrAttachment(models.Model):
         AWS_REGION_NAME = tools.config.get('aws_region_name')
         AWS_BUCKET_NAME = self.env['ir.config_parameter'].sudo().get_param('ir_attachment_s3_bucket_name')
         #destination_filename
-        destination_filename = 'ir_attachments/'+str(self.res_model)+'/'+str(self.res_id)+'/'+str(self.name.encode('ascii', 'ignore').decode('ascii'))
         s3_key = destination_filename[1:-1]
         #client
         s3_client = boto3.client(
@@ -55,15 +55,14 @@ class IrAttachment(models.Model):
     @api.one        
     def upload_to_s3(self):
         #define
-        db_name = odoo.tools.config.get('db_name')
+        db_name = tools.config.get('db_name')
         source_path = '/var/lib/odoo/.local/share/Odoo/filestore/'+str(db_name)+'/'+str(self.store_fname)
         destination_filename = 'ir_attachments/'+str(self.res_model)+'/'+str(self.res_id)+'/'+str(self.name.encode('ascii', 'ignore').decode('ascii'))
-        ir_attachment_s3_bucket_name = self.env['ir.config_parameter'].sudo().get_param('ir_attachment_s3_bucket_name')
         #define AWS
         AWS_ACCESS_KEY_ID = tools.config.get('aws_access_key_id')        
         AWS_SECRET_ACCESS_KEY = tools.config.get('aws_secret_key_id')
         AWS_REGION_NAME = tools.config.get('aws_region_name')
-        AWS_BUCKET_NAME = bucket_name
+        AWS_BUCKET_NAME = self.env['ir.config_parameter'].sudo().get_param('ir_attachment_s3_bucket_name')
         #decode
         if isinstance(destination_filename, str):
             decoded = False
