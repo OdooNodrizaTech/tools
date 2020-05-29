@@ -3,6 +3,7 @@ from odoo import api, fields, models
 
 import logging
 _logger = logging.getLogger(__name__)
+logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
 
 class GoogleanalyticsResultGeneral(models.Model):
     _name = 'googleanalytics.result.general'
