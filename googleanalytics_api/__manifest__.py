@@ -7,7 +7,8 @@
     'category': 'Tools',
     'license': 'AGPL-3',
     'external_dependencies': {
-        'python' : ['google-api-python-client', 'oauth2client'],
+        #'python' : ['google-api-python-client', 'oauth2client'],
+        'python' : ['oauth2client'],
     },
     'depends': ['base'],
     'data': [

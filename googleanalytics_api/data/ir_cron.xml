@@ -1,6 +1,6 @@
 <openerp>
     <data noupdate="1">
-        <record id="cron_get_previous_day_info" model="ir.cron">
+        <record id="googleanalytics_result_beahavior_cron_get_previous_day_info" model="ir.cron">
             <field name="name">Cron Googleanalytics Result Beahavior Get Previous Day info</field>
             <field name="active" eval="False" />
             <field name="user_id" ref="base.user_root" />
@@ -8,6 +8,17 @@
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
             <field name="model" eval="'googleanalytics.result.beahavior'" />
+            <field name="function" eval="'cron_get_previous_day_info'" />
+            <field name="args" eval="" />
+        </record>
+        <record id="googleanalytics_result_campaign_cron_get_previous_day_info" model="ir.cron">
+            <field name="name">Cron Googleanalytics Result Campaign Get Previous Day info</field>
+            <field name="active" eval="False" />
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="model" eval="'googleanalytics.result.campaign'" />
             <field name="function" eval="'cron_get_previous_day_info'" />
             <field name="args" eval="" />
         </record>

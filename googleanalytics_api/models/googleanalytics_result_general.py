@@ -2,9 +2,13 @@
 from odoo import api, fields, models
 from datetime import datetime
 
+import odoo
+
 import logging
 _logger = logging.getLogger(__name__)
 logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
+
+from googleanalytics_webservice import GoogleanalyticsWebservice
 
 class GoogleanalyticsResultGeneral(models.Model):
     _name = 'googleanalytics.result.general'
