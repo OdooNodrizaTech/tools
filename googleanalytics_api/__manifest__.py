@@ -13,6 +13,7 @@
     'depends': ['base'],
     'data': [
         'data/ir_cron.xml',
+        'data/ir_configparameter_data.xml',
         'security/ir.model.access.csv'
     ],
     'installable': True,
