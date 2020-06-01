@@ -1,15 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
-    <record id="cron_get_previous_day_info" forcecreate="True" model="ir.cron">
-        <field name="name">Cron Googleanalytics Result Beahavior Get Previous Day info</field>
+    <record id="googleanalytics_result_beahavior_cron_get_yesterday_info" forcecreate="True" model="ir.cron">
+        <field name="name">Cron Googleanalytics Result Beahavior Get Yesterday info</field>
         <field name="active" eval="False"/>
         <field name="user_id" ref="base.user_root"/>
         <field name="interval_number">1</field>
-            <field name="interval_type">days</field>
+        <field name="interval_type">days</field>
         <field name="numbercall">-1</field>
         <field name="doall" eval="False"/>
         <field name="model_id" ref="model_googleanalytics_result_beahavior"/>
         <field name="state">code</field>
-        <field name="code">model.cron_get_previous_day_info()</field>
+        <field name="code">model.cron_get_yesterday_info()</field>
+    </record>
+    <record id="googleanalytics_result_beahavior_cron_get_all_year_info" forcecreate="True" model="ir.cron">
+        <field name="name">Cron Googleanalytics Result Beahavior Get All year info</field>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_googleanalytics_result_beahavior"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_get_all_year_info()</field>
+    </record>
+    <record id="googleanalytics_result_campaign_cron_get_yesterday_info" forcecreate="True" model="ir.cron">
+        <field name="name">Cron Googleanalytics Result Campaign Get Yesterday info</field>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_googleanalytics_result_campaign"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_get_yesterday_info()</field>
+    </record>
+    <record id="googleanalytics_result_campaign_cron_get_all_year_info" forcecreate="True" model="ir.cron">
+        <field name="name">Cron Googleanalytics Result Campaign Get All year info</field>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_googleanalytics_result_campaign"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_get_all_year_info()</field>
+    </record>
+    <record id="googleanalytics_result_general_cron_get_yesterday_info" forcecreate="True" model="ir.cron">
+        <field name="name">Cron Googleanalytics Result General Get Yesterday info</field>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_googleanalytics_result_general"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_get_yesterday_info()</field>
+    </record>
+    <record id="googleanalytics_result_general_cron_get_all_year_info" forcecreate="True" model="ir.cron">
+        <field name="name">Cron Googleanalytics Result General Get All year info</field>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_googleanalytics_result_general"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_get_all_year_info()</field>
     </record>
 </odoo>

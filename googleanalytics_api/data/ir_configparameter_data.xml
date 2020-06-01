@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="googleanalytics_api_profile_ids" model="ir.config_parameter">
+            <field name="key">googleanalytics_api_profile_ids</field>
+            <field name="value">15181752,46640523</field>
+        </record>
+    </data>
+</odoo>
