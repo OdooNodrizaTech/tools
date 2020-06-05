@@ -426,48 +426,48 @@ class CesceWebService():
                             # cesce_risk_classification_situation_id
                             if data['cesce_risk_classification_situation_id'] != False:
                                 cesce_risk_classification_id.cesce_risk_classification_situation_id = data['cesce_risk_classification_situation_id']
-                    elif res_partner_id_obj.cesce_risk_state == 'classification_sent':
-                        # cesce_risk_clasification_vals
-                        cesce_risk_clasification_vals = {
-                            'partner_id': res_partner_id_obj.id,
-                            'code_cesce': data['code_cesce'],
-                            'num_sup_cesce': data['num_sup_cesce'],
-                            'nombre_deudor': data['nombre_deudor'],
-                            'codigo_fiscal': data['codigo_fiscal'],
-                            'codigo_deudor_cesce': data['codigo_deudor_cesce'],
-                            'grupo_riesgo_deudor': data['grupo_riesgo_deudor'],
-                            'mercado': data['mercado'],
-                            'pais_provincia': data['pais_provincia'],
-                            'importe_solicitado': data['importe_solicitado'],
-                            'importe_concedido': data['importe_concedido'],
-                            'currency_id': data['currency_id'],
-                            'plazo_solicitado': data['plazo_solicitado'],
-                            'plazo_concedido': data['plazo_concedido'],
-                            'condicion_pago': data['condicion_pago'],
-                            'tipo_movimiento': data['tipo_movimiento'],
-                            'cesce_risk_classification_situation_id': data['cesce_risk_classification_situation_id'],
-                            'fecha_solicitud': data['fecha_solicitud'],
-                            'fecha_efecto': data['fecha_efecto'],
-                            'fecha_anulacion': data['fecha_anulacion'],
-                            'fecha_validez': data['fecha_validez'],
-                            'motivo_validez': data['motivo_validez'],
-                            'riesgo_comercial': data['riesgo_comercial'],
-                            'riesgo_politico': data['riesgo_politico'],
-                            'avalistas': data['avalistas'],
-                            'cesce_risk_classification_motive_id': data['cesce_risk_classification_motive_id'],
-                            'codigo_deudor_interno': data['codigo_deudor_interno'],
-                            'fecha_renovacion': data['fecha_renovacion']
-                        }
-                        cesce_risk_clasification_obj = self.custom_env['cesce.risk.classification'].sudo().create(cesce_risk_clasification_vals)
-                        # check_partner and update
-                        if cesce_risk_clasification_obj.partner_id.id > 0:
-                            cesce_risk_clasification_obj.partner_id.credit_limit = cesce_risk_clasification_obj.importe_concedido
-                            # cesce_risk_state
-                            if cesce_risk_clasification_obj.partner_id.credit_limit > 0:
-                                cesce_risk_clasification_obj.partner_id.cesce_risk_state = 'classification_ok'
-                                cesce_risk_clasification_obj.cesce_error = ''
-                            else:
-                                cesce_risk_clasification_obj.partner_id.cesce_risk_state = 'canceled_ok'
+                elif res_partner_id_obj.cesce_risk_state == 'classification_sent':
+                    # cesce_risk_clasification_vals
+                    cesce_risk_clasification_vals = {
+                        'partner_id': res_partner_id_obj.id,
+                        'code_cesce': data['code_cesce'],
+                        'num_sup_cesce': data['num_sup_cesce'],
+                        'nombre_deudor': data['nombre_deudor'],
+                        'codigo_fiscal': data['codigo_fiscal'],
+                        'codigo_deudor_cesce': data['codigo_deudor_cesce'],
+                        'grupo_riesgo_deudor': data['grupo_riesgo_deudor'],
+                        'mercado': data['mercado'],
+                        'pais_provincia': data['pais_provincia'],
+                        'importe_solicitado': data['importe_solicitado'],
+                        'importe_concedido': data['importe_concedido'],
+                        'currency_id': data['currency_id'],
+                        'plazo_solicitado': data['plazo_solicitado'],
+                        'plazo_concedido': data['plazo_concedido'],
+                        'condicion_pago': data['condicion_pago'],
+                        'tipo_movimiento': data['tipo_movimiento'],
+                        'cesce_risk_classification_situation_id': data['cesce_risk_classification_situation_id'],
+                        'fecha_solicitud': data['fecha_solicitud'],
+                        'fecha_efecto': data['fecha_efecto'],
+                        'fecha_anulacion': data['fecha_anulacion'],
+                        'fecha_validez': data['fecha_validez'],
+                        'motivo_validez': data['motivo_validez'],
+                        'riesgo_comercial': data['riesgo_comercial'],
+                        'riesgo_politico': data['riesgo_politico'],
+                        'avalistas': data['avalistas'],
+                        'cesce_risk_classification_motive_id': data['cesce_risk_classification_motive_id'],
+                        'codigo_deudor_interno': data['codigo_deudor_interno'],
+                        'fecha_renovacion': data['fecha_renovacion']
+                    }
+                    cesce_risk_clasification_obj = self.custom_env['cesce.risk.classification'].sudo().create(cesce_risk_clasification_vals)
+                    # check_partner and update
+                    if cesce_risk_clasification_obj.partner_id.id > 0:
+                        cesce_risk_clasification_obj.partner_id.credit_limit = cesce_risk_clasification_obj.importe_concedido
+                        # cesce_risk_state
+                        if cesce_risk_clasification_obj.partner_id.credit_limit > 0:
+                            cesce_risk_clasification_obj.partner_id.cesce_risk_state = 'classification_ok'
+                            cesce_risk_clasification_obj.cesce_error = ''
+                        else:
+                            cesce_risk_clasification_obj.partner_id.cesce_risk_state = 'canceled_ok'
 
     def partner_classifications_out_ftp(self):
         tmp_file = 'out_solicitudes_tmp.txt'
