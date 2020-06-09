@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pipedrive_activity_form_view" model="ir.ui.view">
+        <field name="name">Pipedrive Activity</field>
+        <field name="model">pipedrive.activity</field>
+        <field name="arch" type="xml">
+            <form string="Pipedrive Activity">
+                <sheet string="child">
+                    <group>
+                        <field name="type"/>
+                        <field name="pipedrive_user_id" options='{"no_create": True, "no_create_edit": True}'/>
+                        <field name="done"/>
+                        <field name="due_date"/>
+                        <field name="subject"/>
+                        <field name="public_description"/>
+                        <field name="pipedrive_organization_id" options='{"no_create": True, "no_create_edit": True}'/>
+                        <field name="pipedrive_person_id" options='{"no_create": True, "no_create_edit": True}'/>
+                        <field name="pipedrive_deal_id" options='{"no_create": True, "no_create_edit": True}'/>
+                        <field name="mail_activity_id" options='{"no_create": True, "no_create_edit": True}'/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="pipedrive_activity_tree" model="ir.ui.view">
+        <field name="name">Pipedrive Activity</field>
+        <field name="model">pipedrive.activity</field>
+        <field name="arch" type="xml">
+            <tree string="Pipedrive Activity">
+                <field name="type"/>
+                <field name="pipedrive_user_id"/>
+                <field name="done"/>
+                <field name="due_date"/>
+                <field name="subject"/>
+                <field name="public_description"/>
+                <field name="pipedrive_organization_id"/>
+                <field name="pipedrive_person_id"/>
+                <field name="pipedrive_deal_id"/>
+                <field name="mail_activity_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="pipedrive_activity_type_action" model="ir.actions.act_window">
+        <field name="name">Pipedrive Activity</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pipedrive.activity</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="pipedrive_activity_tree"/>
+    </record>
+    <menuitem
+        action="pipedrive_activity_type_action"
+        name="Activity"
+        id="menuitem_pipedrive_activity"
+        parent="menu_odoo_pipedrive"
+    />
+</odoo>

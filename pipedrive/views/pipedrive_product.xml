@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pipedrive_product_form_view" model="ir.ui.view">
+        <field name="name">Pipedrive Product</field>
+        <field name="model">pipedrive.product</field>
+        <field name="arch" type="xml">
+            <form string="Pipedrive Product">
+                <sheet string="child">
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="description"/>
+                        <field name="tax"/>
+                        <field name="price"/>
+                        <field name="cost"/>
+                        <field name="currency_id" options='{"no_create": True, "no_create_edit": True}'/>
+                        <field name="product_id" options='{"no_create": True, "no_create_edit": True}'/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="pipedrive_product_tree" model="ir.ui.view">
+        <field name="name">Pipedrive Product</field>
+        <field name="model">pipedrive.product</field>
+        <field name="arch" type="xml">
+            <tree string="Pipedrive Product">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="tax"/>
+                <field name="price"/>
+                <field name="cost"/>
+                <field name="currency_id"/>
+                <field name="product_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="pipedrive_product_type_action" model="ir.actions.act_window">
+        <field name="name">Pipedrive Product</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pipedrive.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="pipedrive_product_tree"/>
+    </record>
+    <menuitem
+        action="pipedrive_product_type_action"
+        name="Product"
+        id="menuitem_pipedrive_product"
+        parent="menu_odoo_pipedrive"
+    />
+</odoo>

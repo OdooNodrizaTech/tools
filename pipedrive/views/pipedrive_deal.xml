@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pipedrive_deal_form_view" model="ir.ui.view">
+        <field name="name">Pipedrive Deal</field>
+        <field name="model">pipedrive.deal</field>
+        <field name="arch" type="xml">
+            <form string="Pipedrive Deal">
+                <sheet string="child">
+                    <group>
+                        <field name="title"/>
+                        <field name="active"/>
+                        <field name="status"/>
+                        <field name="pipedrive_person_id" options='{"no_create": True, "no_create_edit": True}'/>
+                        <field name="pipedrive_organization_id" options='{"no_create": True, "no_create_edit": True}'/>
+                        <field name="pipedrive_user_id" options='{"no_create": True, "no_create_edit": True}'/>
+                        <field name="pipedrive_pipeline_id" options='{"no_create": True, "no_create_edit": True}'/>
+                        <field name="pipedrive_stage_id" options='{"no_create": True, "no_create_edit": True}'/>
+                        <field name="partner_id" options='{"no_create": True, "no_create_edit": True}'/>
+                        <field name="lead_id" options='{"no_create": True, "no_create_edit": True}'/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="pipedrive_deal_tree" model="ir.ui.view">
+        <field name="name">Pipedrive Deal</field>
+        <field name="model">pipedrive.deal</field>
+        <field name="arch" type="xml">
+            <tree string="Pipedrive Deal">
+                <field name="title"/>
+                <field name="active"/>
+                <field name="status"/>
+                <field name="pipedrive_person_id"/>
+                <field name="pipedrive_organization_id"/>
+                <field name="pipedrive_user_id"/>
+                <field name="pipedrive_pipeline_id"/>
+                <field name="pipedrive_stage_id"/>
+                <field name="partner_id"/>
+                <field name="lead_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="pipedrive_deal_type_action" model="ir.actions.act_window">
+        <field name="name">Pipedrive Deal</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pipedrive.deal</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="pipedrive_deal_tree"/>
+    </record>
+    <menuitem
+        action="pipedrive_deal_type_action"
+        name="Deal"
+        id="menuitem_pipedrive_deal"
+        parent="menu_odoo_pipedrive"
+    />
+</odoo>

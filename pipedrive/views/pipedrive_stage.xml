@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pipedrive_stage_form_view" model="ir.ui.view">
+        <field name="name">Pipedrive Stage</field>
+        <field name="model">pipedrive.stage</field>
+        <field name="arch" type="xml">
+            <form string="Pipedrive Stage">
+                <sheet string="child">
+                    <group>
+                        <field name="name"/>
+                        <field name="deal_probability"/>
+                        <field name="pipedrive_pipeline_id" options='{"no_create": True, "no_create_edit": True}'/>
+                        <field name="stage_id" options='{"no_create": True, "no_create_edit": True}'/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="pipedrive_stage_tree" model="ir.ui.view">
+        <field name="name">Pipedrive Stage</field>
+        <field name="model">pipedrive.stage</field>
+        <field name="arch" type="xml">
+            <tree string="Pipedrive Stage">
+                <field name="name"/>
+                <field name="deal_probability"/>
+                <field name="pipedrive_pipeline_id"/>
+                <field name="stage_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="pipedrive_stage_type_action" model="ir.actions.act_window">
+        <field name="name">Pipedrive Stage</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pipedrive.stage</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="pipedrive_stage_tree"/>
+    </record>
+    <menuitem
+        action="pipedrive_stage_type_action"
+        name="Stage"
+        id="menuitem_pipedrive_stage"
+        parent="menu_odoo_pipedrive"
+    />
+</odoo>

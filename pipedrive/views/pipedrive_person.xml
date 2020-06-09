@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pipedrive_person_form_view" model="ir.ui.view">
+        <field name="name">Pipedrive Person</field>
+        <field name="model">pipedrive.person</field>
+        <field name="arch" type="xml">
+            <form string="Pipedrive Person">
+                <sheet string="child">
+                    <group>
+                        <field name="name"/>
+                        <field name="first_name"/>
+                        <field name="last_name"/>
+                        <field name="phone"/>
+                        <field name="email"/>
+                        <field name="pipedrive_organization_id" options='{"no_create": True, "no_create_edit": True}'/>
+                        <field name="pipedrive_user_id" options='{"no_create": True, "no_create_edit": True}'/>
+                        <field name="partner_id" options='{"no_create": True, "no_create_edit": True}'/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="pipedrive_person_tree" model="ir.ui.view">
+        <field name="name">Pipedrive Person</field>
+        <field name="model">pipedrive.person</field>
+        <field name="arch" type="xml">
+            <tree string="Pipedrive Person">
+                <field name="name"/>
+                <field name="first_name"/>
+                <field name="last_name"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="pipedrive_organization_id"/>
+                <field name="pipedrive_user_id"/>
+                <field name="partner_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="pipedrive_person_type_action" model="ir.actions.act_window">
+        <field name="name">Pipedrive Person</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pipedrive.person</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="pipedrive_person_tree"/>
+    </record>
+    <menuitem
+        action="pipedrive_person_type_action"
+        name="Person"
+        id="menuitem_pipedrive_person"
+        parent="menu_odoo_pipedrive"
+    />
+</odoo>

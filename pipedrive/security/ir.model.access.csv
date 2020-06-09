@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pipedrive_activity_admin,pipedrive.activity,model_pipedrive_activity,,1,1,1,1
+access_pipedrive_currency_admin,pipedrive.currency,model_pipedrive_currency,,1,1,1,1
+access_pipedrive_deal_admin,pipedrive.deal,model_pipedrive_deal,,1,1,1,1
+access_pipedrive_organization_admin,pipedrive.organization,model_pipedrive_organization,,1,1,1,1
+access_pipedrive_person_admin,pipedrive.person,model_pipedrive_person,,1,1,1,1
+access_pipedrive_pipeline_admin,pipedrive.pipeline,model_pipedrive_pipeline,,1,1,1,1
+access_pipedrive_product_admin,pipedrive.product,model_pipedrive_product,,1,1,1,1
+access_pipedrive_stage_admin,pipedrive.stage,model_pipedrive_stage,,1,1,1,1
+access_pipedrive_user_admin,pipedrive.user,model_pipedrive_user,,1,1,1,1

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pipedrive_pipeline_form_view" model="ir.ui.view">
+        <field name="name">Pipedrive Pipeline</field>
+        <field name="model">pipedrive.pipeline</field>
+        <field name="arch" type="xml">
+            <form string="Pipedrive Pipeline">
+                <sheet string="child">
+                    <group>
+                        <field name="name"/>
+                        <field name="active"/>
+                        <field name="deal_probability"/>
+                        <field name="selected"/>
+                        <field name="type"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="pipedrive_pipeline_tree" model="ir.ui.view">
+        <field name="name">Pipedrive Pipeline</field>
+        <field name="model">pipedrive.pipeline</field>
+        <field name="arch" type="xml">
+            <tree string="Pipedrive Pipeline">
+                <field name="name"/>
+                <field name="active"/>
+                <field name="deal_probability"/>
+                <field name="selected"/>
+                <field name="type"/>
+            </tree>
+        </field>
+    </record>
+    <record id="pipedrive_pipeline_type_action" model="ir.actions.act_window">
+        <field name="name">Pipedrive Pipeline</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pipedrive.pipeline</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="pipedrive_pipeline_tree"/>
+    </record>
+    <menuitem
+        action="pipedrive_pipeline_type_action"
+        name="Pipeline"
+        id="menuitem_pipedrive_pipeline"
+        parent="menu_odoo_pipedrive"
+    />
+</odoo>

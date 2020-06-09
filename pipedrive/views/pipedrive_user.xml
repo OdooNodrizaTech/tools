@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pipedrive_user_form_view" model="ir.ui.view">
+        <field name="name">Pipedrive User</field>
+        <field name="model">pipedrive.user</field>
+        <field name="arch" type="xml">
+            <form string="Pipedrive User">
+                <sheet string="child">
+                    <group>
+                        <field name="name"/>
+                        <field name="currency_id" options='{"no_create": True, "no_create_edit": True}'/>
+                        <field name="email"/>
+                        <field name="phone"/>
+                        <field name="is_admin"/>
+                        <field name="activated"/>
+                        <field name="timezone_name"/>
+                        <field name="user_id" options='{"no_create": True, "no_create_edit": True}'/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="pipedrive_user_tree" model="ir.ui.view">
+        <field name="name">Pipedrive User</field>
+        <field name="model">pipedrive.user</field>
+        <field name="arch" type="xml">
+            <tree string="Pipedrive User">
+                <field name="name"/>
+                <field name="currency_id"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="is_admin"/>
+                <field name="activated"/>
+                <field name="timezone_name"/>
+                <field name="user_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="pipedrive_user_type_action" model="ir.actions.act_window">
+        <field name="name">Pipedrive User</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pipedrive.user</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="pipedrive_user_tree"/>
+    </record>
+    <menuitem
+        action="pipedrive_user_type_action"
+        name="User"
+        id="menuitem_pipedrive_user"
+        parent="menu_odoo_pipedrive"
+    />
+</odoo>
