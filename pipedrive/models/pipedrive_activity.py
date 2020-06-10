@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#https://developers.pipedrive.com/docs/api/v1/#!/Activities
 from odoo import api, fields, models
 
 import logging
@@ -54,6 +55,10 @@ class PipedriveActivity(models.Model):
         comodel_name='mail.activity',
         string='Mail Activity Id'
     )
+
+    @api.model
+    def cron_sqs_pipedrive_activity(self):
+        _logger.info('cron_sqs_pipedrive_activity')
 
 '''
 {

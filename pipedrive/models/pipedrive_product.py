@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+#https://developers.pipedrive.com/docs/api/v1/#!/Products
 from odoo import api, fields, models
+from pipedrive.client import Client
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -17,7 +19,7 @@ class PipedriveProduct(models.Model):
     description = fields.Text(
         string='Description'
     )
-    tax = fields.Monetary(
+    tax = fields.Float(
         string='Tax'
     )
     price = fields.Monetary(
@@ -34,41 +36,46 @@ class PipedriveProduct(models.Model):
         comodel_name='product.product',
         string='Product Id'
     )
-'''
-{
-    "id": 4,
-    "name": "Importación Base de Datos",
-    "code": "IMPORTDB",
-    "description": null,
-    "unit": "",
-    "tax": 21,
-    "category": "15",
-    "active_flag": true,
-    "selectable": true,
-    "first_char": "i",
-    "visible_to": "3",
-    "owner_id": {
-        "id": 11451374,
-        "name": "TUUP",
-        "email": "servicios@tuup.es",
-        "has_pic": 1,
-        "pic_hash": "947f9957d2eb3cd06cddb67fa36c29b6",
-        "active_flag": true,
-        "value": 11451374
-    },
-    "files_count": null,
-    "followers_count": 0,
-    "add_time": "2020-06-04 07:40:23",
-    "update_time": "2020-06-08 12:09:31",
-    "prices": [
-        {
-            "id": 4,
-            "product_id": 4,
-            "price": 100,
-            "currency": "EUR",
-            "cost": 0,
-            "overhead_cost": null
+
+    @api.model
+    def action_item(self, data):
+        vals = {
+            'name': data['name'],
+            'code': data['code'],
+            'description': data['description'],
+            'tax': data['tax']
         }
-    ]
-}
-'''
+        #price data
+        if 'prices' in data:
+            if len(data['prices'])>0:
+                data_price_0 = data['prices'][0]
+                vals['price'] = data_price_0['price']
+                vals['cost'] = data_price_0['cost']
+                # currency_id
+                res_currency_ids = self.env['res.currency'].search([('name', '=', data_price_0['currency'])])
+                if len(res_currency_ids) > 0:
+                    vals['currency_id'] = res_currency_ids[0].id
+        # search
+        pipedrive_product_ids = self.env['pipedrive.product'].search([('id', '=', data['id'])])
+        if len(pipedrive_product_ids) == 0:
+            vals['id'] = data['id']
+            pipedrive_product_obj = self.env['pipedrive.product'].sudo().create(vals)
+        else:
+            pipedrive_product_id = pipedrive_product_ids[0]
+            pipedrive_product_id.write(vals)
+
+    @api.model
+    def cron_pipedrive_product_exec(self):
+        _logger.info('cron_pipedrive_product_exec')
+        # params
+        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_domain'))
+        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_api_token'))
+        # api client
+        client = Client(domain=pipedrive_domain)
+        client.set_api_token(pipedrive_api_token)
+        # get_info
+        response = client.products.get_all_products()
+        if 'success' in response:
+            if response['success'] == True:
+                for data_item in response['data']:
+                    self.action_item(data_item)

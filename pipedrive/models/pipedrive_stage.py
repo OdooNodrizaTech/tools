@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+#https://developers.pipedrive.com/docs/api/v1/#!/Stages
 from odoo import api, fields, models
+from pipedrive.client import Client
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -23,19 +25,37 @@ class PipedriveStage(models.Model):
         string='Stage Id'
     )
 
-'''
-{
-    "id": 1,
-    "order_nr": 0,
-    "name": "No Contactado",
-    "active_flag": true,
-    "deal_probability": 10,
-    "pipeline_id": 1,
-    "rotten_flag": false,
-    "rotten_days": null,
-    "add_time": "2020-05-14 09:19:55",
-    "update_time": "2020-06-08 11:52:11",
-    "pipeline_name": "Leads",
-    "pipeline_deal_probability": false
-}
-'''
+    @api.model
+    def action_item(self, data):
+        vals = {
+            'name': data['name'],
+            'deal_probability': data['deal_probability']
+        }
+        # pipedrive_pipeline_id
+        pipedrive_pipeline_ids = self.env['pipedrive.pipeline'].search([('id', '=', data['pipeline_id'])])
+        if len(pipedrive_pipeline_ids) > 0:
+            vals['pipedrive_pipeline_id'] = pipedrive_pipeline_ids[0].id
+        # search
+        pipedrive_stage_ids = self.env['pipedrive.stage'].search([('id', '=', data['id'])])
+        if len(pipedrive_stage_ids) == 0:
+            vals['id'] = data['id']
+            pipedrive_stage_obj = self.env['pipedrive.stage'].sudo().create(vals)
+        else:
+            pipedrive_stage_id = pipedrive_stage_ids[0]
+            pipedrive_stage_id.write(vals)
+
+    @api.model
+    def cron_pipedrive_stage_exec(self):
+        _logger.info('cron_pipedrive_stage_exec')
+        # params
+        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_domain'))
+        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_api_token'))
+        # api client
+        client = Client(domain=pipedrive_domain)
+        client.set_api_token(pipedrive_api_token)
+        # get_info
+        response = client._get(client.BASE_URL + 'stages')
+        if 'success' in response:
+            if response['success'] == True:
+                for data_item in response['data']:
+                    self.action_item(data_item)

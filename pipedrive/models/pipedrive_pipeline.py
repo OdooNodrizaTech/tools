@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+#https://developers.pipedrive.com/docs/api/v1/#!/Pipelines
 from odoo import api, fields, models
+from pipedrive.client import Client
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -29,16 +31,35 @@ class PipedrivePipeline(models.Model):
         default='lead'
     )
 
-'''
-{
-    "id": 1,
-    "name": "Leads",
-    "url_title": "Leads",
-    "order_nr": 1,
-    "active": true,
-    "deal_probability": false,
-    "add_time": "2020-05-13 21:23:22",
-    "update_time": "2020-06-04 07:02:35",
-    "selected": true
-}
-'''
+    @api.model
+    def action_item(self, data):
+        vals = {
+            'name': data['name'],
+            'active': data['active'],
+            'deal_probability': data['deal_probability'],
+            'selected': data['selected']
+        }
+        # search
+        pipedrive_pipeline_ids = self.env['pipedrive.pipeline'].search([('id', '=', data['id'])])
+        if len(pipedrive_pipeline_ids) == 0:
+            vals['id'] = data['id']
+            pipedrive_pipeline_obj = self.env['pipedrive.pipeline'].sudo().create(vals)
+        else:
+            pipedrive_pipeline_id = pipedrive_pipeline_ids[0]
+            pipedrive_pipeline_id.write(vals)
+
+    @api.model
+    def cron_pipedrive_pipeline_exec(self):
+        _logger.info('cron_pipedrive_pipeline_exec')
+        # params
+        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_domain'))
+        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_api_token'))
+        # api client
+        client = Client(domain=pipedrive_domain)
+        client.set_api_token(pipedrive_api_token)
+        # get_info
+        response = client.pipelines.get_all_pipelines()
+        if 'success' in response:
+            if response['success'] == True:
+                for data_item in response['data']:
+                    self.action_item(data_item)

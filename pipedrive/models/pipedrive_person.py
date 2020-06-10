@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#https://developers.pipedrive.com/docs/api/v1/#!/Persons
 from odoo import api, fields, models
 
 import logging
@@ -36,6 +37,9 @@ class PipedrivePerson(models.Model):
         string='Partner Id'
     )
 
+    @api.model
+    def cron_sqs_pipedrive_person(self):
+        _logger.info('cron_sqs_pipedrive_person')
 '''
 {
     "id": 1,

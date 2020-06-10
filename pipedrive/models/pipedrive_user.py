@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+#https://developers.pipedrive.com/docs/api/v1/#!/Users
 from odoo import api, fields, models
+from pipedrive.client import Client
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -35,27 +37,41 @@ class PipedriveUser(models.Model):
         string='User Id'
     )
 
-'''
-{
-    "id": 11451374,
-    "name": "TUUP",
-    "default_currency": "EUR",
-    "locale": "es_ES",
-    "email": "servicios@tuup.es",
-    "phone": "+34667637701",
-    "created": "2020-05-14 09:19:49",
-    "modified": "2020-06-08 10:13:51",
-    "lang": 6,
-    "active_flag": true,
-    "is_admin": 1,
-    "last_login": "2020-06-08 10:13:51",
-    "signup_flow_variation": "signup_service",
-    "has_created_company": true,
-    "role_id": 1,
-    "activated": true,
-    "timezone_name": "Europe/Madrid",
-    "timezone_offset": "+01:00",
-    "icon_url": "https://d3myhnqlqw2314.cloudfront.net/profile_120x120_11451374_947f9957d2eb3cd06cddb67fa36c29b6.jpg",
-    "is_you": true
-}
-'''
+    @api.model
+    def action_item(self, data):
+        vals = {
+            'name': data['name'],
+            'email': data['email'],
+            'phone': data['phone'],
+            'is_admin': data['is_admin'],
+            'activated': data['activated'],
+            'timezone_name': data['timezone_name']
+        }
+        #currency_id
+        res_currency_ids = self.env['res.currency'].search([('name', '=', data['default_currency'])])
+        if len(res_currency_ids)>0:
+            vals['currency_id'] = res_currency_ids[0].id
+        #search
+        pipedrive_user_ids = self.env['pipedrive.user'].search([('id', '=', data['id'])])
+        if len(pipedrive_user_ids)==0:
+            vals['id'] = data['id']
+            pipedrive_user_obj = self.env['pipedrive.user'].sudo().create(vals)
+        else:
+            pipedrive_user_id = pipedrive_user_ids[0]
+            pipedrive_user_id.write(vals)
+
+    @api.model
+    def cron_pipedrive_user_exec(self):
+        _logger.info('cron_pipedrive_user_exec')
+        # params
+        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_domain'))
+        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_api_token'))
+        # api client
+        client = Client(domain=pipedrive_domain)
+        client.set_api_token(pipedrive_api_token)
+        # get_info
+        response = client.users.get_all_users()
+        if 'success' in response:
+            if response['success']==True:
+                for data_item in response['data']:
+                    self.action_item(data_item)

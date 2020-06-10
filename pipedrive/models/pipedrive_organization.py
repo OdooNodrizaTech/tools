@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#https://developers.pipedrive.com/docs/api/v1/#!/Organizations
 from odoo import api, fields, models
 
 import logging
@@ -37,6 +38,10 @@ class PipedriveOrganization(models.Model):
         comodel_name='res.partner',
         string='Partner Id'
     )
+
+    @api.model
+    def cron_sqs_pipedrive_organization(self):
+        _logger.info('cron_sqs_pipedrive_organization')
 
 '''
 {

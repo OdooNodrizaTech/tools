@@ -7,8 +7,12 @@
     'category': 'Tools',
     'license': 'AGPL-3',
     'depends': ['base', 'crm', 'mail'],
+    'external_dependencies': {
+        'python3' : ['pipedrive-python-lib'],
+    },
     'data': [
-        #'data/ir_cron.xml',
+        'data/ir_configparameter_data.xml',
+        'data/ir_cron.xml',
         'views/pipedrive_menu.xml',
         'views/pipedrive_activity.xml',
         'views/pipedrive_currency.xml',

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#https://developers.pipedrive.com/docs/api/v1/#!/Deals
 from odoo import api, fields, models
 
 import logging
@@ -52,6 +53,10 @@ class PipedriveDeal(models.Model):
         comodel_name='crm.lead',
         string='Lead Id'
     )
+
+    @api.model
+    def cron_sqs_pipedrive_deal(self):
+        _logger.info('cron_sqs_pipedrive_deal')
 
 '''
 {
