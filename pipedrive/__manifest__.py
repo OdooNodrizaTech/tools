@@ -8,7 +8,7 @@
     'license': 'AGPL-3',
     'depends': ['base', 'crm', 'mail'],
     'external_dependencies': {
-        'python3' : ['pipedrive-python-lib'],
+        'python3' : ['pipedrive-python-lib', 'boto3'],
     },
     'data': [
         'data/ir_configparameter_data.xml',
