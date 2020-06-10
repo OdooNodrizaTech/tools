@@ -26,6 +26,11 @@ Frecuencia: Cada 5 minutos
 
 Descripción: Consulta el SQS configurado, crearemos las activities como actividades (mail.activity) de Odoo
 
+### Cron Pipedrive Activity Type Exec
+Frecuencia: Manual
+
+Descripción: Obtendremos las activityTypes quehabrá que mapear con los tipo de actividad (mail.activity.type) de Odoo
+
 ### Cron Pipedrive Currency Exec
 Frecuencia: Manual
 
