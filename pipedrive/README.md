@@ -10,6 +10,15 @@ pipedrive_domain > https://companydomain.pipedrive.com/
 pipedrive_api_token > https://companydomain.pipedrive.com/settings/api
 Webhooks > https://companydomain.pipedrive.com/settings/webhooks
 
+## odoo.conf
+```
+#sqs_pipedrive
+sqs_pipedrive_activity_url=https://sqs.eu-west-1.amazonaws.com/734904753081/pipedrive-tuup_dev-webhook-activity-post
+sqs_pipedrive_deal_url=https://sqs.eu-west-1.amazonaws.com/734904753081/pipedrive-tuup_dev-webhook-deal-post
+sqs_pipedrive_organization_url=https://sqs.eu-west-1.amazonaws.com/734904753081/pipedrive-tuup_dev-webhook-organization-post
+sqs_pipedrive_person_url=https://sqs.eu-west-1.amazonaws.com/734904753081/pipedrive-tuup_dev-webhook-person-post
+```
+
 ## Crones
 
 ### Cron SQS Pipedrive Activity
