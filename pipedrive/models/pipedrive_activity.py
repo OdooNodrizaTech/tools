@@ -26,6 +26,9 @@ class PipedriveActivity(models.Model):
     due_date = fields.Date(
         string='Due Date'
     )
+    marked_as_done_time = fields.Date(
+        string='Marked as done time'
+    )
     subject = fields.Char(
         string='Subject'
     )
@@ -83,6 +86,9 @@ class PipedriveActivity(models.Model):
             #due_date
             if data['current']['due_date']!=None:
                 pipedrive_activity_vals['due_date'] = data['current']['due_date']
+            #marked_as_done_time
+            if data['current']['marked_as_done_time']!=None:
+                pipedrive_activity_vals['marked_as_done_time'] = data['current']['marked_as_done_time']
             # user_id
             if data['current']['user_id'] > 0:
                 pipedrive_user_ids = self.env['pipedrive.user'].sudo().search([('id', '=', data['current']['user_id'])])
@@ -141,12 +147,15 @@ class PipedriveActivity(models.Model):
                     mail_activity_vals = {
                         'summary': pipedrive_activity_id.subject,
                         'done': pipedrive_activity_id.done,
-                        #'date_done': pipedrive_activity_id.done,
                         'note': pipedrive_activity_id.public_description,
                         'date_deadline': pipedrive_activity_id.due_date,
                         'res_model_id': ir_model_id.id,
                         'res_id': pipedrive_activity_id.pipedrive_deal_id.lead_id.id
                     }
+                    #date_done
+                    if pipedrive_activity_id.done==True:
+                        if pipedrive_activity_id.marked_as_done_time!=False:
+                            mail_activity_vals['date_done'] = pipedrive_activity_id.marked_as_done_time
                     #activity_type_id
                     if pipedrive_activity_id.pipedrive_activity_type_id.id>0:
                         if pipedrive_activity_id.pipedrive_activity_type_id.mail_activity_type_id.id > 0:
