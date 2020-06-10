@@ -8,7 +8,7 @@ pipedrive_api_token
 
 pipedrive_domain > https://companydomain.pipedrive.com/
 pipedrive_api_token > https://companydomain.pipedrive.com/settings/api
-
+Webhooks > https://companydomain.pipedrive.com/settings/webhooks
 
 ## Crones
 
