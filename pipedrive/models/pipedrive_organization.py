@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 #https://developers.pipedrive.com/docs/api/v1/#!/Organizations
-from odoo import api, fields, models
+from odoo import api, fields, models, tools
+import json
+import boto3
+from botocore.exceptions import ClientError
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -40,66 +43,130 @@ class PipedriveOrganization(models.Model):
     )
 
     @api.model
+    def action_item(self, data):
+        _logger.info('action_item')
+        _logger.info(data)
+        # result_message
+        result_message = {
+            'statusCode': 200,
+            'return_body': 'OK',
+            'message': data
+        }
+        # operations
+        if data['meta']['action'] not in ['updated', 'added']:
+            result_message['statusCode'] = 500
+            result_message['return_body'] = 'El action ' + str(
+                data['meta']['action']) + ' no tien que realizar ninguna accion'
+        else:
+            #vals
+            pipedrive_organization_vals = {
+                'name': data['current']['name']
+            }
+            #fields_need_check
+            fields_need_check = ['address', 'address_street_number', 'address_route', 'address_locality', 'address_country', 'address_postal_code']
+            for field_need_check in fields_need_check:
+                if field_need_check in data['current']:
+                    if data['current'][field_need_check]==None:
+                        pipedrive_organization_vals[field_need_check] = False
+                    else:
+                        pipedrive_organization_vals[field_need_check] = data['current'][field_need_check]
+            #pipedrive_user_id
+            if data['current']['owner_id']>0:
+                pipedrive_user_ids = self.env['pipedrive.user'].sudo().search([('id', '=', data['current']['owner_id'])])
+                if len(pipedrive_user_ids)== 0:
+                    result_message['statusCode'] = 500
+                    result_message['return_body'] = 'No existe el (pipedrive.user) owner_id=' + str(data['current']['owner_id'])
+                else:
+                    pipedrive_organization_vals['pipedrive_user_id'] = pipedrive_user_ids[0].id
+        # all operations (if statusCode 200)
+        if result_message['statusCode'] == 200:
+            # create-update (pipedrive.organization)
+            pipedrive_organization_ids = self.env['pipedrive.organization'].sudo().search([('id', '=', data['current']['id'])])
+            if len(pipedrive_organization_ids) == 0:
+                pipedrive_organization_vals['id'] = data['current']['id']
+                pipedrive_organization_id = self.env['pipedrive.organization'].sudo().create(pipedrive_organization_vals)
+            else:
+                pipedrive_organization_id = pipedrive_organization_ids[0]
+                pipedrive_organization_id.write(pipedrive_organization_vals)
+            # partner_id
+            res_partner_vals = {
+                'company_type': 'company',
+                'name': pipedrive_organization_id.name
+            }
+            #address
+            if pipedrive_organization_id.address!=False:
+                res_partner_vals['street'] = pipedrive_organization_id.address
+                #address_street_number
+                if pipedrive_organization_id.address_street_number!=False:
+                    res_partner_vals['street'] += ' '+str(pipedrive_organization_id.address_street_number)
+            #address_locality
+            if pipedrive_organization_id.address_locality!=False:
+                res_partner_vals['city'] = pipedrive_organization_id.address_locality
+            #address_postal_code
+            if pipedrive_organization_id.address_postal_code!=False:
+                res_partner_vals['zip'] = pipedrive_organization_id.address_postal_code
+                #search
+                res_city_zip_ids = self.env['res.city.zip'].sudo().search([('name', '=', res_partner_vals['zip'])])
+                if len(res_city_zip_ids)>0:
+                    res_city_zip_id = res_city_zip_ids[0]
+                    res_partner_vals['state_id'] = res_city_zip_id.city_id.state_id.id
+                    res_partner_vals['country_id'] = res_city_zip_id.city_id.country_id.id
+            # user_id
+            if pipedrive_organization_id.pipedrive_user_id.id > 0:
+                if pipedrive_organization_id.pipedrive_user_id.user_id.id > 0:
+                    res_partner_vals['user_id'] = pipedrive_organization_id.pipedrive_user_id.user_id.id
+            # create-update (res.partner)
+            if pipedrive_organization_id.partner_id.id == 0:
+                res_partner_obj = self.env['res.partner'].sudo().create(res_partner_vals)
+                pipedrive_organization_id.partner_id = res_partner_obj.id
+            else:
+                pipedrive_organization_id.partner_id.write(res_partner_vals)
+        #return
+        return result_message
+
+    @api.model
     def cron_sqs_pipedrive_organization(self):
         _logger.info('cron_sqs_pipedrive_organization')
-
-'''
-{
-    "id": 2,
-    "company_id": 7498904,
-    "owner_id": {
-        "id": 11451374,
-        "name": "TUUP",
-        "email": "servicios@tuup.es",
-        "has_pic": 1,
-        "pic_hash": "947f9957d2eb3cd06cddb67fa36c29b6",
-        "active_flag": true,
-        "value": 11451374
-    },
-    "name": "Demostraciones S.L",
-    "open_deals_count": 0,
-    "related_open_deals_count": 0,
-    "closed_deals_count": 0,
-    "related_closed_deals_count": 0,
-    "email_messages_count": 0,
-    "people_count": 1,
-    "activities_count": 0,
-    "done_activities_count": 0,
-    "undone_activities_count": 0,
-    "files_count": 0,
-    "notes_count": 0,
-    "followers_count": 1,
-    "won_deals_count": 0,
-    "related_won_deals_count": 0,
-    "lost_deals_count": 0,
-    "related_lost_deals_count": 0,
-    "active_flag": true,
-    "category_id": null,
-    "picture_id": null,
-    "country_code": null,
-    "first_char": "d",
-    "update_time": "2020-06-04 14:32:04",
-    "add_time": "2020-06-04 10:21:51",
-    "visible_to": "3",
-    "next_activity_date": null,
-    "next_activity_time": null,
-    "next_activity_id": null,
-    "last_activity_id": null,
-    "last_activity_date": null,
-    "label": null,
-    "address": "Avenida de las Pruebas 1, Zaragoza",
-    "address_subpremise": "3",
-    "address_street_number": "1",
-    "address_route": "Avenida Alcalde Ramón Sainz de Varanda",
-    "address_sublocality": null,
-    "address_locality": "Zaragoza",
-    "address_admin_area_level_1": "Aragón",
-    "address_admin_area_level_2": "Zaragoza",
-    "address_country": "España",
-    "address_postal_code": "50009",
-    "address_formatted_address": "Av. Alcalde Ramón Sainz de Varanda, 1, 3, 50009 Zaragoza, España",
-    "89a1b8d03112f1b63eab112c7c46c69c73ae7334": null,
-    "owner_name": "TUUP",
-    "cc_email": "tuup@pipedrivemail.com"
-}
-'''
+        sqs_pipedrive_organization_url = tools.config.get('sqs_pipedrive_organization_url')
+        AWS_ACCESS_KEY_ID = tools.config.get('aws_access_key_id')
+        AWS_SECRET_ACCESS_KEY = tools.config.get('aws_secret_key_id')
+        AWS_SMS_REGION_NAME = tools.config.get('aws_region_name')
+        # boto3
+        sqs = boto3.client(
+            'sqs',
+            region_name=AWS_SMS_REGION_NAME,
+            aws_access_key_id=AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=AWS_SECRET_ACCESS_KEY
+        )
+        # Receive message from SQS queue
+        total_messages = 10
+        while total_messages > 0:
+            response = sqs.receive_message(
+                QueueUrl=sqs_pipedrive_organization_url,
+                AttributeNames=['All'],
+                MaxNumberOfMessages=10,
+                MessageAttributeNames=['All']
+            )
+            if 'Messages' in response:
+                total_messages = len(response['Messages'])
+            else:
+                total_messages = 0
+            # continue
+            if 'Messages' in response:
+                for message in response['Messages']:
+                    # message_body
+                    message_body = json.loads(message['Body'])
+                    # fix message
+                    if 'Message' in message_body:
+                        message_body = json.loads(message_body['Message'])
+                    # result_message
+                    result_message = self.action_item(message_body)
+                    #operations
+                    _logger.info('result_message')
+                    _logger.info(result_message)
+                    # remove_message
+                    if result_message['statusCode'] == 200:
+                        response_delete_message = sqs.delete_message(
+                            QueueUrl=sqs_pipedrive_organization_url,
+                            ReceiptHandle=message['ReceiptHandle']
+                        )
