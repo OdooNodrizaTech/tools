@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 #https://developers.pipedrive.com/docs/api/v1/#!/Deals
-from odoo import api, fields, models
+from odoo import api, fields, models, tools
+import json
+import boto3
+from botocore.exceptions import ClientError
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -11,6 +14,9 @@ class PipedriveDeal(models.Model):
 
     title = fields.Char(
         string='Title'
+    )
+    value = fields.Float(
+        string='Value'
     )
     active = fields.Boolean(
         string='Active'
@@ -24,6 +30,12 @@ class PipedriveDeal(models.Model):
         ],
         string='Status',
         default='open'
+    )
+    probability = fields.Integer(
+        string='Probability'
+    )
+    expected_close_date = fields.Date(
+        string='Expected Close Date'
     )
     pipedrive_person_id = fields.Many2one(
         comodel_name='pipedrive.person',
@@ -55,61 +67,172 @@ class PipedriveDeal(models.Model):
     )
 
     @api.model
+    def action_item(self, data):
+        _logger.info('action_item')
+        _logger.info(data)
+        # result_message
+        result_message = {
+            'delete_message': True,
+            'errors': False,
+            'return_body': 'OK',
+            'message': data
+        }
+        # operations
+        if data['meta']['action'] not in ['updated', 'added']:
+            result_message['errors'] = True
+            result_message['return_body'] = 'El action ' + str(data['meta']['action']) + ' no tien que realizar ninguna accion'
+        else:
+            # vals
+            pipedrive_deal_vals = {
+                'title': data['current']['title'],
+                'value': data['current']['value'],
+                'active': data['current']['active'],
+                'status': data['current']['status'],
+                'probability': data['current']['probability']
+            }
+            #expected_close_date
+            if data['current']['expected_close_date']!=None:
+                pipedrive_deal_vals['expected_close_date'] = data['current']['expected_close_date']
+            #person_id
+            if data['current']['person_id'] > 0:
+                pipedrive_person_ids = self.env['pipedrive.person'].sudo().search([('id', '=', data['current']['person_id'])])
+                if len(pipedrive_person_ids) == 0:
+                    result_message['delete_message'] = False
+                    result_message['errors'] = True
+                    result_message['return_body'] = 'No existe el (pipedrive.person) owner_id=' + str(data['current']['person_id'])
+                else:
+                    pipedrive_deal_vals['pipedrive_person_id'] = pipedrive_person_ids[0].id
+            #org_id
+            if data['current']['org_id']!=None:
+                if data['current']['org_id'] > 0:
+                    pipedrive_organization_ids = self.env['pipedrive.organization'].sudo().search([('id', '=', data['current']['org_id'])])
+                    if len(pipedrive_organization_ids) == 0:
+                        result_message['delete_message'] = False
+                        result_message['errors'] = True
+                        result_message['return_body'] = 'No existe el (pipedrive.organization) owner_id=' + str(data['current']['org_id'])
+                    else:
+                        pipedrive_deal_vals['pipedrive_organization_id'] = pipedrive_organization_ids[0].id
+            #user_id
+            if data['current']['user_id']>0:
+                pipedrive_user_ids = self.env['pipedrive.user'].sudo().search([('id', '=', data['current']['user_id'])])
+                if len(pipedrive_user_ids) == 0:
+                    result_message['delete_message'] = False
+                    result_message['errors'] = True
+                    result_message['return_body'] = 'No existe el (pipedrive.user) owner_id=' + str(data['current']['user_id'])
+                else:
+                    pipedrive_deal_vals['pipedrive_user_id'] = pipedrive_user_ids[0].id
+            #pipeline_id
+            if data['current']['pipeline_id'] > 0:
+                pipedrive_pipeline_ids = self.env['pipedrive.pipeline'].sudo().search([('id', '=', data['current']['pipeline_id'])])
+                if len(pipedrive_pipeline_ids) == 0:
+                    result_message['delete_message'] = False
+                    result_message['errors'] = True
+                    result_message['return_body'] = 'No existe el (pipedrive.pipeline) owner_id=' + str(data['current']['pipeline_id'])
+                else:
+                    pipedrive_deal_vals['pipedrive_pipeline_id'] = pipedrive_pipeline_ids[0].id
+            # stage_id
+            if data['current']['stage_id'] > 0:
+                pipedrive_stage_ids = self.env['pipedrive.stage'].sudo().search([('id', '=', data['current']['stage_id'])])
+                if len(pipedrive_stage_ids) == 0:
+                    result_message['delete_message'] = False
+                    result_message['errors'] = True
+                    result_message['return_body'] = 'No existe el (pipedrive.stage) owner_id=' + str(data['current']['stage_id'])
+                else:
+                    pipedrive_deal_vals['pipedrive_stage_id'] = pipedrive_stage_ids[0].id
+        # all operations (if errors False)
+        if result_message['errors'] == False:
+            # create-update (pipedrive.deal)
+            pipedrive_deal_ids = self.env['pipedrive.deal'].sudo().search([('id', '=', data['current']['id'])])
+            if len(pipedrive_deal_ids) == 0:
+                pipedrive_deal_vals['id'] = data['current']['id']
+                pipedrive_deal_id = self.env['pipedrive.deal'].sudo().create(pipedrive_deal_vals)
+            else:
+                pipedrive_deal_id = pipedrive_deal_ids[0]
+                pipedrive_deal_id.write(pipedrive_deal_vals)
+            #partner_id
+            if pipedrive_deal_id.pipedrive_person_id.id>0:
+                if pipedrive_deal_id.pipedrive_person_id.partner_id.id>0:
+                    pipedrive_deal_id.partner_id = pipedrive_deal_id.pipedrive_person_id.partner_id.id
+                    # lead_id
+                    crm_lead_vals = {
+                        'active': pipedrive_deal_id.active,
+                        'type': pipedrive_deal_id.pipedrive_pipeline_id.type,
+                        'name': pipedrive_deal_id.title,
+                        'partner_id': pipedrive_deal_id.partner_id.id,
+                        'planned_revenue': pipedrive_deal_id.value,
+                        'probability': pipedrive_deal_id.probability
+                    }
+                    #email_from
+                    if pipedrive_deal_id.partner_id.email!=False:
+                        crm_lead_vals['email_from'] = pipedrive_deal_id.partner_id.email
+                    #phone
+                    if pipedrive_deal_id.partner_id.phone!=False:
+                        crm_lead_vals['phone'] = pipedrive_deal_id.partner_id.phone
+                    #mobile
+                    if pipedrive_deal_id.partner_id.mobile != False:
+                        crm_lead_vals['mobile'] = pipedrive_deal_id.partner_id.mobile
+                    #date_deadline
+                    if pipedrive_deal_id.expected_close_date!=False:
+                        crm_lead_vals['date_deadline'] = pipedrive_deal_id.expected_close_date
+                    #stage_id
+                    if pipedrive_deal_id.pipedrive_stage_id.stage_id.id>0:
+                        crm_lead_vals['stage_id'] = pipedrive_deal_id.pipedrive_stage_id.stage_id.id
+                    # user_id
+                    if pipedrive_deal_id.pipedrive_user_id.id > 0:
+                        if pipedrive_deal_id.pipedrive_user_id.user_id.id > 0:
+                            crm_lead_vals['user_id'] = pipedrive_deal_id.pipedrive_user_id.user_id.id
+                    # create-update (crm.lead)
+                    if pipedrive_deal_id.lead_id.id == 0:
+                        crm_lead_obj = self.env['crm.lead'].sudo().create(crm_lead_vals)
+                        pipedrive_deal_id.lead_id = crm_lead_obj.id
+                    else:
+                        pipedrive_deal_id.lead_id.write(crm_lead_vals)
+        # return
+        return result_message
+
+    @api.model
     def cron_sqs_pipedrive_deal(self):
         _logger.info('cron_sqs_pipedrive_deal')
-
-'''
-{
-    "id": 2,
-    "value": 0,
-    "currency": "EUR",
-    "add_time": "2020-06-09 10:58:39",
-    "update_time": "2020-06-09 10:58:39",
-    "stage_change_time": null,
-    "active": true,
-    "deleted": false,
-    "status": "open",
-    "probability": null,
-    "next_activity_date": null,
-    "next_activity_time": null,
-    "next_activity_id": null,
-    "last_activity_id": null,
-    "last_activity_date": null,
-    "lost_reason": null,
-    "visible_to": "3",
-    "close_time": null,
-    "pipeline_id": 1,
-    "won_time": null,
-    "first_won_time": null,
-    "lost_time": null,
-    "products_count": 0,
-    "files_count": 0,
-    "notes_count": 0,
-    "followers_count": 1,
-    "email_messages_count": 0,
-    "activities_count": 0,
-    "done_activities_count": 0,
-    "undone_activities_count": 0,
-    "participants_count": 1,
-    "expected_close_date": null,
-    "last_incoming_mail_time": null,
-    "last_outgoing_mail_time": null,
-    "label": null,
-    "stage_order_nr": 0,
-    "person_name": "Ejemplo 1",
-    "org_name": null,
-    "next_activity_subject": null,
-    "next_activity_type": null,
-    "next_activity_duration": null,
-    "next_activity_note": null,
-    "formatted_value": "0 €",
-    "weighted_value": 0,
-    "formatted_weighted_value": "0 €",
-    "weighted_value_currency": "EUR",
-    "rotten_time": null,
-    "owner_name": "TUUP",
-    "cc_email": "tuup+deal2@pipedrivemail.com",
-    "org_hidden": false,
-    "person_hidden": false
-}
-'''
+        sqs_pipedrive_deal_url = tools.config.get('sqs_pipedrive_deal_url')
+        AWS_ACCESS_KEY_ID = tools.config.get('aws_access_key_id')
+        AWS_SECRET_ACCESS_KEY = tools.config.get('aws_secret_key_id')
+        AWS_SMS_REGION_NAME = tools.config.get('aws_region_name')
+        # boto3
+        sqs = boto3.client(
+            'sqs',
+            region_name=AWS_SMS_REGION_NAME,
+            aws_access_key_id=AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=AWS_SECRET_ACCESS_KEY
+        )
+        # Receive message from SQS queue
+        total_messages = 10
+        while total_messages > 0:
+            response = sqs.receive_message(
+                QueueUrl=sqs_pipedrive_deal_url,
+                AttributeNames=['All'],
+                MaxNumberOfMessages=10,
+                MessageAttributeNames=['All']
+            )
+            if 'Messages' in response:
+                total_messages = len(response['Messages'])
+            else:
+                total_messages = 0
+            # continue
+            if 'Messages' in response:
+                for message in response['Messages']:
+                    # message_body
+                    message_body = json.loads(message['Body'])
+                    # fix message
+                    if 'Message' in message_body:
+                        message_body = json.loads(message_body['Message'])
+                    # result_message
+                    result_message = self.action_item(message_body)
+                    # operations
+                    _logger.info('result_message')
+                    _logger.info(result_message)
+                    # remove_message
+                    if result_message['delete_message'] == True:
+                        response_delete_message = sqs.delete_message(
+                            QueueUrl=sqs_pipedrive_deal_url,
+                            ReceiptHandle=message['ReceiptHandle']
+                        )

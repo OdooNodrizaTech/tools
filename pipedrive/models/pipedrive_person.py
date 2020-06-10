@@ -46,13 +46,14 @@ class PipedrivePerson(models.Model):
         _logger.info(data)
         #result_message
         result_message = {
-            'statusCode': 200,
+            'delete_message': True,
+            'errors': False,
             'return_body': 'OK',
             'message': data
         }
         #operations
         if data['meta']['action'] not in ['updated', 'added']:
-            result_message['statusCode'] = 500
+            result_message['errors'] = True
             result_message['return_body'] = 'El action '+str(data['meta']['action'] )+' no tien que realizar ninguna accion'
         else:
             #vals
@@ -77,7 +78,8 @@ class PipedrivePerson(models.Model):
             if data['current']['org_id']>0:
                 pipedrive_organization_ids = self.env['pipedrive.organization'].sudo().search([('id', '=', data['current']['org_id'])])
                 if len(pipedrive_organization_ids)==0:
-                    result_message['statusCode'] = 500
+                    result_message['delete_message'] = False
+                    result_message['errors'] = True
                     result_message['return_body'] = 'No existe el (pipedrive.organization) org_id='+str(data['current']['org_id'])
                 else:
                     pipedrive_person_vals['pipedrive_organization_id'] = pipedrive_organization_ids[0].id
@@ -85,12 +87,13 @@ class PipedrivePerson(models.Model):
             if data['current']['owner_id']>0:
                 pipedrive_user_ids = self.env['pipedrive.user'].sudo().search([('id', '=', data['current']['owner_id'])])
                 if len(pipedrive_user_ids)==0:
-                    result_message['statusCode'] = 500
+                    result_message['delete_message'] = False
+                    result_message['errors'] = True
                     result_message['return_body'] = 'No existe el (pipedrive.user) owner_id='+str(data['current']['owner_id'])
                 else:
                     pipedrive_person_vals['pipedrive_user_id'] = pipedrive_user_ids[0].id
-        #all operations (if statusCode 200)
-        if result_message['statusCode']==200:
+        # all operations (if errors False)
+        if result_message['errors'] == False:
             #create-update (pipedrive.person)
             pipedrive_person_ids = self.env['pipedrive.person'].sudo().search([('id', '=', data['current']['id'])])
             if len(pipedrive_person_ids) == 0:
@@ -164,7 +167,7 @@ class PipedrivePerson(models.Model):
                     _logger.info('result_message')
                     _logger.info(result_message)
                     # remove_message
-                    if result_message['statusCode'] == 200:
+                    if result_message['delete_message'] == True:
                         response_delete_message = sqs.delete_message(
                             QueueUrl=sqs_pipedrive_person_url,
                             ReceiptHandle=message['ReceiptHandle']

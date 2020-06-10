@@ -8,8 +8,11 @@
                 <sheet string="child">
                     <group>
                         <field name="title"/>
+                        <field name="value"/>
                         <field name="active"/>
                         <field name="status"/>
+                        <field name="probability"/>
+                        <field name="expected_close_date"/>
                         <field name="pipedrive_person_id" options='{"no_create": True, "no_create_edit": True}'/>
                         <field name="pipedrive_organization_id" options='{"no_create": True, "no_create_edit": True}'/>
                         <field name="pipedrive_user_id" options='{"no_create": True, "no_create_edit": True}'/>
@@ -28,8 +31,11 @@
         <field name="arch" type="xml">
             <tree string="Pipedrive Deal">
                 <field name="title"/>
+                <field name="value"/>
                 <field name="active"/>
                 <field name="status"/>
+                <field name="probability"/>
+                <field name="expected_close_date"/>
                 <field name="pipedrive_person_id"/>
                 <field name="pipedrive_organization_id"/>
                 <field name="pipedrive_user_id"/>
