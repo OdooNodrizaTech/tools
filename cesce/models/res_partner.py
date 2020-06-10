@@ -88,8 +88,8 @@ class ResPartner(models.Model):
         for partner in self:
             partner.cesce_risk_classification_count = mapped_data.get(partner.id, 0)            
     
-    @api.multi    
-    def cron_cesce_risk_classification_check_file_out(self, cr=None, uid=False, context=None):
+    @api.model
+    def cron_cesce_risk_classification_check_file_out(self):
         _logger.info('cron_cesce_risk_classification_check_file_out')
         #webservice
         cesce_web_service = CesceWebService(self.env.user.company_id, self.env)        

@@ -71,8 +71,8 @@ class AccountMoveLine(models.Model):
     def _get_partner_id_credit_limit(self):                              
         self.partner_id_credit_limit = self.partner_id.credit_limit
         
-    @api.multi    
-    def cron_cesce_sale_generate_file(self, cr=None, uid=False, context=None):
+    @api.model
+    def cron_cesce_sale_generate_file(self):
         _logger.info('cron_cesce_sale_generate_file')                                
         
         current_date = datetime.today()
@@ -102,8 +102,8 @@ class AccountMoveLine(models.Model):
                     else:
                         _logger.info(return_generate_cesce_sale)                                        
         
-    @api.multi    
-    def cron_cesce_sale_check_file_out(self, cr=None, uid=False, context=None):
+    @api.model
+    def cron_cesce_sale_check_file_out(self):
         _logger.info('cron_cesce_sale_check_file_out')        
         #webservice
         cesce_web_service = CesceWebService(self.env.user.company_id, self.env)        

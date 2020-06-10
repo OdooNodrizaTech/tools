@@ -115,8 +115,8 @@ class CesceRiskClassification(models.Model):
         string='Fecha renovacion'
     )
     
-    @api.multi    
-    def cron_cesce_risk_classification_cambiar_fecha_renovacion(self, cr=None, uid=False, context=None):
+    @api.model
+    def cron_cesce_risk_classification_cambiar_fecha_renovacion(self):
         current_date = datetime.today()
         start_date = current_date
         end_date = start_date + relativedelta(months=-2)
@@ -135,8 +135,8 @@ class CesceRiskClassification(models.Model):
                 fecha_renovacion_new = str(year_next)+'-'+fecha_renovacion_split[1]+'-'+fecha_renovacion_split[2]
                 cesce_risk_classification_id.fecha_renovacion = fecha_renovacion_new                  
     
-    @api.multi    
-    def cron_cesce_risk_classification_fecha_renovacion(self, cr=None, uid=False, context=None):
+    @api.model
+    def cron_cesce_risk_classification_fecha_renovacion(self):
         current_date = datetime.today()
         start_date = current_date
         end_date = start_date + relativedelta(days=-30)
