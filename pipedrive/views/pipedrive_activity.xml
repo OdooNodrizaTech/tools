@@ -7,7 +7,7 @@
             <form string="Pipedrive Activity">
                 <sheet string="child">
                     <group>
-                        <field name="type"/>
+                        <field name="pipedrive_activity_type_id" options='{"no_create": True, "no_create_edit": True}'/>
                         <field name="pipedrive_user_id" options='{"no_create": True, "no_create_edit": True}'/>
                         <field name="done"/>
                         <field name="due_date"/>
@@ -27,7 +27,7 @@
         <field name="model">pipedrive.activity</field>
         <field name="arch" type="xml">
             <tree string="Pipedrive Activity">
-                <field name="type"/>
+                <field name="pipedrive_activity_type_id"/>
                 <field name="pipedrive_user_id"/>
                 <field name="done"/>
                 <field name="due_date"/>

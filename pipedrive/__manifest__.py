@@ -6,7 +6,7 @@
     'website': 'https://nodrizatech.com/',
     'category': 'Tools',
     'license': 'AGPL-3',
-    'depends': ['base', 'crm', 'mail'],
+    'depends': ['base', 'crm', 'mail', 'mail_activity_done'],
     'external_dependencies': {
         'python3' : ['pipedrive-python-lib', 'boto3'],
     },
@@ -15,6 +15,7 @@
         'data/ir_cron.xml',
         'views/pipedrive_menu.xml',
         'views/pipedrive_activity.xml',
+        'views/pipedrive_activity_type.xml',
         'views/pipedrive_currency.xml',
         'views/pipedrive_deal.xml',
         'views/pipedrive_organization.xml',

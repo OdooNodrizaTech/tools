@@ -99,7 +99,7 @@ class PipedriveDeal(models.Model):
                 if len(pipedrive_person_ids) == 0:
                     result_message['delete_message'] = False
                     result_message['errors'] = True
-                    result_message['return_body'] = 'No existe el (pipedrive.person) owner_id=' + str(data['current']['person_id'])
+                    result_message['return_body'] = 'No existe el (pipedrive.person) person_id=' + str(data['current']['person_id'])
                 else:
                     pipedrive_deal_vals['pipedrive_person_id'] = pipedrive_person_ids[0].id
             #org_id
@@ -109,7 +109,7 @@ class PipedriveDeal(models.Model):
                     if len(pipedrive_organization_ids) == 0:
                         result_message['delete_message'] = False
                         result_message['errors'] = True
-                        result_message['return_body'] = 'No existe el (pipedrive.organization) owner_id=' + str(data['current']['org_id'])
+                        result_message['return_body'] = 'No existe el (pipedrive.organization) org_id=' + str(data['current']['org_id'])
                     else:
                         pipedrive_deal_vals['pipedrive_organization_id'] = pipedrive_organization_ids[0].id
             #user_id
@@ -118,7 +118,7 @@ class PipedriveDeal(models.Model):
                 if len(pipedrive_user_ids) == 0:
                     result_message['delete_message'] = False
                     result_message['errors'] = True
-                    result_message['return_body'] = 'No existe el (pipedrive.user) owner_id=' + str(data['current']['user_id'])
+                    result_message['return_body'] = 'No existe el (pipedrive.user) user_id=' + str(data['current']['user_id'])
                 else:
                     pipedrive_deal_vals['pipedrive_user_id'] = pipedrive_user_ids[0].id
             #pipeline_id
@@ -127,7 +127,7 @@ class PipedriveDeal(models.Model):
                 if len(pipedrive_pipeline_ids) == 0:
                     result_message['delete_message'] = False
                     result_message['errors'] = True
-                    result_message['return_body'] = 'No existe el (pipedrive.pipeline) owner_id=' + str(data['current']['pipeline_id'])
+                    result_message['return_body'] = 'No existe el (pipedrive.pipeline) pipeline_id=' + str(data['current']['pipeline_id'])
                 else:
                     pipedrive_deal_vals['pipedrive_pipeline_id'] = pipedrive_pipeline_ids[0].id
             # stage_id
@@ -136,7 +136,7 @@ class PipedriveDeal(models.Model):
                 if len(pipedrive_stage_ids) == 0:
                     result_message['delete_message'] = False
                     result_message['errors'] = True
-                    result_message['return_body'] = 'No existe el (pipedrive.stage) owner_id=' + str(data['current']['stage_id'])
+                    result_message['return_body'] = 'No existe el (pipedrive.stage) stage_id=' + str(data['current']['stage_id'])
                 else:
                     pipedrive_deal_vals['pipedrive_stage_id'] = pipedrive_stage_ids[0].id
         # all operations (if errors False)

@@ -1,5 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_pipedrive_activity_admin,pipedrive.activity,model_pipedrive_activity,,1,1,1,1
+access_pipedrive_activity_type_admin,pipedrive.activity.type,model_pipedrive_activity_type,,1,1,1,1
 access_pipedrive_currency_admin,pipedrive.currency,model_pipedrive_currency,,1,1,1,1
 access_pipedrive_deal_admin,pipedrive.deal,model_pipedrive_deal,,1,1,1,1
 access_pipedrive_organization_admin,pipedrive.organization,model_pipedrive_organization,,1,1,1,1

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from . import pipedrive_activity
+from . import pipedrive_activity_type
 from . import pipedrive_currency
 from . import pipedrive_deal
 from . import pipedrive_organization

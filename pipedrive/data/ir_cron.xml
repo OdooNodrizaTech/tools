@@ -12,6 +12,18 @@
         <field name="state">code</field>
         <field name="code">model.cron_sqs_pipedrive_activity()</field>
     </record>
+    <record id="cron_pipedrive_activity_type_exec" forcecreate="True" model="ir.cron">
+        <field name="name">Cron Pipedrive Activity Type Exec</field>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">12</field>
+        <field name="interval_type">months</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_pipedrive_activity_type"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_pipedrive_activity_type_exec()</field>
+    </record>
     <record id="cron_pipedrive_currency_exec" forcecreate="True" model="ir.cron">
         <field name="name">Cron Pipedrive Currency Exec</field>
         <field name="active" eval="False"/>
