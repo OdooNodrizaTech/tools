@@ -66,6 +66,64 @@ class PipedriveDeal(models.Model):
         string='Lead Id'
     )
 
+    @api.one
+    def check_crm_lead(self):
+        _logger.info('check_crm_lead')
+        # partner_id
+        if self.pipedrive_person_id.id > 0:
+            if self.pipedrive_person_id.partner_id.id > 0:
+                self.partner_id = self.pipedrive_person_id.partner_id.id
+                # lead_id
+                vals = {
+                    'active': self.active,
+                    'type': self.pipedrive_pipeline_id.type,
+                    'name': self.title,
+                    'partner_id': self.partner_id.id,
+                    'planned_revenue': self.value,
+                    'probability': self.probability
+                }
+                # email_from
+                if self.partner_id.email != False:
+                    vals['email_from'] = self.partner_id.email
+                # phone
+                if self.partner_id.phone != False:
+                    vals['phone'] = self.partner_id.phone
+                # mobile
+                if self.partner_id.mobile != False:
+                    vals['mobile'] = self.partner_id.mobile
+                # date_deadline
+                if self.expected_close_date != False:
+                    vals['date_deadline'] = self.expected_close_date
+                # stage_id
+                if self.pipedrive_stage_id.stage_id.id > 0:
+                    vals['stage_id'] = self.pipedrive_stage_id.stage_id.id
+                # user_id
+                if self.pipedrive_user_id.id > 0:
+                    if self.pipedrive_user_id.user_id.id > 0:
+                        vals['user_id'] = self.pipedrive_user_id.user_id.id
+                # create-update (crm.lead)
+                if self.lead_id.id == 0:
+                    crm_lead_obj = self.env['crm.lead'].sudo().create(vals)
+                    self.lead_id = crm_lead_obj.id
+                else:
+                    self.lead_id.write(vals)
+
+    @api.model
+    def create(self, values):
+        return_item = super(PipedriveDeal, self).create(values)
+        # operations
+        return_item.check_crm_lead()
+        # return
+        return return_item
+
+    @api.one
+    def write(self, vals):
+        return_write = super(PipedriveDeal, self).write(vals)
+        # operations
+        self.check_crm_lead()
+        # return
+        return return_write
+
     @api.model
     def action_item(self, data):
         _logger.info('action_item')
@@ -83,7 +141,7 @@ class PipedriveDeal(models.Model):
             result_message['return_body'] = 'El action ' + str(data['meta']['action']) + ' no tien que realizar ninguna accion'
         else:
             # vals
-            pipedrive_deal_vals = {
+            vals = {
                 'title': data['current']['title'],
                 'value': data['current']['value'],
                 'active': data['current']['active'],
@@ -92,7 +150,7 @@ class PipedriveDeal(models.Model):
             }
             #expected_close_date
             if data['current']['expected_close_date']!=None:
-                pipedrive_deal_vals['expected_close_date'] = data['current']['expected_close_date']
+                vals['expected_close_date'] = data['current']['expected_close_date']
             #person_id
             if data['current']['person_id'] > 0:
                 pipedrive_person_ids = self.env['pipedrive.person'].sudo().search([('id', '=', data['current']['person_id'])])
@@ -101,7 +159,7 @@ class PipedriveDeal(models.Model):
                     result_message['errors'] = True
                     result_message['return_body'] = 'No existe el (pipedrive.person) person_id=' + str(data['current']['person_id'])
                 else:
-                    pipedrive_deal_vals['pipedrive_person_id'] = pipedrive_person_ids[0].id
+                    vals['pipedrive_person_id'] = pipedrive_person_ids[0].id
             #org_id
             if data['current']['org_id']!=None:
                 if data['current']['org_id'] > 0:
@@ -111,7 +169,7 @@ class PipedriveDeal(models.Model):
                         result_message['errors'] = True
                         result_message['return_body'] = 'No existe el (pipedrive.organization) org_id=' + str(data['current']['org_id'])
                     else:
-                        pipedrive_deal_vals['pipedrive_organization_id'] = pipedrive_organization_ids[0].id
+                        vals['pipedrive_organization_id'] = pipedrive_organization_ids[0].id
             #user_id
             if data['current']['user_id']>0:
                 pipedrive_user_ids = self.env['pipedrive.user'].sudo().search([('id', '=', data['current']['user_id'])])
@@ -120,7 +178,7 @@ class PipedriveDeal(models.Model):
                     result_message['errors'] = True
                     result_message['return_body'] = 'No existe el (pipedrive.user) user_id=' + str(data['current']['user_id'])
                 else:
-                    pipedrive_deal_vals['pipedrive_user_id'] = pipedrive_user_ids[0].id
+                    vals['pipedrive_user_id'] = pipedrive_user_ids[0].id
             #pipeline_id
             if data['current']['pipeline_id'] > 0:
                 pipedrive_pipeline_ids = self.env['pipedrive.pipeline'].sudo().search([('id', '=', data['current']['pipeline_id'])])
@@ -129,7 +187,7 @@ class PipedriveDeal(models.Model):
                     result_message['errors'] = True
                     result_message['return_body'] = 'No existe el (pipedrive.pipeline) pipeline_id=' + str(data['current']['pipeline_id'])
                 else:
-                    pipedrive_deal_vals['pipedrive_pipeline_id'] = pipedrive_pipeline_ids[0].id
+                    vals['pipedrive_pipeline_id'] = pipedrive_pipeline_ids[0].id
             # stage_id
             if data['current']['stage_id'] > 0:
                 pipedrive_stage_ids = self.env['pipedrive.stage'].sudo().search([('id', '=', data['current']['stage_id'])])
@@ -138,55 +196,17 @@ class PipedriveDeal(models.Model):
                     result_message['errors'] = True
                     result_message['return_body'] = 'No existe el (pipedrive.stage) stage_id=' + str(data['current']['stage_id'])
                 else:
-                    pipedrive_deal_vals['pipedrive_stage_id'] = pipedrive_stage_ids[0].id
+                    vals['pipedrive_stage_id'] = pipedrive_stage_ids[0].id
         # all operations (if errors False)
         if result_message['errors'] == False:
             # create-update (pipedrive.deal)
             pipedrive_deal_ids = self.env['pipedrive.deal'].sudo().search([('id', '=', data['current']['id'])])
             if len(pipedrive_deal_ids) == 0:
-                pipedrive_deal_vals['id'] = data['current']['id']
-                pipedrive_deal_id = self.env['pipedrive.deal'].sudo().create(pipedrive_deal_vals)
+                vals['id'] = data['current']['id']
+                pipedrive_deal_id = self.env['pipedrive.deal'].sudo().create(vals)
             else:
                 pipedrive_deal_id = pipedrive_deal_ids[0]
-                pipedrive_deal_id.write(pipedrive_deal_vals)
-            #partner_id
-            if pipedrive_deal_id.pipedrive_person_id.id>0:
-                if pipedrive_deal_id.pipedrive_person_id.partner_id.id>0:
-                    pipedrive_deal_id.partner_id = pipedrive_deal_id.pipedrive_person_id.partner_id.id
-                    # lead_id
-                    crm_lead_vals = {
-                        'active': pipedrive_deal_id.active,
-                        'type': pipedrive_deal_id.pipedrive_pipeline_id.type,
-                        'name': pipedrive_deal_id.title,
-                        'partner_id': pipedrive_deal_id.partner_id.id,
-                        'planned_revenue': pipedrive_deal_id.value,
-                        'probability': pipedrive_deal_id.probability
-                    }
-                    #email_from
-                    if pipedrive_deal_id.partner_id.email!=False:
-                        crm_lead_vals['email_from'] = pipedrive_deal_id.partner_id.email
-                    #phone
-                    if pipedrive_deal_id.partner_id.phone!=False:
-                        crm_lead_vals['phone'] = pipedrive_deal_id.partner_id.phone
-                    #mobile
-                    if pipedrive_deal_id.partner_id.mobile != False:
-                        crm_lead_vals['mobile'] = pipedrive_deal_id.partner_id.mobile
-                    #date_deadline
-                    if pipedrive_deal_id.expected_close_date!=False:
-                        crm_lead_vals['date_deadline'] = pipedrive_deal_id.expected_close_date
-                    #stage_id
-                    if pipedrive_deal_id.pipedrive_stage_id.stage_id.id>0:
-                        crm_lead_vals['stage_id'] = pipedrive_deal_id.pipedrive_stage_id.stage_id.id
-                    # user_id
-                    if pipedrive_deal_id.pipedrive_user_id.id > 0:
-                        if pipedrive_deal_id.pipedrive_user_id.user_id.id > 0:
-                            crm_lead_vals['user_id'] = pipedrive_deal_id.pipedrive_user_id.user_id.id
-                    # create-update (crm.lead)
-                    if pipedrive_deal_id.lead_id.id == 0:
-                        crm_lead_obj = self.env['crm.lead'].sudo().create(crm_lead_vals)
-                        pipedrive_deal_id.lead_id = crm_lead_obj.id
-                    else:
-                        pipedrive_deal_id.lead_id.write(crm_lead_vals)
+                pipedrive_deal_id.write(vals)
         # return
         return result_message
 

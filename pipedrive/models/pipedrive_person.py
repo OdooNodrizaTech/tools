@@ -40,6 +40,47 @@ class PipedrivePerson(models.Model):
         string='Partner Id'
     )
 
+    @api.one
+    def check_res_partner(self):
+        _logger.info('check_res_partner')
+        # partner_id
+        vals = {
+            'type': 'person',
+            'name': self.name,
+            'phone': self.phone,
+            'email': self.email
+        }
+        # parent_id
+        if self.pipedrive_organization_id.id > 0:
+            if self.pipedrive_organization_id.partner_id.id > 0:
+                vals['parent_id'] = self.pipedrive_organization_id.partner_id.id
+        # user_id
+        if self.pipedrive_user_id.id > 0:
+            if self.pipedrive_user_id.user_id.id > 0:
+                vals['user_id'] = self.pipedrive_user_id.user_id.id
+        # create-update (res.partner)
+        if self.partner_id.id == 0:
+            res_partner_obj = self.env['res.partner'].sudo().create(vals)
+            self.partner_id = res_partner_obj.id
+        else:
+            self.partner_id.write(vals)
+
+    @api.model
+    def create(self, values):
+        return_item = super(PipedrivePerson, self).create(values)
+        # operations
+        return_item.check_res_partner()
+        # return
+        return return_item
+
+    @api.one
+    def write(self, vals):
+        return_write = super(PipedrivePerson, self).write(vals)
+        # operations
+        self.check_res_partner()
+        # return
+        return return_write
+
     @api.model
     def action_item(self, data):
         _logger.info('action_item')
@@ -57,7 +98,7 @@ class PipedrivePerson(models.Model):
             result_message['return_body'] = 'El action '+str(data['meta']['action'] )+' no tien que realizar ninguna accion'
         else:
             #vals
-            pipedrive_person_vals = {
+            vals = {
                 'name': data['current']['name'],
                 'first_name': data['current']['first_name'],
                 'last_name': data['current']['last_name']
@@ -67,13 +108,13 @@ class PipedrivePerson(models.Model):
                 if len(data['current']['phone'])>0:
                     for phone_item in data['current']['phone']:
                         if phone_item['primary']==True:
-                            pipedrive_person_vals['phone'] = phone_item['value']
+                            vals['phone'] = phone_item['value']
             #email
             if 'email' in data['current']:
                 if len(data['current']['email'])>0:
                     for email_item in data['current']['email']:
                         if email_item in['primary']==True:
-                            pipedrive_person_vals['email'] = email_item in['value']
+                            vals['email'] = email_item in['value']
             #pipedrive_organization_id
             if data['current']['org_id']>0:
                 pipedrive_organization_ids = self.env['pipedrive.organization'].sudo().search([('id', '=', data['current']['org_id'])])
@@ -82,7 +123,7 @@ class PipedrivePerson(models.Model):
                     result_message['errors'] = True
                     result_message['return_body'] = 'No existe el (pipedrive.organization) org_id='+str(data['current']['org_id'])
                 else:
-                    pipedrive_person_vals['pipedrive_organization_id'] = pipedrive_organization_ids[0].id
+                    vals['pipedrive_organization_id'] = pipedrive_organization_ids[0].id
             #pipedrive_user_id
             if data['current']['owner_id']>0:
                 pipedrive_user_ids = self.env['pipedrive.user'].sudo().search([('id', '=', data['current']['owner_id'])])
@@ -91,38 +132,17 @@ class PipedrivePerson(models.Model):
                     result_message['errors'] = True
                     result_message['return_body'] = 'No existe el (pipedrive.user) owner_id='+str(data['current']['owner_id'])
                 else:
-                    pipedrive_person_vals['pipedrive_user_id'] = pipedrive_user_ids[0].id
+                    vals['pipedrive_user_id'] = pipedrive_user_ids[0].id
         # all operations (if errors False)
         if result_message['errors'] == False:
             #create-update (pipedrive.person)
             pipedrive_person_ids = self.env['pipedrive.person'].sudo().search([('id', '=', data['current']['id'])])
             if len(pipedrive_person_ids) == 0:
-                pipedrive_person_vals['id'] = data['current']['id']
-                pipedrive_person_id = self.env['pipedrive.person'].sudo().create(pipedrive_person_vals)
+                vals['id'] = data['current']['id']
+                pipedrive_person_id = self.env['pipedrive.person'].sudo().create(vals)
             else:
                 pipedrive_person_id = pipedrive_person_ids[0]
-                pipedrive_person_id.write(pipedrive_person_vals)
-            #partner_id
-            res_partner_vals = {
-                'company_type': 'person',
-                'name': pipedrive_person_id.name,
-                'phone': pipedrive_person_id.phone,
-                'email': pipedrive_person_id.email
-            }
-            #parent_id
-            if pipedrive_person_id.pipedrive_organization_id.id>0:
-                if pipedrive_person_id.pipedrive_organization_id.partner_id.id>0:
-                    res_partner_vals['parent_id'] = pipedrive_person_id.pipedrive_organization_id.partner_id.id
-            #user_id
-            if pipedrive_person_id.pipedrive_user_id.id>0:
-                if pipedrive_person_id.pipedrive_user_id.user_id.id>0:
-                    res_partner_vals['user_id'] = pipedrive_person_id.pipedrive_user_id.user_id.id
-            #create-update (res.partner)
-            if pipedrive_person_id.partner_id.id==0:
-                res_partner_obj = self.env['res.partner'].sudo().create(res_partner_vals)
-                pipedrive_person_id.partner_id = res_partner_obj.id
-            else:
-                pipedrive_person_id.partner_id.write(res_partner_vals)
+                pipedrive_person_id.write(vals)
         #return
         return result_message
 
