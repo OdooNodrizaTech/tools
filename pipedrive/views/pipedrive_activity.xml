@@ -36,7 +36,6 @@
                 <field name="due_date"/>
                 <field name="marked_as_done_time"/>
                 <field name="subject"/>
-                <field name="public_description"/>
                 <field name="pipedrive_organization_id"/>
                 <field name="pipedrive_person_id"/>
                 <field name="pipedrive_deal_id"/>

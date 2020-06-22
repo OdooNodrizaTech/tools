@@ -12,6 +12,18 @@
         <field name="state">code</field>
         <field name="code">model.cron_sqs_pipedrive_activity()</field>
     </record>
+    <record id="cron_pipedrive_activity_exec" forcecreate="True" model="ir.cron">
+        <field name="name">Cron Pipedrive Activity Exec</field>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">12</field>
+        <field name="interval_type">months</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_pipedrive_activity"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_pipedrive_activity_exec()</field>
+    </record>
     <record id="cron_pipedrive_activity_type_exec" forcecreate="True" model="ir.cron">
         <field name="name">Cron Pipedrive Activity Type Exec</field>
         <field name="active" eval="False"/>
@@ -48,6 +60,18 @@
         <field name="state">code</field>
         <field name="code">model.cron_sqs_pipedrive_deal()</field>
     </record>
+    <record id="cron_pipedrive_deal_exec" forcecreate="True" model="ir.cron">
+        <field name="name">Cron Pipedrive Deal Exec</field>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">12</field>
+        <field name="interval_type">months</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_pipedrive_deal"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_pipedrive_deal_exec()</field>
+    </record>
     <record id="cron_sqs_pipedrive_organization" forcecreate="True" model="ir.cron">
         <field name="name">Cron SQS Pipedrive Organization</field>
         <field name="active" eval="True"/>
@@ -60,6 +84,18 @@
         <field name="state">code</field>
         <field name="code">model.cron_sqs_pipedrive_organization()</field>
     </record>
+    <record id="cron_pipedrive_organization_exec" forcecreate="True" model="ir.cron">
+        <field name="name">Cron Pipedrive Organization Exec</field>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">12</field>
+        <field name="interval_type">months</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_pipedrive_organization"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_pipedrive_organization_exec()</field>
+    </record>
     <record id="cron_sqs_pipedrive_person" forcecreate="True" model="ir.cron">
         <field name="name">Cron SQS Pipedrive Person</field>
         <field name="active" eval="True"/>
@@ -71,6 +107,18 @@
         <field name="model_id" ref="model_pipedrive_person"/>
         <field name="state">code</field>
         <field name="code">model.cron_sqs_pipedrive_person()</field>
+    </record>
+    <record id="cron_pipedrive_person_exec" forcecreate="True" model="ir.cron">
+        <field name="name">Cron Pipedrive Person Exec</field>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">12</field>
+        <field name="interval_type">months</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_pipedrive_person"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_pipedrive_person_exec()</field>
     </record>
     <record id="cron_pipedrive_pipeline_exec" forcecreate="True" model="ir.cron">
         <field name="name">Cron Pipedrive Pipeline Exec</field>

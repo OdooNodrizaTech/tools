@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #https://developers.pipedrive.com/docs/api/v1/#!/Activities
 from odoo import api, fields, models, tools
+from pipedrive.client import Client
 import json
 import boto3
 from botocore.exceptions import ClientError
@@ -35,7 +36,7 @@ class PipedriveActivity(models.Model):
     subject = fields.Char(
         string='Subject'
     )
-    public_description = fields.Text(
+    public_description = fields.Html(
         string='Public Description'
     )
     pipedrive_organization_id = fields.Many2one(
@@ -152,7 +153,8 @@ class PipedriveActivity(models.Model):
                 vals['due_date'] = data['current']['due_date']
             #marked_as_done_time
             if data['current']['marked_as_done_time']!=None:
-                vals['marked_as_done_time'] = data['current']['marked_as_done_time']
+                if data['current']['marked_as_done_time']!='':
+                    vals['marked_as_done_time'] = data['current']['marked_as_done_time']
             # user_id
             if data['current']['user_id'] > 0:
                 pipedrive_user_ids = self.env['pipedrive.user'].sudo().search([('external_id', '=', data['current']['user_id'])])
@@ -203,6 +205,39 @@ class PipedriveActivity(models.Model):
                 pipedrive_activity_id.write(vals)
         # return
         return result_message
+
+    @api.model
+    def cron_pipedrive_activity_exec(self):
+        _logger.info('cron_pipedrive_activity_exec')
+        # params
+        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_domain'))
+        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_api_token'))
+        # api client
+        client = Client(domain=pipedrive_domain)
+        client.set_api_token(pipedrive_api_token)
+        # get_info
+        response = client.activities.get_all_activities()
+        if 'success' in response:
+            if response['success'] == True:
+                for data_item in response['data']:
+                    # keys_need_check
+                    keys_need_check = ['owner_id']
+                    for key_need_check in keys_need_check:
+                        if key_need_check in data_item:
+                            if data_item[key_need_check] != None:
+                                if 'id' in data_item[key_need_check]:
+                                    data_item[key_need_check] = data_item[key_need_check]['id']
+                                else:
+                                    data_item[key_need_check] = None
+                            else:
+                                data_item[key_need_check] = None
+                    # action_item
+                    self.action_item({
+                        'current': data_item,
+                        'meta': {
+                            'action': 'updated'
+                        }
+                    })
 
     @api.model
     def cron_sqs_pipedrive_activity(self):

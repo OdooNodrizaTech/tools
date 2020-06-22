@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #https://developers.pipedrive.com/docs/api/v1/#!/Persons
 from odoo import api, fields, models, tools
+from pipedrive.client import Client
 import json
 import boto3
 from botocore.exceptions import ClientError
@@ -150,6 +151,37 @@ class PipedrivePerson(models.Model):
                 pipedrive_person_id.write(vals)
         #return
         return result_message
+
+    @api.model
+    def cron_pipedrive_person_exec(self):
+        _logger.info('cron_pipedrive_person_exec')
+        # params
+        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_domain'))
+        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_api_token'))
+        # api client
+        client = Client(domain=pipedrive_domain)
+        client.set_api_token(pipedrive_api_token)
+        # get_info
+        response = client.persons.get_all_persons()
+        if 'success' in response:
+            if response['success'] == True:
+                for data_item in response['data']:
+                    data_item['owner_id'] = data_item['owner_id']['id']
+                    #org_id
+                    if data_item['org_id']!=None:
+                        if 'id' in data_item['org_id']:
+                            data_item['org_id'] = data_item['org_id']['id']
+                        else:
+                            data_item['org_id'] = None
+                    else:
+                        data_item['org_id'] = None
+                    #action_item
+                    self.action_item({
+                        'current': data_item,
+                        'meta': {
+                            'action': 'updated'
+                        }
+                    })
 
     @api.model
     def cron_sqs_pipedrive_person(self):

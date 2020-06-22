@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #https://developers.pipedrive.com/docs/api/v1/#!/Deals
 from odoo import api, fields, models, tools
+from pipedrive.client import Client
 import json
 import boto3
 from botocore.exceptions import ClientError
@@ -163,14 +164,15 @@ class PipedriveDeal(models.Model):
             if data['current']['expected_close_date']!=None:
                 vals['expected_close_date'] = data['current']['expected_close_date']
             #person_id
-            if data['current']['person_id'] > 0:
-                pipedrive_person_ids = self.env['pipedrive.person'].sudo().search([('external_id', '=', data['current']['person_id'])])
-                if len(pipedrive_person_ids) == 0:
-                    result_message['delete_message'] = False
-                    result_message['errors'] = True
-                    result_message['return_body'] = 'No existe el (pipedrive.person) person_id=' + str(data['current']['person_id'])
-                else:
-                    vals['pipedrive_person_id'] = pipedrive_person_ids[0].id
+            if data['current']['person_id']!=None:
+                if data['current']['person_id'] > 0:
+                    pipedrive_person_ids = self.env['pipedrive.person'].sudo().search([('external_id', '=', data['current']['person_id'])])
+                    if len(pipedrive_person_ids) == 0:
+                        result_message['delete_message'] = False
+                        result_message['errors'] = True
+                        result_message['return_body'] = 'No existe el (pipedrive.person) person_id=' + str(data['current']['person_id'])
+                    else:
+                        vals['pipedrive_person_id'] = pipedrive_person_ids[0].id
             #org_id
             if data['current']['org_id']!=None:
                 if data['current']['org_id'] > 0:
@@ -219,6 +221,39 @@ class PipedriveDeal(models.Model):
                 pipedrive_deal_id.write(vals)
         # return
         return result_message
+
+    @api.model
+    def cron_pipedrive_deal_exec(self):
+        _logger.info('cron_pipedrive_deal_exec')
+        # params
+        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_domain'))
+        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_api_token'))
+        # api client
+        client = Client(domain=pipedrive_domain)
+        client.set_api_token(pipedrive_api_token)
+        # get_info
+        response = client.deals.get_all_deals()
+        if 'success' in response:
+            if response['success'] == True:
+                for data_item in response['data']:
+                    #keys_need_check
+                    keys_need_check = ['person_id', 'org_id', 'user_id']
+                    for key_need_check in keys_need_check:
+                        if key_need_check in data_item:
+                            if data_item[key_need_check] != None:
+                                if 'id' in data_item[key_need_check]:
+                                    data_item[key_need_check] = data_item[key_need_check]['id']
+                                else:
+                                    data_item[key_need_check] = None
+                            else:
+                                data_item[key_need_check] = None
+                    # action_item
+                    self.action_item({
+                        'current': data_item,
+                        'meta': {
+                            'action': 'updated'
+                        }
+                    })
 
     @api.model
     def cron_sqs_pipedrive_deal(self):
