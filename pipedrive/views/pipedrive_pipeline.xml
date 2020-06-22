@@ -7,6 +7,7 @@
             <form string="Pipedrive Pipeline">
                 <sheet string="child">
                     <group>
+                        <field name="external_id"/>
                         <field name="name"/>
                         <field name="active"/>
                         <field name="deal_probability"/>
@@ -22,6 +23,7 @@
         <field name="model">pipedrive.pipeline</field>
         <field name="arch" type="xml">
             <tree string="Pipedrive Pipeline">
+                <field name="external_id"/>
                 <field name="name"/>
                 <field name="active"/>
                 <field name="deal_probability"/>

@@ -12,6 +12,9 @@ class PipedriveOrganization(models.Model):
     _name = 'pipedrive.organization'
     _description = 'Pipedrive Organization'
 
+    external_id = fields.Integer(
+        string='External Id'
+    )
     name = fields.Char(
         string='Name'
     )
@@ -113,6 +116,7 @@ class PipedriveOrganization(models.Model):
         else:
             #vals
             vals = {
+                'external_id': data['current']['id'],
                 'name': data['current']['name']
             }
             #fields_need_check
@@ -125,7 +129,7 @@ class PipedriveOrganization(models.Model):
                         vals[field_need_check] = data['current'][field_need_check]
             #pipedrive_user_id
             if data['current']['owner_id']>0:
-                pipedrive_user_ids = self.env['pipedrive.user'].sudo().search([('id', '=', data['current']['owner_id'])])
+                pipedrive_user_ids = self.env['pipedrive.user'].sudo().search([('external_id', '=', data['current']['owner_id'])])
                 if len(pipedrive_user_ids)== 0:
                     result_message['delete_message'] = False
                     result_message['errors'] = True
@@ -135,9 +139,8 @@ class PipedriveOrganization(models.Model):
         # all operations (if errors False)
         if result_message['errors'] == False:
             # create-update (pipedrive.organization)
-            pipedrive_organization_ids = self.env['pipedrive.organization'].sudo().search([('id', '=', data['current']['id'])])
+            pipedrive_organization_ids = self.env['pipedrive.organization'].sudo().search([('external_id', '=', vals['external_id'])])
             if len(pipedrive_organization_ids) == 0:
-                vals['id'] = data['current']['id']
                 pipedrive_organization_id = self.env['pipedrive.organization'].sudo().create(vals)
             else:
                 pipedrive_organization_id = pipedrive_organization_ids[0]

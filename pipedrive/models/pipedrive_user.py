@@ -10,6 +10,9 @@ class PipedriveUser(models.Model):
     _name = 'pipedrive.user'
     _description = 'Pipedrive User'
 
+    external_id = fields.Integer(
+        string='External Id'
+    )
     name = fields.Char(
         string='Name'
     )
@@ -40,6 +43,7 @@ class PipedriveUser(models.Model):
     @api.model
     def action_item(self, data):
         vals = {
+            'external_id': data['id'],
             'name': data['name'],
             'email': data['email'],
             'phone': data['phone'],
@@ -52,9 +56,8 @@ class PipedriveUser(models.Model):
         if len(res_currency_ids)>0:
             vals['currency_id'] = res_currency_ids[0].id
         #search
-        pipedrive_user_ids = self.env['pipedrive.user'].search([('id', '=', data['id'])])
+        pipedrive_user_ids = self.env['pipedrive.user'].search([('external_id', '=', vals['external_id'])])
         if len(pipedrive_user_ids)==0:
-            vals['id'] = data['id']
             pipedrive_user_obj = self.env['pipedrive.user'].sudo().create(vals)
         else:
             pipedrive_user_id = pipedrive_user_ids[0]

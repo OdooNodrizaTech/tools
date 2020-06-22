@@ -7,6 +7,7 @@
             <form string="Pipedrive Stage">
                 <sheet string="child">
                     <group>
+                        <field name="external_id"/>
                         <field name="name"/>
                         <field name="deal_probability"/>
                         <field name="pipedrive_pipeline_id" options='{"no_create": True, "no_create_edit": True}'/>
@@ -21,6 +22,7 @@
         <field name="model">pipedrive.stage</field>
         <field name="arch" type="xml">
             <tree string="Pipedrive Stage">
+                <field name="external_id"/>
                 <field name="name"/>
                 <field name="deal_probability"/>
                 <field name="pipedrive_pipeline_id"/>

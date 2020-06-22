@@ -7,6 +7,7 @@
             <form string="Pipedrive Activity Type">
                 <sheet string="child">
                     <group>
+                        <field name="external_id"/>
                         <field name="name"/>
                         <field name="key_string"/>
                         <field name="mail_activity_type_id" options='{"no_create": True, "no_create_edit": True}'/>
@@ -20,6 +21,7 @@
         <field name="model">pipedrive.activity.type</field>
         <field name="arch" type="xml">
             <tree string="Pipedrive Activity Type">
+                <field name="external_id"/>
                 <field name="name"/>
                 <field name="key_string"/>
                 <field name="mail_activity_type_id"/>

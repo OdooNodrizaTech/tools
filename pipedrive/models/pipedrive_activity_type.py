@@ -10,6 +10,9 @@ class PipedriveActivityType(models.Model):
     _name = 'pipedrive.activity.type'
     _description = 'Pipedrive Activity Type'
 
+    external_id = fields.Integer(
+        string='External Id'
+    )
     name = fields.Char(
         string='Name'
     )
@@ -24,13 +27,13 @@ class PipedriveActivityType(models.Model):
     @api.model
     def action_item(self, data):
         vals = {
+            'external_id': data['id'],
             'name': data['name'],
             'key_string': data['key_string']
         }
         # search
-        pipedrive_activity_type_ids = self.env['pipedrive.activity.type'].search([('id', '=', data['id'])])
+        pipedrive_activity_type_ids = self.env['pipedrive.activity.type'].search([('external_id', '=', vals['external_id'])])
         if len(pipedrive_activity_type_ids) == 0:
-            vals['id'] = data['id']
             pipedrive_currency_obj = self.env['pipedrive.activity.type'].sudo().create(vals)
         else:
             pipedrive_activity_type_id = pipedrive_activity_type_ids[0]

@@ -10,6 +10,9 @@ class PipedriveStage(models.Model):
     _name = 'pipedrive.stage'
     _description = 'Pipedrive Stage'
 
+    external_id = fields.Integer(
+        string='External Id'
+    )
     name = fields.Char(
         string='Name'
     )
@@ -28,17 +31,17 @@ class PipedriveStage(models.Model):
     @api.model
     def action_item(self, data):
         vals = {
+            'external_id': data['id'],
             'name': data['name'],
             'deal_probability': data['deal_probability']
         }
         # pipedrive_pipeline_id
-        pipedrive_pipeline_ids = self.env['pipedrive.pipeline'].search([('id', '=', data['pipeline_id'])])
+        pipedrive_pipeline_ids = self.env['pipedrive.pipeline'].search([('external_id', '=', data['pipeline_id'])])
         if len(pipedrive_pipeline_ids) > 0:
             vals['pipedrive_pipeline_id'] = pipedrive_pipeline_ids[0].id
         # search
-        pipedrive_stage_ids = self.env['pipedrive.stage'].search([('id', '=', data['id'])])
+        pipedrive_stage_ids = self.env['pipedrive.stage'].search([('external_id', '=', vals['external_id'])])
         if len(pipedrive_stage_ids) == 0:
-            vals['id'] = data['id']
             pipedrive_stage_obj = self.env['pipedrive.stage'].sudo().create(vals)
         else:
             pipedrive_stage_id = pipedrive_stage_ids[0]

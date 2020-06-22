@@ -12,6 +12,9 @@ class PipedriveActivity(models.Model):
     _name = 'pipedrive.activity'
     _description = 'Pipedrive Activity'
 
+    external_id = fields.Integer(
+        string='External Id'
+    )
     pipedrive_activity_type_id = fields.Many2one(
         comodel_name='pipedrive.activity.type',
         string='Pipedrive Activity Type Id'
@@ -130,6 +133,7 @@ class PipedriveActivity(models.Model):
         else:
             # vals
             vals = {
+                'external_id': data['current']['id'],
                 'done': data['current']['done'],
                 'subject': data['current']['subject'],
                 'public_description': data['current']['public_description']
@@ -145,13 +149,13 @@ class PipedriveActivity(models.Model):
                     vals['pipedrive_activity_type_id'] = pipedrive_activity_type_ids[0].id
             #due_date
             if data['current']['due_date']!=None:
-                pipedrive_activity_vals['due_date'] = data['current']['due_date']
+                vals['due_date'] = data['current']['due_date']
             #marked_as_done_time
             if data['current']['marked_as_done_time']!=None:
-                pipedrive_activity_vals['marked_as_done_time'] = data['current']['marked_as_done_time']
+                vals['marked_as_done_time'] = data['current']['marked_as_done_time']
             # user_id
             if data['current']['user_id'] > 0:
-                pipedrive_user_ids = self.env['pipedrive.user'].sudo().search([('id', '=', data['current']['user_id'])])
+                pipedrive_user_ids = self.env['pipedrive.user'].sudo().search([('external_id', '=', data['current']['user_id'])])
                 if len(pipedrive_user_ids) == 0:
                     result_message['delete_message'] = False
                     result_message['errors'] = True
@@ -161,7 +165,7 @@ class PipedriveActivity(models.Model):
             # org_id
             if data['current']['org_id'] != None:
                 if data['current']['org_id'] > 0:
-                    pipedrive_organization_ids = self.env['pipedrive.organization'].sudo().search([('id', '=', data['current']['org_id'])])
+                    pipedrive_organization_ids = self.env['pipedrive.organization'].sudo().search([('external_id', '=', data['current']['org_id'])])
                     if len(pipedrive_organization_ids) == 0:
                         result_message['delete_message'] = False
                         result_message['errors'] = True
@@ -169,18 +173,19 @@ class PipedriveActivity(models.Model):
                     else:
                         vals['pipedrive_organization_id'] = pipedrive_organization_ids[0].id
             # person_id
-            if data['current']['person_id'] > 0:
-                pipedrive_person_ids = self.env['pipedrive.person'].sudo().search([('id', '=', data['current']['person_id'])])
-                if len(pipedrive_person_ids) == 0:
-                    result_message['delete_message'] = False
-                    result_message['errors'] = True
-                    result_message['return_body'] = 'No existe el (pipedrive.person) person_id=' + str(data['current']['person_id'])
-                else:
-                    vals['pipedrive_person_id'] = pipedrive_person_ids[0].id
+            if data['current']['person_id']!=None:
+                if data['current']['person_id'] > 0:
+                    pipedrive_person_ids = self.env['pipedrive.person'].sudo().search([('external_id', '=', data['current']['person_id'])])
+                    if len(pipedrive_person_ids) == 0:
+                        result_message['delete_message'] = False
+                        result_message['errors'] = True
+                        result_message['return_body'] = 'No existe el (pipedrive.person) person_id=' + str(data['current']['person_id'])
+                    else:
+                        vals['pipedrive_person_id'] = pipedrive_person_ids[0].id
             #deal_id
             if data['current']['deal_id'] != None:
                 if data['current']['deal_id'] > 0:
-                    pipedrive_deal_ids = self.env['pipedrive.deal'].sudo().search([('id', '=', data['current']['deal_id'])])
+                    pipedrive_deal_ids = self.env['pipedrive.deal'].sudo().search([('external_id', '=', data['current']['deal_id'])])
                     if len(pipedrive_deal_ids) == 0:
                         result_message['delete_message'] = False
                         result_message['errors'] = True
@@ -190,9 +195,8 @@ class PipedriveActivity(models.Model):
         # all operations (if errors False)
         if result_message['errors'] == False:
             # create-update (pipedrive.activity)
-            pipedrive_activity_ids = self.env['pipedrive.activity'].sudo().search([('id', '=', data['current']['id'])])
+            pipedrive_activity_ids = self.env['pipedrive.activity'].sudo().search([('external_id', '=', vals['external_id'])])
             if len(pipedrive_activity_ids) == 0:
-                vals['id'] = data['current']['id']
                 pipedrive_activity_id = self.env['pipedrive.activity'].sudo().create(vals)
             else:
                 pipedrive_activity_id = pipedrive_activity_ids[0]

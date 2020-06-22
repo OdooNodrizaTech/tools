@@ -12,6 +12,9 @@ class PipedriveDeal(models.Model):
     _name = 'pipedrive.deal'
     _description = 'Pipedrive Deal'
 
+    external_id = fields.Integer(
+        string='External Id'
+    )
     title = fields.Char(
         string='Title'
     )
@@ -120,7 +123,14 @@ class PipedriveDeal(models.Model):
     def write(self, vals):
         return_write = super(PipedriveDeal, self).write(vals)
         # operations
-        self.check_crm_lead()
+        allow_check = True
+        keys_need_check = ['lead_id', 'partner_id']
+        for key_need_check in keys_need_check:
+            if key_need_check in vals:
+                allow_check = False
+
+        if allow_check==True:
+            self.check_crm_lead()
         # return
         return return_write
 
@@ -142,6 +152,7 @@ class PipedriveDeal(models.Model):
         else:
             # vals
             vals = {
+                'external_id': data['current']['id'],
                 'title': data['current']['title'],
                 'value': data['current']['value'],
                 'active': data['current']['active'],
@@ -153,7 +164,7 @@ class PipedriveDeal(models.Model):
                 vals['expected_close_date'] = data['current']['expected_close_date']
             #person_id
             if data['current']['person_id'] > 0:
-                pipedrive_person_ids = self.env['pipedrive.person'].sudo().search([('id', '=', data['current']['person_id'])])
+                pipedrive_person_ids = self.env['pipedrive.person'].sudo().search([('external_id', '=', data['current']['person_id'])])
                 if len(pipedrive_person_ids) == 0:
                     result_message['delete_message'] = False
                     result_message['errors'] = True
@@ -163,7 +174,7 @@ class PipedriveDeal(models.Model):
             #org_id
             if data['current']['org_id']!=None:
                 if data['current']['org_id'] > 0:
-                    pipedrive_organization_ids = self.env['pipedrive.organization'].sudo().search([('id', '=', data['current']['org_id'])])
+                    pipedrive_organization_ids = self.env['pipedrive.organization'].sudo().search([('external_id', '=', data['current']['org_id'])])
                     if len(pipedrive_organization_ids) == 0:
                         result_message['delete_message'] = False
                         result_message['errors'] = True
@@ -172,7 +183,7 @@ class PipedriveDeal(models.Model):
                         vals['pipedrive_organization_id'] = pipedrive_organization_ids[0].id
             #user_id
             if data['current']['user_id']>0:
-                pipedrive_user_ids = self.env['pipedrive.user'].sudo().search([('id', '=', data['current']['user_id'])])
+                pipedrive_user_ids = self.env['pipedrive.user'].sudo().search([('external_id', '=', data['current']['user_id'])])
                 if len(pipedrive_user_ids) == 0:
                     result_message['delete_message'] = False
                     result_message['errors'] = True
@@ -181,7 +192,7 @@ class PipedriveDeal(models.Model):
                     vals['pipedrive_user_id'] = pipedrive_user_ids[0].id
             #pipeline_id
             if data['current']['pipeline_id'] > 0:
-                pipedrive_pipeline_ids = self.env['pipedrive.pipeline'].sudo().search([('id', '=', data['current']['pipeline_id'])])
+                pipedrive_pipeline_ids = self.env['pipedrive.pipeline'].sudo().search([('external_id', '=', data['current']['pipeline_id'])])
                 if len(pipedrive_pipeline_ids) == 0:
                     result_message['delete_message'] = False
                     result_message['errors'] = True
@@ -190,7 +201,7 @@ class PipedriveDeal(models.Model):
                     vals['pipedrive_pipeline_id'] = pipedrive_pipeline_ids[0].id
             # stage_id
             if data['current']['stage_id'] > 0:
-                pipedrive_stage_ids = self.env['pipedrive.stage'].sudo().search([('id', '=', data['current']['stage_id'])])
+                pipedrive_stage_ids = self.env['pipedrive.stage'].sudo().search([('external_id', '=', data['current']['stage_id'])])
                 if len(pipedrive_stage_ids) == 0:
                     result_message['delete_message'] = False
                     result_message['errors'] = True
@@ -200,9 +211,8 @@ class PipedriveDeal(models.Model):
         # all operations (if errors False)
         if result_message['errors'] == False:
             # create-update (pipedrive.deal)
-            pipedrive_deal_ids = self.env['pipedrive.deal'].sudo().search([('id', '=', data['current']['id'])])
+            pipedrive_deal_ids = self.env['pipedrive.deal'].sudo().search([('external_id', '=', vals['external_id'])])
             if len(pipedrive_deal_ids) == 0:
-                vals['id'] = data['current']['id']
                 pipedrive_deal_id = self.env['pipedrive.deal'].sudo().create(vals)
             else:
                 pipedrive_deal_id = pipedrive_deal_ids[0]

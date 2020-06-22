@@ -7,6 +7,7 @@
             <form string="Pipedrive Organization">
                 <sheet string="child">
                     <group>
+                        <field name="external_id"/>
                         <field name="name"/>
                         <field name="address"/>
                         <field name="address_street_number"/>
@@ -26,6 +27,7 @@
         <field name="model">pipedrive.organization</field>
         <field name="arch" type="xml">
             <tree string="Pipedrive Organization">
+                <field name="external_id"/>
                 <field name="name"/>
                 <field name="address"/>
                 <field name="address_street_number"/>

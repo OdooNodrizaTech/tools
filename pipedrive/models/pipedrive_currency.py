@@ -10,6 +10,9 @@ class PipedriveCurrency(models.Model):
     _name = 'pipedrive.currency'
     _description = 'Pipedrive Currency'
 
+    external_id = fields.Integer(
+        string='External Id'
+    )
     code = fields.Char(
         string='Code'
     )
@@ -27,6 +30,7 @@ class PipedriveCurrency(models.Model):
     @api.model
     def action_item(self, data):
         vals = {
+            'external_id': data['id'],
             'code': data['code'],
             'name': data['name'],
             'symbol': data['symbol']
@@ -36,9 +40,8 @@ class PipedriveCurrency(models.Model):
         if len(res_currency_ids) > 0:
             vals['currency_id'] = res_currency_ids[0].id
         # search
-        pipedrive_currency_ids = self.env['pipedrive.currency'].search([('id', '=', data['id'])])
+        pipedrive_currency_ids = self.env['pipedrive.currency'].search([('external_id', '=', vals['external_id'])])
         if len(pipedrive_currency_ids) == 0:
-            vals['id'] = data['id']
             pipedrive_currency_obj = self.env['pipedrive.currency'].sudo().create(vals)
         else:
             pipedrive_currency_id = pipedrive_currency_ids[0]

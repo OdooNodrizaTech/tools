@@ -7,6 +7,7 @@
             <form string="Pipedrive Deal">
                 <sheet string="child">
                     <group>
+                        <field name="external_id"/>
                         <field name="title"/>
                         <field name="value"/>
                         <field name="active"/>
@@ -30,6 +31,7 @@
         <field name="model">pipedrive.deal</field>
         <field name="arch" type="xml">
             <tree string="Pipedrive Deal">
+                <field name="external_id"/>
                 <field name="title"/>
                 <field name="value"/>
                 <field name="active"/>

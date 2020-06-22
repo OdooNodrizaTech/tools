@@ -7,6 +7,7 @@
             <form string="Pipedrive Person">
                 <sheet string="child">
                     <group>
+                        <field name="external_id"/>
                         <field name="name"/>
                         <field name="first_name"/>
                         <field name="last_name"/>
@@ -25,6 +26,7 @@
         <field name="model">pipedrive.person</field>
         <field name="arch" type="xml">
             <tree string="Pipedrive Person">
+                <field name="external_id"/>
                 <field name="name"/>
                 <field name="first_name"/>
                 <field name="last_name"/>

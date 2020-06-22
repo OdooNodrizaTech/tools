@@ -12,6 +12,9 @@ class PipedrivePerson(models.Model):
     _name = 'pipedrive.person'
     _description = 'Pipedrive Person'
 
+    external_id = fields.Integer(
+        string='External Id'
+    )
     name = fields.Char(
         string='Name'
     )
@@ -45,7 +48,7 @@ class PipedrivePerson(models.Model):
         _logger.info('check_res_partner')
         # partner_id
         vals = {
-            'type': 'person',
+            'type': 'contact',
             'name': self.name,
             'phone': self.phone,
             'email': self.email
@@ -77,7 +80,8 @@ class PipedrivePerson(models.Model):
     def write(self, vals):
         return_write = super(PipedrivePerson, self).write(vals)
         # operations
-        self.check_res_partner()
+        if 'partner_id' not in vals:
+            self.check_res_partner()
         # return
         return return_write
 
@@ -99,6 +103,7 @@ class PipedrivePerson(models.Model):
         else:
             #vals
             vals = {
+                'external_id': data['current']['id'],
                 'name': data['current']['name'],
                 'first_name': data['current']['first_name'],
                 'last_name': data['current']['last_name']
@@ -116,17 +121,18 @@ class PipedrivePerson(models.Model):
                         if email_item in['primary']==True:
                             vals['email'] = email_item in['value']
             #pipedrive_organization_id
-            if data['current']['org_id']>0:
-                pipedrive_organization_ids = self.env['pipedrive.organization'].sudo().search([('id', '=', data['current']['org_id'])])
-                if len(pipedrive_organization_ids)==0:
-                    result_message['delete_message'] = False
-                    result_message['errors'] = True
-                    result_message['return_body'] = 'No existe el (pipedrive.organization) org_id='+str(data['current']['org_id'])
-                else:
-                    vals['pipedrive_organization_id'] = pipedrive_organization_ids[0].id
+            if data['current']['org_id']!=None:
+                if data['current']['org_id']>0:
+                    pipedrive_organization_ids = self.env['pipedrive.organization'].sudo().search([('external_id', '=', data['current']['org_id'])])
+                    if len(pipedrive_organization_ids)==0:
+                        result_message['delete_message'] = False
+                        result_message['errors'] = True
+                        result_message['return_body'] = 'No existe el (pipedrive.organization) org_id='+str(data['current']['org_id'])
+                    else:
+                        vals['pipedrive_organization_id'] = pipedrive_organization_ids[0].id
             #pipedrive_user_id
             if data['current']['owner_id']>0:
-                pipedrive_user_ids = self.env['pipedrive.user'].sudo().search([('id', '=', data['current']['owner_id'])])
+                pipedrive_user_ids = self.env['pipedrive.user'].sudo().search([('external_id', '=', data['current']['owner_id'])])
                 if len(pipedrive_user_ids)==0:
                     result_message['delete_message'] = False
                     result_message['errors'] = True
@@ -136,9 +142,8 @@ class PipedrivePerson(models.Model):
         # all operations (if errors False)
         if result_message['errors'] == False:
             #create-update (pipedrive.person)
-            pipedrive_person_ids = self.env['pipedrive.person'].sudo().search([('id', '=', data['current']['id'])])
+            pipedrive_person_ids = self.env['pipedrive.person'].sudo().search([('external_id', '=', vals['external_id'])])
             if len(pipedrive_person_ids) == 0:
-                vals['id'] = data['current']['id']
                 pipedrive_person_id = self.env['pipedrive.person'].sudo().create(vals)
             else:
                 pipedrive_person_id = pipedrive_person_ids[0]
