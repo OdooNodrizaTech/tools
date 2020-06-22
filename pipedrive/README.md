@@ -26,6 +26,11 @@ Frecuencia: Cada 5 minutos
 
 Descripción: Consulta el SQS configurado, crearemos las activities como actividades (mail.activity) de Odoo
 
+## Cron Pipedrive Activity Exec
+Frecuencia: Nunca
+
+Descripción: Obtenemos las activity de la API para realizar la acción de actualizar los datos (y crear los registros que no existieran en Odoo).
+
 ### Cron Pipedrive Activity Type Exec
 Frecuencia: Manual
 
@@ -41,15 +46,30 @@ Frecuencia: Cada 5 minutos
 
 Descripción: Consulta el SQS configurado, crearemos los deals como leads (crm.lead) de Odoo
 
+## Cron Pipedrive Deal Exec
+Frecuencia: Nunca
+
+Descripción: Obtenemos las deal de la API para realizar la acción de actualizar los datos (y crear los registros que no existieran en Odoo).
+
 ### Cron SQS Pipedrive Organization
 Frecuencia: Cada 5 minutos
 
 Descripción: Consulta el SQS configurado, crearemos las organizations como contactos (res.partner) de Odoo
 
+## Cron Pipedrive Organization Exec
+Frecuencia: Nunca
+
+Descripción: Obtenemos las organization de la API para realizar la acción de actualizar los datos (y crear los registros que no existieran en Odoo).
+
 ### Cron SQS Pipedrive Person
 Frecuencia: Cada 5 minutos
 
 Descripción: Consulta el SQS configurado, crearemos las persons como contactos (res.partner) de Odoo
+
+## Cron Pipedrive Person Exec
+Frecuencia: Nunca
+
+Descripción: Obtenemos las person de la API para realizar la acción de actualizar los datos (y crear los registros que no existieran en Odoo).
 
 ### Cron Pipedrive Pipeline Exec
 Frecuencia: Manual
