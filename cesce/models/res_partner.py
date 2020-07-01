@@ -48,10 +48,11 @@ class ResPartner(models.Model):
         if allow_write==True:                        
             return_write = super(ResPartner, self).write(vals)
         #operations
-        if allow_write==True:
-            if 'credit_limit' in vals:            
-                if vals['credit_limit']>=0:
-                    if self.user_id.id>0:
+        if allow_write == True:
+            if 'credit_limit' in vals:
+                # Solo se notificara cuando el estado sea algo que haya venido de Cesce (bien sea porque nos han dado riesgo o porque lo han actualizado a 0 -denegado o nos han dado riesgo aunque sea menos de lo que hemos pedido-)
+                if self.cesce_risk_state in ['classification_ok', 'classification_error', 'canceled_ok']:
+                    if self.user_id.id > 0:
                         if self.user_id.partner_id.id!=self._uid:
                             mail_message_ids = self.env['mail.message'].sudo().search(
                                 [
