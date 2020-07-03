@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 #https://developers.pipedrive.com/docs/api/v1/#!/Organizations
 from odoo import api, fields, models, tools
 from pipedrive.client import Client
