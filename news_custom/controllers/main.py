@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-# © 2014-2016 Akretion (Alexis de Lattre <alexis.delattre@akretion.com>)
-# © 2015-2016 Juris Malinens (port to v9)
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from odoo import http
 
 class NewsCustomController(http.Controller):
