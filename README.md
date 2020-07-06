@@ -15,6 +15,7 @@ nombre | version
 [odoo_git](odoo_git/) | 10.0.1.0.0
 [ont_freshdesk](ont_freshdesk/) | 10.0.1.0.0
 [ont_intranet](ont_intranet/) | 10.0.1.0.0
+[phone_call_log](phone_call_log/) | 10.0.1.0.0
 [phone_code](phone_code/) | 10.0.1.0.0
 [phone_widget](phone_widget/) | 10.0.1.0.0
 [tr_oniad](tr_oniad/) | 10.0.1.0.0
