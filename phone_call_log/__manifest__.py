@@ -8,11 +8,13 @@
     'website': 'https://nodrizatech.com/',
     'category': 'Tools',
     'license': 'AGPL-3',
-    'depends': ['base', 'mail', 'phone_code'],
+    'depends': ['base', 'crm', 'mail', 'phone_code'],
     'data': [
         'data/ir_cron.xml',
+        'views/crm_lead_view.xml',
         'views/mail_message_subtype_view.xml',
         'views/phone_call_log_view.xml',
+        'views/res_partner_view.xml',
         'security/ir.model.access.csv'
     ],
     'installable': True,

@@ -26,6 +26,14 @@ class PhoneCallLogFile(models.Model):
         string='User',
         required=True
     )
+    phone_call_log_count = fields.Integer(
+        compute='_compute_phone_call_log_count',
+        string="Phone Call Logs",
+    )
+
+    def _compute_phone_call_log_count(self):
+        for item in self:
+            item.phone_call_log_count = len(self.env['phone.call.log'].search([('phone_call_log_file_id', '=', self.id)]))
 
     @api.multi
     def action_read_google_drive_file_id_multi(self):

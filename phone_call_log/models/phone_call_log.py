@@ -53,6 +53,10 @@ class PhoneCallLog(models.Model):
         comodel_name='res.partner',
         string='Partner'
     )
+    lead_id = fields.Many2one(
+        comodel_name='crm.lead',
+        string='Lead Id'
+    )
     mail_message_id = fields.Many2one(
         comodel_name='mail.message',
         string='Mail Message id'
@@ -90,6 +94,8 @@ class PhoneCallLog(models.Model):
                 #search_lead_id
                 crm_lead_ids = self.env['crm.lead'].search([('partner_id', '=', return_object.partner_id.id)])
                 if len(crm_lead_ids)>0:
+                    #update lead_id
+                    return_object.lead_id = crm_lead_ids[0].id
                     #get mail_message_subtype
                     mail_message_subtype_ids = self.env['mail.message.subtype'].search([('is_phone_call', '=', True)])
                     if len(mail_message_subtype_ids)>0:
@@ -97,7 +103,7 @@ class PhoneCallLog(models.Model):
                         mail_message_without_parent_ids = self.env['mail.message'].search(
                             [
                                 ('parent_id', '=', False),
-                                ('res_id', '=', crm_lead_ids[0].id),
+                                ('res_id', '=', return_object.lead_id),
                                 ('model', '=', 'crm.lead')
                             ]
                         )
@@ -106,8 +112,8 @@ class PhoneCallLog(models.Model):
                             mail_message_obj = self.env['mail.message'].sudo(return_object.user_id).create({
                                 'parent_id': mail_message_without_parent_ids[0].id,
                                 'subtype_id': mail_message_subtype_ids[0].id,
-                                'res_id': crm_lead_ids[0].id,
-                                'record_name': crm_lead_ids[0].name,
+                                'res_id': return_object.lead_id,
+                                'record_name': return_object.lead_id.name,
                                 'date': return_object.date,
                                 'model': 'crm.lead',
                                 'message_type': 'notification',
