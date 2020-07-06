@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_phone_call_log_admin,phone.call.log,model_phone_call_log,,1,1,1,1
+access_phone_call_log_group_user,phone.call.log.user,model_phone_call_log,base.group_user,1,1,1,1
+access_phone_call_log_file_admin,phone.call.log.file,model_phone_call_log_file,,1,1,1,1
+access_phone_call_log_file_group_user,phone.call.log.file.user,model_phone_call_log_file,base.group_user,1,1,1,1
