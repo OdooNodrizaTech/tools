@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_git_author_admin,git.author,model_git_author,,1,1,1,1
-access_git_author_group_user,git.author.user,model_git_author,base.group_user,1,1,1,1
-access_git_repository_admin,git.repository,model_git_repository,,1,1,1,1
-access_git_repository_group_user,git.repository.user,model_git_repository,base.group_user,1,1,1,1
-access_git_repository_log_admin,git.repository.log,model_git_repository_log,,1,1,1,1
-access_git_repository_log_group_user,git.repository.log.user,model_git_repository_log,base.group_user,1,1,1,1
