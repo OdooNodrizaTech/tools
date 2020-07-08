@@ -14,6 +14,7 @@ nombre | version
 [odoo_gdpr](odoo_gdpr/) | 12.0.1.0.0
 [ont_freshdesk](ont_freshdesk/) | 12.0.1.0.0
 [ont_intranet](ont_intranet/) | 12.0.1.0.0
+[phone_call_log](phone_call_log/) | 12.0.1.0.0
 [pipedrive](pipedrive/) | 12.0.1.0.0
 [tr_oniad](tr_oniad/) | 12.0.1.0.0
 [utm_websites](utm_websites/) | 12.0.1.0.0
