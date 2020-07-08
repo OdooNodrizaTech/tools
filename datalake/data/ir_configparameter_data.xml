@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="sns_arns_google_analytics_reports" model="ir.config_parameter">
+            <field name="key">sns_arns_google_analytics_reports</field>
+            <field name="value">1,2</field>
+        </record>
+        <record id="google_analytics_reports_profile_ids" model="ir.config_parameter">
+            <field name="key">google_analytics_reports_profile_ids</field>
+            <field name="value">1,2</field>
+        </record>
+        <record id="ses_datalake_test" model="ir.config_parameter">
+            <field name="key">ses_datalake_test</field>
+            <field name="value">True</field>
+        </record>                            
+    </data>
+</odoo>
