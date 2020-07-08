@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="phone_call_log_view" model="ir.ui.view">
+        <field name="name">Phone Call Log</field>
+        <field name="model">phone.call.log</field>
+        <field name="arch" type="xml">
+            <form string="Phone Call Log">
+                <sheet string="child">
+                    <group>
+                        <field name="phone_call_log_file_id" options='{"no_create": True, "no_create_edit": True}' />
+                        <field name="user_id" options='{"no_create": True, "no_create_edit": True}' />
+                        <field name="number"/>
+                        <field name="duration"/>
+                        <field name="date"/>
+                        <field name="type"/>
+                        <field name="presentation"/>
+                        <field name="contact_name"/>
+                        <field name="partner_id" options='{"no_create": True, "no_create_edit": True}' />
+                        <field name="mail_activity_id" options='{"no_create": True, "no_create_edit": True}' />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_phone_call_log_search" model="ir.ui.view">
+        <field name="name">view_phone_call_log_search</field>
+        <field name="model">phone.call.log</field>
+        <field name="arch" type="xml">
+            <search string="Phone Call Log">
+                <field name="partner_id" operator="child_of"/>
+                <field name="phone_call_log_file_id"/>
+                <field name="user_id"/>
+                <filter string="Mis llamadas" domain="[('user_id','=',uid)]" name="my_phone_call_log_filter"/>
+                <group expand="0" name="group_by" string="Agrupar por">
+                    <filter name="group_by_user_id" string="Comercial" domain="[]" context="{'group_by' : 'user_id'}"/>
+               </group>
+            </search>
+        </field>
+    </record>
+    <record id="phone_call_log_tree" model="ir.ui.view">
+        <field name="name">Phone Call log</field>
+        <field name="model">phone.call.log</field>
+        <field name="arch" type="xml">
+            <tree string="Phone Call Log">
+                <field name="phone_call_log_file_id"/>
+                <field name="user_id"/>
+                <field name="number"/>
+                <field name="duration"/>
+                <field name="date"/>
+                <field name="type"/>
+                <field name="presentation"/>
+                <field name="contact_name"/>
+                <field name="partner_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="phone_call_log_action" model="ir.actions.act_window">
+        <field name="name">Phone Call Log</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">phone.call.log</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="phone_call_log_tree"/>
+        <field name="search_view_id" ref="view_phone_call_log_search"/>
+    </record>
+    <record id="phone_call_log_file_view" model="ir.ui.view">
+        <field name="name">Phone Call Log File</field>
+        <field name="model">phone.call.log.file</field>
+        <field name="arch" type="xml">
+            <form string="Phone Call Log File">
+                <header>
+                    <button name="action_read_google_drive_file_id_multi" string="Leer archivo" type="object"/>
+                </header>
+                <sheet string="child">
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="action" name="%(phone_call_log.phone_call_log_action)d" icon="fa-phone"  context="{'search_default_phone_call_log_file_id': active_id}">
+                            <field string="Phone Calls" name="phone_call_log_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <field name="google_drive_file_id" options='{"no_create": True, "no_create_edit": True}'/>
+                        <field name="user_id" options='{"no_create": True, "no_create_edit": True}' />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="phone_call_log_file_tree" model="ir.ui.view">
+        <field name="name">Phone Call log file</field>
+        <field name="model">phone.call.log.file</field>
+        <field name="arch" type="xml">
+            <tree string="Phone Call Log File">
+                <field name="google_drive_file_id"/>
+                <field name="user_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="phone_call_log_file_action" model="ir.actions.act_window">
+        <field name="name">Phone Call Log File</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">phone.call.log.file</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="phone_call_log_file_tree"/>
+    </record>
+    <menuitem
+        id="menu_phone_call_log"
+        name="Phone Call Log"
+        parent="base.menu_custom"
+    />
+    <menuitem
+        action="phone_call_log_action"
+        name="Phone Call Log"
+        id="menuitem_phone_call_log"
+        parent="menu_phone_call_log"
+    />
+    <menuitem
+        action="phone_call_log_file_action"
+        name="Phone Call Log File"
+        id="menuitem_phone_call_log_file"
+        parent="menu_phone_call_log"
+    />
+</odoo>
