@@ -1,0 +1,26 @@
+<openerp>
+    <data noupdate="1">        
+        <record id="cron_generate_ses_google_analytics_reports_yesterday" model="ir.cron">
+            <field name="name">Cron Generate Google Analytics Reports Yesterday - Datalake</field>
+            <field name="active" eval="False" />
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="model" eval="'datalake.log'" />
+            <field name="function" eval="'cron_generate_ses_google_analytics_reports_yesterday'" />
+            <field name="args" eval="" />
+        </record>
+        <record id="cron_generate_ses_google_analytics_reports_all_year" model="ir.cron">
+            <field name="name">Cron Generate Google Analytics Reports All Year - Datalake</field>
+            <field name="active" eval="False" />
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">12</field>
+            <field name="interval_type">months</field>
+            <field name="numbercall">-1</field>
+            <field name="model" eval="'datalake.log'" />
+            <field name="function" eval="'cron_generate_ses_google_analytics_reports_all_year'" />
+            <field name="args" eval="" />
+        </record>                                                      
+    </data>
+</openerp>
