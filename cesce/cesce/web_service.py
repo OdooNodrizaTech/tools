@@ -361,7 +361,7 @@ class CesceWebService():
                 item['cesce_risk_classification_motive_id'] = cesce_risk_classification_motive_ids[0].id
         #codigo_deudor_interno
         if index_exists(data, 25)==True:
-            item['codigo_deudor_interno'] = str(data[25])
+            item['codigo_deudor_interno'] = str(data[25]).rstrip()
         # operations codigo_deudor_interno (para calcular el partner_id)
         if item['codigo_deudor_interno']==False:
             _logger.info('No existe la posicion 25')
