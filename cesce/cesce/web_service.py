@@ -369,6 +369,7 @@ class CesceWebService():
                     [
                         ('active', '=', True),
                         ('customer', '=', True),
+                        ('parent_id', '=', False),
                         ('type', '=', 'contact'),
                         ('cesce_risk_state', '!=', 'none'),
                         ('vat', 'like', item['codigo_fiscal'])
@@ -382,6 +383,7 @@ class CesceWebService():
                         [
                             ('active', '=', True),
                             ('customer', '=', True),
+                            ('parent_id', '=', False),
                             ('type', '=', 'contact'),
                             ('vat', 'like', item['codigo_fiscal'])
                         ]
