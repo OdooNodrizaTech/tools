@@ -1,4 +1,5 @@
 <odoo>
+
     <data noupdate="1">
         <record id="cron_action_s3_upload_ir_attachments" forcecreate="True" model="ir.cron">
             <field name="name">S3 Upload Ir Attachments</field>
@@ -13,4 +14,5 @@
             <field name="code">model.cron_action_s3_upload_ir_attachments()</field>
         </record>                        
     </data>
+
 </odoo>

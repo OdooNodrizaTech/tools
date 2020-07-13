@@ -1,16 +1,15 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models, tools
-
-import os
-import unidecode
-
-import boto3
-from botocore.exceptions import ClientError
 
 import logging
+import os
+from odoo import api, fields, models, tools
+
+try:
+    import boto3
+    from botocore.exceptions import ClientError
+except ImportError:
+    _logger.debug('Cannot boto3')
+
 _logger = logging.getLogger(__name__)
 
 class IrAttachment(models.Model):
