@@ -9,7 +9,7 @@
               "Odoo Community Association (OCA)",
     "license": "AGPL-3",
     'external_dependencies': {
-        'python3' : ['boto3'],
+        'python3': ['boto3'],
     },
     "depends": [
         "base"
