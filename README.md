@@ -12,8 +12,6 @@ nombre | version
 [googleanalytics_api](googleanalytics_api/) | 12.0.1.0.0
 [ir_attachment_s3](ir_attachment_s3/) | 12.0.1.0.0
 [odoo_gdpr](odoo_gdpr/) | 12.0.1.0.0
-[ont_freshdesk](ont_freshdesk/) | 12.0.1.0.0
-[ont_intranet](ont_intranet/) | 12.0.1.0.0
 [phone_call_log](phone_call_log/) | 12.0.1.0.0
 [pipedrive](pipedrive/) | 12.0.1.0.0
 [tr_oniad](tr_oniad/) | 12.0.1.0.0
