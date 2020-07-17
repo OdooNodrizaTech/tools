@@ -27,8 +27,3 @@ msgstr ""
 msgid "S3 Upload Ir Attachments"
 msgstr ""
 
-#. module: ir_attachment_s3
-#: model:ir.model,name:ir_attachment_s3.model_s3_model
-msgid "s3.model"
-msgstr ""
-
