@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="pipedrive_user_form_view" model="ir.ui.view">
         <field name="name">Pipedrive User</field>
         <field name="model">pipedrive.user</field>
@@ -21,6 +22,7 @@
             </form>
         </field>
     </record>
+
     <record id="pipedrive_user_tree" model="ir.ui.view">
         <field name="name">Pipedrive User</field>
         <field name="model">pipedrive.user</field>
@@ -38,6 +40,7 @@
             </tree>
         </field>
     </record>
+
     <record id="pipedrive_user_type_action" model="ir.actions.act_window">
         <field name="name">Pipedrive User</field>
         <field name="type">ir.actions.act_window</field>
@@ -46,6 +49,7 @@
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="pipedrive_user_tree"/>
     </record>
+    
     <menuitem
         action="pipedrive_user_type_action"
         name="User"

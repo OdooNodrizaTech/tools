@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="pipedrive_product_form_view" model="ir.ui.view">
         <field name="name">Pipedrive Product</field>
         <field name="model">pipedrive.product</field>
@@ -21,6 +22,7 @@
             </form>
         </field>
     </record>
+
     <record id="pipedrive_product_tree" model="ir.ui.view">
         <field name="name">Pipedrive Product</field>
         <field name="model">pipedrive.product</field>
@@ -37,6 +39,7 @@
             </tree>
         </field>
     </record>
+
     <record id="pipedrive_product_type_action" model="ir.actions.act_window">
         <field name="name">Pipedrive Product</field>
         <field name="type">ir.actions.act_window</field>
@@ -45,6 +48,7 @@
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="pipedrive_product_tree"/>
     </record>
+
     <menuitem
         action="pipedrive_product_type_action"
         name="Product"

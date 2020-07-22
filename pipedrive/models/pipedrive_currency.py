@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 #https://developers.pipedrive.com/docs/api/v1/#!/Currencies
 from odoo import api, fields, models
@@ -37,11 +36,19 @@ class PipedriveCurrency(models.Model):
             'symbol': data['symbol']
         }
         # currency_id
-        res_currency_ids = self.env['res.currency'].search([('name', '=', data['code'])])
-        if len(res_currency_ids) > 0:
+        res_currency_ids = self.env['res.currency'].search(
+            [
+                ('name', '=', data['code'])
+            ]
+        )
+        if res_currency_ids:
             vals['currency_id'] = res_currency_ids[0].id
         # search
-        pipedrive_currency_ids = self.env['pipedrive.currency'].search([('external_id', '=', vals['external_id'])])
+        pipedrive_currency_ids = self.env['pipedrive.currency'].search(
+            [
+                ('external_id', '=', vals['external_id'])
+            ]
+        )
         if len(pipedrive_currency_ids) == 0:
             pipedrive_currency_obj = self.env['pipedrive.currency'].sudo().create(vals)
         else:
@@ -61,6 +68,6 @@ class PipedriveCurrency(models.Model):
         # get_info
         response = client._get(client.BASE_URL + 'currencies')
         if 'success' in response:
-            if response['success']==True:
+            if response['success']:
                 for data_item in response['data']:
                     self.action_item(data_item)

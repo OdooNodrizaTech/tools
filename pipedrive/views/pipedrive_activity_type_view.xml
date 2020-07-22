@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="pipedrive_activity_type_form_view" model="ir.ui.view">
         <field name="name">Pipedrive Activity Type</field>
         <field name="model">pipedrive.activity.type</field>
@@ -16,6 +17,7 @@
             </form>
         </field>
     </record>
+
     <record id="pipedrive_activity_type_tree" model="ir.ui.view">
         <field name="name">Pipedrive Activity Type</field>
         <field name="model">pipedrive.activity.type</field>
@@ -28,6 +30,7 @@
             </tree>
         </field>
     </record>
+
     <record id="pipedrive_activity_type_type_action" model="ir.actions.act_window">
         <field name="name">Pipedrive Activity Type</field>
         <field name="type">ir.actions.act_window</field>
@@ -36,6 +39,7 @@
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="pipedrive_activity_type_tree"/>
     </record>
+
     <menuitem
         action="pipedrive_activity_type_type_action"
         name="Activity Types"

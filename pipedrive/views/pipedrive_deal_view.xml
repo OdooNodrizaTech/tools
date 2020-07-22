@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="pipedrive_deal_form_view" model="ir.ui.view">
         <field name="name">Pipedrive Deal</field>
         <field name="model">pipedrive.deal</field>
@@ -26,6 +27,7 @@
             </form>
         </field>
     </record>
+
     <record id="pipedrive_deal_tree" model="ir.ui.view">
         <field name="name">Pipedrive Deal</field>
         <field name="model">pipedrive.deal</field>
@@ -48,6 +50,7 @@
             </tree>
         </field>
     </record>
+
     <record id="pipedrive_deal_type_action" model="ir.actions.act_window">
         <field name="name">Pipedrive Deal</field>
         <field name="type">ir.actions.act_window</field>
@@ -56,6 +59,7 @@
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="pipedrive_deal_tree"/>
     </record>
+
     <menuitem
         action="pipedrive_deal_type_action"
         name="Deal"

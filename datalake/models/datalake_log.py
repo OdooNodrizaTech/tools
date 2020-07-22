@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from odoo import api, fields, models, tools
 from datetime import datetime
@@ -16,7 +15,7 @@ class DatalakeLog(models.Model):
      
     @api.model
     def cron_generate_ses_google_analytics_reports_yesterday(self):
-        AWS_ACCESS_KEY_ID = tools.config.get('aws_access_key_id')        
+        AWS_ACCESS_KEY_ID = tools.config.get('aws_access_key_id')
         AWS_SECRET_ACCESS_KEY = tools.config.get('aws_secret_key_id')                    
         ses_datalake_test = str(self.env['ir.config_parameter'].sudo().get_param('ses_datalake_test'))
 
@@ -34,11 +33,11 @@ class DatalakeLog(models.Model):
         
         for sns_arn in sns_arns_google_analytics_reports:
             for profile_id in google_analytics_reports_profile_ids:
-                #test
+                # test
                 test = False
-                if ses_datalake_test==True or ses_datalake_test=='True':
+                if ses_datalake_test or ses_datalake_test == 'True':
                     test = True                                                    
-                #publish
+                # publish
                 message = {
                     'test': test,
                     'profile_id': profile_id,
@@ -56,7 +55,7 @@ class DatalakeLog(models.Model):
         end_date = datetime.today()
         start_date = datetime(end_date.year,1, 1)                
         
-        AWS_ACCESS_KEY_ID = tools.config.get('aws_access_key_id')        
+        AWS_ACCESS_KEY_ID = tools.config.get('aws_access_key_id')
         AWS_SECRET_ACCESS_KEY = tools.config.get('aws_secret_key_id')                
         ses_datalake_test = str(self.env['ir.config_parameter'].sudo().get_param('ses_datalake_test'))
 
@@ -76,11 +75,11 @@ class DatalakeLog(models.Model):
                         
             for sns_arn in sns_arns_google_analytics_reports:
                 for profile_id in google_analytics_reports_profile_ids:
-                    #test
+                    # test
                     test = False
-                    if ses_datalake_test==True or ses_datalake_test=='True':
+                    if ses_datalake_test or ses_datalake_test == 'True':
                         test = True                                                    
-                    #publish
+                    # publish
                     message = {
                         'test': test,
                         'profile_id': profile_id,

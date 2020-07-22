@@ -1,25 +1,23 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-from odoo import api, fields, models
 
-import logging
-_logger = logging.getLogger(__name__)
+from odoo import fields, models
+
 
 class CesceWebserviceError(models.Model):
     _name = 'cesce.webservice.error'
     _description = 'Cesce Webservice Error'    
     
     code = fields.Char(        
-        string='Codigo'
+        string='Code'
     )
     name = fields.Char(        
-        string='Mensaje'
+        string='Name'
     )
     area = fields.Selection(
         selection=[
-            ('none','Ninguna'), 
-            ('security','Seguridad'),
-            ('risk','Riesgos')                          
+            ('none','None'),
+            ('security','Security'),
+            ('risk','Risk')
         ],
         string='Area'
     )                                           

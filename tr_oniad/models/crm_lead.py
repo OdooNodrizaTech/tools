@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from odoo import api, fields, models
 
@@ -29,7 +28,7 @@ class CrmLead(models.Model):
     
     @api.one
     def tracking_session_addProperties(self):
-        if self.tracking_profile_uuid!=False and self.tracking_session_uuid!=False:
+        if self.tracking_profile_uuid and self.tracking_session_uuid:
             headers = {
                 'Content-type': 'application/json',
                 'origin': 'erp.arelux.com',
@@ -39,7 +38,7 @@ class CrmLead(models.Model):
                 "profile_uuid": str(self.tracking_profile_uuid),
                 "properties": {"lead_id": self.id}
             }
-            url = 'https://tr.oniad.com/api/session/' + str(self.tracking_session_uuid) + '/addProperties'
+            url = 'https://tr.oniad.com/api/session/%s/addProperties' % self.tracking_session_uuid
             try:
                 response = requests.post(url, data=json.dumps(data), headers=headers)
                 return response.status_code
@@ -57,11 +56,11 @@ class CrmLead(models.Model):
                 ('lead_id.tracking_profile_uuid', '!=', False)                
             ]
         )
-        if len(crm_lead_account_invoice_report_ids)>0:
+        if crm_lead_account_invoice_report_ids:
             for item in crm_lead_account_invoice_report_ids:                        
                 amount_untaxed = item.amount_untaxed_total_out_invoice-item.amount_untaxed_total_out_refund
                 margin = item.margin_total_out_invoice-item.margin_total_out_refund                
-                #api_call tr.oniad.com
+                # api_call tr.oniad.com
                 headers = {
                     'Content-type': 'application/json', 
                     'origin': 'erp.arelux.com', 
@@ -71,14 +70,14 @@ class CrmLead(models.Model):
                     "amount_untaxed_invoices": amount_untaxed,
                     "margin_invoices": margin
                 }}
-                url = 'https://tr.oniad.com/api/session/'+str(item.lead_id.tracking_session_uuid)+'/addProperties'
+                url = 'https://tr.oniad.com/api/session/%s/addProperties' % item.lead_id.tracking_session_uuid
                 try:
                     response = requests.post(url, data=json.dumps(data), headers=headers)
-                    #logger
+                    # logger
                     if response.status_code!=200:
                         _logger.info(response.status_code)
                         _logger.info(response.json())
-                    #return
+                    # return
                     return response.status_code
                 except:
                     return 500                                

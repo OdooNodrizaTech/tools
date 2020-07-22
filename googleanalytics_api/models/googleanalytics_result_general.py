@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from odoo import api, fields, models
 from datetime import datetime
@@ -116,7 +115,12 @@ class GoogleanalyticsResultGeneral(models.Model):
 
         metrics = metrics_new
         # search
-        googleanalytics_result_general_ids = self.env['googleanalytics.result.general'].sudo().search([('date', '=', str(date)), ('profileId', '=', str(profile_id))])
+        googleanalytics_result_general_ids = self.env['googleanalytics.result.general'].sudo().search(
+            [
+                ('date', '=', str(date)),
+                ('profileId', '=', str(profile_id))
+            ]
+        )
         if len(googleanalytics_result_general_ids) == 0:
             try:
                 results = googleanalytics_webservice.get_results(profile_id, date, date, metrics, dimensions)
@@ -124,7 +128,7 @@ class GoogleanalyticsResultGeneral(models.Model):
                     if len(results['rows']) > 0:
                         for row in results['rows']:
                             count = 0
-                            googleanalytics_result_general_vals = {
+                            vals = {
                                 'webPropertyId': results['profileInfo']['webPropertyId'],
                                 'profileId': results['profileInfo']['profileId'],
                                 'profileName': results['profileInfo']['profileName'],
@@ -139,7 +143,7 @@ class GoogleanalyticsResultGeneral(models.Model):
 
                                 columnHeaderDataType = str(columnHeader['dataType'])
                                 # pre_item
-                                googleanalytics_result_general_vals[columnHeaderName] = ''
+                                vals[columnHeaderName] = ''
                                 # fix
                                 if row_value == '(none)' or row_value == '(not set)':
                                     row_value = ''
@@ -152,17 +156,17 @@ class GoogleanalyticsResultGeneral(models.Model):
                                     row_value = new_row_value
                                 # types
                                 if columnHeaderDataType == 'INTEGER':
-                                    googleanalytics_result_general_vals[columnHeaderName] = int(row_value)
+                                    vals[columnHeaderName] = int(row_value)
                                 elif columnHeaderDataType == 'STRING':
-                                    googleanalytics_result_general_vals[columnHeaderName] = str(row_value)
+                                    vals[columnHeaderName] = str(row_value)
                                 elif columnHeaderDataType == 'PERCENT':
-                                    googleanalytics_result_general_vals[columnHeaderName] = row_value
+                                    vals[columnHeaderName] = row_value
                                 elif columnHeaderDataType == 'TIME':
-                                    googleanalytics_result_general_vals[columnHeaderName] = row_value
+                                    vals[columnHeaderName] = row_value
                                 # count
                                 count += 1
                             # add_item
-                            googleanalytics_result_general_obj = self.env['googleanalytics.result.general'].sudo().create(googleanalytics_result_general_vals)
+                            self.env['googleanalytics.result.general'].sudo().create(vals)
             except:
                 _logger.info('se ha producido un error')
 

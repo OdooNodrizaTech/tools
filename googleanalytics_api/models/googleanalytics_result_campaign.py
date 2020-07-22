@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from odoo import api, fields, models
 from datetime import datetime
@@ -87,19 +86,24 @@ class GoogleanalyticsResultCampaign(models.Model):
         # GoogleanalyticsWebservice
         key_file_location = odoo.tools.config.get('googleanalytics_api_key_file')
         googleanalytics_webservice = GoogleanalyticsWebservice(key_file_location)
-        #define
+        # define
         metrics = ['ga:users', 'ga:sessions', 'ga:sessionDuration', 'ga:bounceRate', 'ga:pageviews', 'ga:timeOnPage', 'ga:totalEvents', 'ga:uniqueEvents', 'ga:entrances', 'ga:exits']
         dimensions = ['ga:date', 'ga:landingPagePath', 'ga:adGroup', 'ga:campaign', 'ga:source', 'ga:medium', 'ga:keyword']
-        #search
-        googleanalytics_result_campaign_ids = self.env['googleanalytics.result.campaign'].sudo().search([('date', '=', str(date)),('profileId', '=', str(profile_id))])
+        # search
+        googleanalytics_result_campaign_ids = self.env['googleanalytics.result.campaign'].sudo().search(
+            [
+                ('date', '=', str(date)),
+                ('profileId', '=', str(profile_id))
+            ]
+        )
         if len(googleanalytics_result_campaign_ids) == 0:
             results = googleanalytics_webservice.get_results(profile_id, date, date, metrics, dimensions)
             if 'rows' in results:
                 if len(results['rows']) > 0:
                     for row in results['rows']:
                         count = 0
-                        #vals
-                        googleanalytics_result_campaign_vals = {
+                        # vals
+                        vals = {
                             'webPropertyId': results['profileInfo']['webPropertyId'],
                             'profileId': results['profileInfo']['profileId'],
                             'profileName': results['profileInfo']['profileName'],
@@ -114,7 +118,7 @@ class GoogleanalyticsResultCampaign(models.Model):
 
                             columnHeaderDataType = str(columnHeader['dataType'])
                             # pre_item
-                            googleanalytics_result_campaign_vals[columnHeaderName] = ''
+                            vals[columnHeaderName] = ''
                             # fix
                             if row_value == '(none)' or row_value == '(not set)':
                                 row_value = ''
@@ -127,17 +131,17 @@ class GoogleanalyticsResultCampaign(models.Model):
                                 row_value = new_row_value
                             # types
                             if columnHeaderDataType == 'INTEGER':
-                                googleanalytics_result_campaign_vals[columnHeaderName] = int(row_value)
+                                vals[columnHeaderName] = int(row_value)
                             elif columnHeaderDataType == 'STRING':
-                                googleanalytics_result_campaign_vals[columnHeaderName] = str(row_value)
+                                vals[columnHeaderName] = str(row_value)
                             elif columnHeaderDataType == 'PERCENT':
-                                googleanalytics_result_campaign_vals[columnHeaderName] = row_value
+                                vals[columnHeaderName] = row_value
                             elif columnHeaderDataType == 'TIME':
-                                googleanalytics_result_campaign_vals[columnHeaderName] = row_value
+                                vals[columnHeaderName] = row_value
                             # count
                             count += 1
                         # add_item
-                        googleanalytics_result_campaign_obj = self.env['googleanalytics.result.campaign'].sudo().create(googleanalytics_result_campaign_vals)
+                        self.env['googleanalytics.result.campaign'].sudo().create(vals)
 
     @api.model
     def cron_get_yesterday_info(self):

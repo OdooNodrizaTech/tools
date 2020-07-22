@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from odoo import api, models, fields
 
@@ -20,7 +19,7 @@ class AccountMoveLine(models.Model):
             ('sale_ok','Venta ok'),
             ('sale_error','Venta error')                         
         ],
-        string='Cesce Venta Estado',
+        string='Cesce Sale State',
         default='none'
     )
     cesce_error = fields.Char(
@@ -28,27 +27,27 @@ class AccountMoveLine(models.Model):
     )
     partner_vat = fields.Char(
         compute='_get_partner_vat',
-        string='DNI',
+        string='VAT',
         store=False
     )
     invoice_id_date = fields.Date(
         compute='_get_invoice_id_date',
-        string='Fecha factura',
+        string='Invoice date',
         store=False        
     )
     invoice_id_amount_total = fields.Monetary(
         compute='_get_invoice_id_amount_total',
-        string='Importe factura',
+        string='Amount invoice total',
         store=False        
     )
     invoice_id_amount_untaxed = fields.Monetary(
         compute='_get_invoice_id_amount_untaxed',
-        string='Importe imponible factura',
+        string='Invoice amount untaxed',
         store=False        
     )    
     partner_id_credit_limit = fields.Monetary(
         compute='_get_partner_id_credit_limit',
-        string='Credito concedido',
+        string='Credit limit',
         store=False        
     )    
     
@@ -91,14 +90,14 @@ class AccountMoveLine(models.Model):
                 ('cesce_sale_state', '=', 'none')
             ]
         )        
-        if len(account_move_line_ids)>0:
+        if account_move_line_ids:
             cesce_web_service = CesceWebService(self.env.user.company_id, self.env)
             
             for account_move_line_id in account_move_line_ids:
                 if account_move_line_id.invoice_id.date_invoice!=account_move_line_id.invoice_id.date_due:                   
                     return_generate_cesce_sale = cesce_web_service.generate_cesce_sale(account_move_line_id)
                 
-                    if return_generate_cesce_sale['errors']==False:
+                    if return_generate_cesce_sale['errors'] == False:
                         account_move_line_id.cesce_sale_state = 'sale_sent'
                     else:
                         _logger.info(return_generate_cesce_sale)                                        
@@ -106,14 +105,18 @@ class AccountMoveLine(models.Model):
     @api.model
     def cron_cesce_sale_check_file_out(self):
         _logger.info('cron_cesce_sale_check_file_out')        
-        #webservice
+        # webservice
         cesce_web_service = CesceWebService(self.env.user.company_id, self.env)        
-        #errors
+        # errors
         cesce_web_service.cesce_sale_error()        
-        #file_out
+        # file_out
         cesce_web_service.cesce_sale_out()
-        #review with cesce_sale_state=sale_sent,sale_error
-        account_move_line_ids = self.env['account.move.line'].search([('cesce_sale_state', 'in', ('sale_sent','sale_error'))])
-        if len(account_move_line_ids)>0:
+        # review with cesce_sale_state=sale_sent,sale_error
+        account_move_line_ids = self.env['account.move.line'].search(
+            [
+                ('cesce_sale_state', 'in', ('sale_sent','sale_error'))
+            ]
+        )
+        if account_move_line_ids:
             _logger.info('revisar estos ids')
             _logger.info(account_move_line_ids)                                                                                               

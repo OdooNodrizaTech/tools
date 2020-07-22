@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="cesce_account_move_line" model="ir.ui.view">
         <field name="name">cesce_account_move_line</field>
         <field name="model">account.move.line</field>
@@ -10,5 +11,6 @@
                 <field name="cesce_sale_state" readonly="1"/>
             </field>                                                        
         </field>
-    </record>                        
+    </record>
+
 </odoo>

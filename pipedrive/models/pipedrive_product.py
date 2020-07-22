@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 #https://developers.pipedrive.com/docs/api/v1/#!/Products
 from odoo import api, fields, models
@@ -50,18 +49,26 @@ class PipedriveProduct(models.Model):
             'description': data['description'],
             'tax': data['tax']
         }
-        #price data
+        # price data
         if 'prices' in data:
             if len(data['prices'])>0:
                 data_price_0 = data['prices'][0]
                 vals['price'] = data_price_0['price']
                 vals['cost'] = data_price_0['cost']
                 # currency_id
-                res_currency_ids = self.env['res.currency'].search([('name', '=', data_price_0['currency'])])
-                if len(res_currency_ids) > 0:
+                res_currency_ids = self.env['res.currency'].search(
+                    [
+                        ('name', '=', data_price_0['currency'])
+                    ]
+                )
+                if res_currency_ids:
                     vals['currency_id'] = res_currency_ids[0].id
         # search
-        pipedrive_product_ids = self.env['pipedrive.product'].search([('external_id', '=', vals['external_id'])])
+        pipedrive_product_ids = self.env['pipedrive.product'].search(
+            [
+                ('external_id', '=', vals['external_id'])
+            ]
+        )
         if len(pipedrive_product_ids) == 0:
             pipedrive_product_obj = self.env['pipedrive.product'].sudo().create(vals)
         else:
@@ -80,6 +87,6 @@ class PipedriveProduct(models.Model):
         # get_info
         response = client.products.get_all_products()
         if 'success' in response:
-            if response['success'] == True:
+            if response['success']:
                 for data_item in response['data']:
                     self.action_item(data_item)

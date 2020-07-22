@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="phone_call_log_view" model="ir.ui.view">
         <field name="name">Phone Call Log</field>
         <field name="model">phone.call.log</field>
@@ -22,6 +23,7 @@
             </form>
         </field>
     </record>
+
     <record id="view_phone_call_log_search" model="ir.ui.view">
         <field name="name">view_phone_call_log_search</field>
         <field name="model">phone.call.log</field>
@@ -37,6 +39,7 @@
             </search>
         </field>
     </record>
+
     <record id="phone_call_log_tree" model="ir.ui.view">
         <field name="name">Phone Call log</field>
         <field name="model">phone.call.log</field>
@@ -54,6 +57,7 @@
             </tree>
         </field>
     </record>
+
     <record id="phone_call_log_action" model="ir.actions.act_window">
         <field name="name">Phone Call Log</field>
         <field name="type">ir.actions.act_window</field>
@@ -63,6 +67,7 @@
         <field name="view_id" ref="phone_call_log_tree"/>
         <field name="search_view_id" ref="view_phone_call_log_search"/>
     </record>
+
     <record id="phone_call_log_file_view" model="ir.ui.view">
         <field name="name">Phone Call Log File</field>
         <field name="model">phone.call.log.file</field>
@@ -85,6 +90,7 @@
             </form>
         </field>
     </record>
+
     <record id="phone_call_log_file_tree" model="ir.ui.view">
         <field name="name">Phone Call log file</field>
         <field name="model">phone.call.log.file</field>
@@ -95,6 +101,7 @@
             </tree>
         </field>
     </record>
+
     <record id="phone_call_log_file_action" model="ir.actions.act_window">
         <field name="name">Phone Call Log File</field>
         <field name="type">ir.actions.act_window</field>
@@ -103,6 +110,7 @@
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="phone_call_log_file_tree"/>
     </record>
+
     <menuitem
         id="menu_phone_call_log"
         name="Phone Call Log"

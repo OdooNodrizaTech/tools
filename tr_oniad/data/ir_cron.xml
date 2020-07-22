@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
+
     <record id="cron_odoo_tr_oniad_api_call_update_session_data" forcecreate="True" model="ir.cron">
         <field name="name">Odoo Tr ONiAd Api Call Update Session Data</field>
         <field name="active" eval="False"/>
@@ -12,4 +13,5 @@
         <field name="state">code</field>
         <field name="code">model.cron_odoo_tr_oniad_api_call_update_session_data()</field>
     </record>
+
 </odoo>

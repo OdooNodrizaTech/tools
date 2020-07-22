@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 #https://developers.pipedrive.com/docs/api/v1/#!/Users
 from odoo import api, fields, models
@@ -52,13 +51,21 @@ class PipedriveUser(models.Model):
             'activated': data['activated'],
             'timezone_name': data['timezone_name']
         }
-        #currency_id
-        res_currency_ids = self.env['res.currency'].search([('name', '=', data['default_currency'])])
-        if len(res_currency_ids)>0:
+        # currency_id
+        res_currency_ids = self.env['res.currency'].search(
+            [
+                ('name', '=', data['default_currency'])
+            ]
+        )
+        if res_currency_ids:
             vals['currency_id'] = res_currency_ids[0].id
-        #search
-        pipedrive_user_ids = self.env['pipedrive.user'].search([('external_id', '=', vals['external_id'])])
-        if len(pipedrive_user_ids)==0:
+        # search
+        pipedrive_user_ids = self.env['pipedrive.user'].search(
+            [
+                ('external_id', '=', vals['external_id'])
+            ]
+        )
+        if len(pipedrive_user_ids) == 0:
             pipedrive_user_obj = self.env['pipedrive.user'].sudo().create(vals)
         else:
             pipedrive_user_id = pipedrive_user_ids[0]
@@ -76,6 +83,6 @@ class PipedriveUser(models.Model):
         # get_info
         response = client.users.get_all_users()
         if 'success' in response:
-            if response['success']==True:
+            if response['success']:
                 for data_item in response['data']:
                     self.action_item(data_item)

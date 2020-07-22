@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
+
     <record id="cron_generate_ses_google_analytics_reports_yesterday" forcecreate="True" model="ir.cron">
         <field name="name">Cron Generate Google Analytics Reports Yesterday - Datalake</field>
         <field name="active" eval="False"/>
@@ -12,6 +13,7 @@
         <field name="state">code</field>
         <field name="code">model.cron_generate_ses_google_analytics_reports_yesterday()</field>
     </record>
+
     <record id="cron_generate_ses_google_analytics_reports_all_year" forcecreate="True" model="ir.cron">
         <field name="name">Cron Generate Google Analytics Reports All Year - Datalake</field>
         <field name="active" eval="False"/>
@@ -24,4 +26,5 @@
         <field name="state">code</field>
         <field name="code">model.cron_generate_ses_google_analytics_reports_all_year()</field>
     </record>
+
 </odoo>

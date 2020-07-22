@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<openerp>
+<odoo>
     <data>
+
         <record id="utm_website_sale_order_form" model="ir.ui.view">
             <field name="name">utm_website_sale_order_form</field>
             <field name="model">sale.order</field>
@@ -10,6 +11,7 @@
                     <field name="utm_website_id"/>
     	       </field>                           
             </field>
-        </record>                
+        </record>
+
     </data>
-</openerp>
+</odoo>

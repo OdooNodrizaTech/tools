@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from odoo import api, fields, models
 
@@ -39,7 +38,7 @@ class ResPartner(models.Model):
                 "profile_uuid": str(self.tracking_profile_uuid),
                 "identity": str(self.id)
             }
-            url = 'https://tr.oniad.com/api/user/' + str(self.tracking_user_uuid) + '/identify'
+            url = 'https://tr.oniad.com/api/user/%s/identify' % self.tracking_user_uuid
             try:
                 response = requests.post(url, data=json.dumps(data), headers=headers)        
                 return response.status_code

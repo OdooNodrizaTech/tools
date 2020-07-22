@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from odoo import api, fields, models
 import odoo
@@ -84,11 +83,16 @@ class GoogleanalyticsResultBeahavior(models.Model):
         # GoogleanalyticsWebservice
         key_file_location = odoo.tools.config.get('googleanalytics_api_key_file')
         googleanalytics_webservice = GoogleanalyticsWebservice(key_file_location)
-        #define
+        # define
         metrics = ['ga:users', 'ga:sessions', 'ga:sessionDuration', 'ga:bounceRate', 'ga:pageviews', 'ga:timeOnPage', 'ga:totalEvents', 'ga:uniqueEvents', 'ga:entrances', 'ga:exits']
         dimensions = ['ga:date', 'ga:userType', 'ga:landingPagePath', 'ga:pagePath', 'ga:eventCategory', 'ga:eventAction', 'ga:eventLabel']
         # search
-        googleanalytics_result_beahavior_ids = self.env['googleanalytics.result.beahavior'].sudo().search([('date', '=', str(date)), ('profileId', '=', str(profile_id))])
+        googleanalytics_result_beahavior_ids = self.env['googleanalytics.result.beahavior'].sudo().search(
+            [
+                ('date', '=', str(date)),
+                ('profileId', '=', str(profile_id))
+            ]
+        )
         if len(googleanalytics_result_beahavior_ids) == 0:
             results = googleanalytics_webservice.get_results(profile_id, date, date, metrics, dimensions)
             if 'rows' in results:
@@ -96,7 +100,7 @@ class GoogleanalyticsResultBeahavior(models.Model):
                     for row in results['rows']:
                         count = 0
                         # vals
-                        googleanalytics_result_beahavior_vals = {
+                        vals = {
                             'webPropertyId': str(results['profileInfo']['webPropertyId']),
                             'profileId': str(results['profileInfo']['profileId']),
                             'profileName': str(results['profileInfo']['profileName']),
@@ -111,7 +115,7 @@ class GoogleanalyticsResultBeahavior(models.Model):
 
                             columnHeaderDataType = str(columnHeader['dataType'])
                             # pre_item
-                            googleanalytics_result_beahavior_vals[columnHeaderName] = ''
+                            vals[columnHeaderName] = ''
                             # fix
                             if row_value == '(none)' or row_value == '(not set)':
                                 row_value = ''
@@ -124,29 +128,29 @@ class GoogleanalyticsResultBeahavior(models.Model):
                                 row_value = new_row_value
                             # types
                             if columnHeaderDataType == 'INTEGER':
-                                googleanalytics_result_beahavior_vals[columnHeaderName] = int(row_value)
+                                vals[columnHeaderName] = int(row_value)
                             elif columnHeaderDataType == 'STRING':
-                                googleanalytics_result_beahavior_vals[columnHeaderName] = str(row_value)
+                                vals[columnHeaderName] = str(row_value)
                             elif columnHeaderDataType == 'PERCENT':
-                                googleanalytics_result_beahavior_vals[columnHeaderName] = row_value
+                                vals[columnHeaderName] = row_value
                             elif columnHeaderDataType == 'TIME':
-                                googleanalytics_result_beahavior_vals[columnHeaderName] = row_value
+                                vals[columnHeaderName] = row_value
                             # count
                             count += 1
                         # remove eventLabel
-                        if 'eventLabel' in googleanalytics_result_beahavior_vals:
-                            del googleanalytics_result_beahavior_vals['eventLabel']
+                        if 'eventLabel' in vals:
+                            del vals['eventLabel']
                         # add_item
-                        googleanalytics_result_beahavior_obj = self.env['googleanalytics.result.beahavior'].sudo().create(googleanalytics_result_beahavior_vals)
+                        self.env['googleanalytics.result.beahavior'].sudo().create(vals)
 
     @api.model
     def cron_get_yesterday_info(self):
         _logger.info('cron_get_yesterday_info')
-        #vars
+        # vars
         profile_ids = str(self.env['ir.config_parameter'].sudo().get_param('googleanalytics_api_profile_ids')).split(',')
         current_date = datetime.today()
         date_yesterday = current_date + relativedelta(days=-1)
-        #config
+        # config
         for profile_id in profile_ids:
             self.get_day_info(date_yesterday.strftime("%Y-%m-%d"), profile_id)
 
@@ -158,9 +162,9 @@ class GoogleanalyticsResultBeahavior(models.Model):
         end_date = datetime.today()
         start_date = datetime(end_date.year, 1, 1)
         date_item = start_date
-        #operations
-        while date_item.strftime("%Y-%m-%d")!=end_date.strftime("%Y-%m-%d"):
+        # operations
+        while date_item.strftime("%Y-%m-%d") != end_date.strftime("%Y-%m-%d"):
             for profile_id in profile_ids:
                 self.get_day_info(date_item.strftime("%Y-%m-%d"), profile_id)
-            #increase
+            # increase
             date_item = date_item + relativedelta(days=1)

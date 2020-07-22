@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 #https://developers.pipedrive.com/docs/api/v1/#!/Persons
 from odoo import api, fields, models, tools
@@ -56,12 +55,12 @@ class PipedrivePerson(models.Model):
             'email': self.email
         }
         # parent_id
-        if self.pipedrive_organization_id.id > 0:
-            if self.pipedrive_organization_id.partner_id.id > 0:
+        if self.pipedrive_organization_id:
+            if self.pipedrive_organization_id.partner_id:
                 vals['parent_id'] = self.pipedrive_organization_id.partner_id.id
         # user_id
-        if self.pipedrive_user_id.id > 0:
-            if self.pipedrive_user_id.user_id.id > 0:
+        if self.pipedrive_user_id:
+            if self.pipedrive_user_id.user_id:
                 vals['user_id'] = self.pipedrive_user_id.user_id.id
         # create-update (res.partner)
         if self.partner_id.id == 0:
@@ -91,30 +90,30 @@ class PipedrivePerson(models.Model):
     def action_item(self, data):
         _logger.info('action_item')
         _logger.info(data)
-        #result_message
+        # result_message
         result_message = {
             'delete_message': True,
             'errors': False,
             'return_body': 'OK',
             'message': data
         }
-        #operations
+        # operations
         if data['meta']['action'] not in ['updated', 'added']:
             result_message['errors'] = True
-            result_message['return_body'] = 'El action '+str(data['meta']['action'] )+' no tien que realizar ninguna accion'
+            result_message['return_body'] = 'El action %s no tien que realizar ninguna accion' % data['meta']['action']
         else:
-            #vals
+            # vals
             vals = {
                 'external_id': data['current']['id'],
                 'name': data['current']['name'],
                 'first_name': data['current']['first_name'],
                 'last_name': data['current']['last_name']
             }
-            #phone
+            # phone
             if 'phone' in data['current']:
-                if len(data['current']['phone'])>0:
+                if len(data['current']['phone']) > 0:
                     for phone_item in data['current']['phone']:
-                        if phone_item['primary']==True:
+                        if phone_item['primary']:
                             vals['phone'] = phone_item['value']
             #email
             if 'email' in data['current']:
@@ -122,35 +121,47 @@ class PipedrivePerson(models.Model):
                     for email_item in data['current']['email']:
                         if email_item in['primary']==True:
                             vals['email'] = email_item in['value']
-            #pipedrive_organization_id
-            if data['current']['org_id']!=None:
-                if data['current']['org_id']>0:
-                    pipedrive_organization_ids = self.env['pipedrive.organization'].sudo().search([('external_id', '=', data['current']['org_id'])])
-                    if len(pipedrive_organization_ids)==0:
+            # pipedrive_organization_id
+            if data['current']['org_id'] != None:
+                if data['current']['org_id'] > 0:
+                    pipedrive_organization_ids = self.env['pipedrive.organization'].sudo().search(
+                        [
+                            ('external_id', '=', data['current']['org_id'])
+                        ]
+                    )
+                    if len(pipedrive_organization_ids) == 0:
                         result_message['delete_message'] = False
                         result_message['errors'] = True
-                        result_message['return_body'] = 'No existe el (pipedrive.organization) org_id='+str(data['current']['org_id'])
+                        result_message['return_body'] = 'No existe el (pipedrive.organization) org_id=%s' % data['current']['org_id']
                     else:
                         vals['pipedrive_organization_id'] = pipedrive_organization_ids[0].id
-            #pipedrive_user_id
-            if data['current']['owner_id']>0:
-                pipedrive_user_ids = self.env['pipedrive.user'].sudo().search([('external_id', '=', data['current']['owner_id'])])
-                if len(pipedrive_user_ids)==0:
+            # pipedrive_user_id
+            if data['current']['owner_id'] > 0:
+                pipedrive_user_ids = self.env['pipedrive.user'].sudo().search(
+                    [
+                        ('external_id', '=', data['current']['owner_id'])
+                    ]
+                )
+                if len(pipedrive_user_ids) == 0:
                     result_message['delete_message'] = False
                     result_message['errors'] = True
-                    result_message['return_body'] = 'No existe el (pipedrive.user) owner_id='+str(data['current']['owner_id'])
+                    result_message['return_body'] = 'No existe el (pipedrive.user) owner_id=%s' % data['current']['owner_id']
                 else:
                     vals['pipedrive_user_id'] = pipedrive_user_ids[0].id
         # all operations (if errors False)
         if result_message['errors'] == False:
             #create-update (pipedrive.person)
-            pipedrive_person_ids = self.env['pipedrive.person'].sudo().search([('external_id', '=', vals['external_id'])])
+            pipedrive_person_ids = self.env['pipedrive.person'].sudo().search(
+                [
+                    ('external_id', '=', vals['external_id'])
+                ]
+            )
             if len(pipedrive_person_ids) == 0:
                 pipedrive_person_id = self.env['pipedrive.person'].sudo().create(vals)
             else:
                 pipedrive_person_id = pipedrive_person_ids[0]
                 pipedrive_person_id.write(vals)
-        #return
+        # return
         return result_message
 
     @api.model
@@ -165,18 +176,18 @@ class PipedrivePerson(models.Model):
         # get_info
         response = client.persons.get_all_persons()
         if 'success' in response:
-            if response['success'] == True:
+            if response['success']:
                 for data_item in response['data']:
                     data_item['owner_id'] = data_item['owner_id']['id']
-                    #org_id
-                    if data_item['org_id']!=None:
+                    # org_id
+                    if data_item['org_id'] != None:
                         if 'id' in data_item['org_id']:
                             data_item['org_id'] = data_item['org_id']['id']
                         else:
                             data_item['org_id'] = None
                     else:
                         data_item['org_id'] = None
-                    #action_item
+                    # action_item
                     self.action_item({
                         'current': data_item,
                         'meta': {
@@ -221,11 +232,11 @@ class PipedrivePerson(models.Model):
                         message_body = json.loads(message_body['Message'])
                     # result_message
                     result_message = self.action_item(message_body)
-                    #operations
+                    # operations
                     _logger.info('result_message')
                     _logger.info(result_message)
                     # remove_message
-                    if result_message['delete_message'] == True:
+                    if result_message['delete_message']:
                         response_delete_message = sqs.delete_message(
                             QueueUrl=sqs_pipedrive_person_url,
                             ReceiptHandle=message['ReceiptHandle']

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="pipedrive_stage_form_view" model="ir.ui.view">
         <field name="name">Pipedrive Stage</field>
         <field name="model">pipedrive.stage</field>
@@ -17,6 +18,7 @@
             </form>
         </field>
     </record>
+
     <record id="pipedrive_stage_tree" model="ir.ui.view">
         <field name="name">Pipedrive Stage</field>
         <field name="model">pipedrive.stage</field>
@@ -30,6 +32,7 @@
             </tree>
         </field>
     </record>
+
     <record id="pipedrive_stage_type_action" model="ir.actions.act_window">
         <field name="name">Pipedrive Stage</field>
         <field name="type">ir.actions.act_window</field>
@@ -38,6 +41,7 @@
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="pipedrive_stage_tree"/>
     </record>
+
     <menuitem
         action="pipedrive_stage_type_action"
         name="Stage"

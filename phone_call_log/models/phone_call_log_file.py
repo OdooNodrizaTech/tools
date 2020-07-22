@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from odoo import api, fields, models
 
@@ -43,18 +42,18 @@ class PhoneCallLogFile(models.Model):
     @api.one
     def action_read_google_drive_file_id(self):
         _logger.info(self.google_drive_file_id)
-        #define
+        # define
         keys_call = ['number', 'duration', 'type', 'presentation', 'subscription_id', 'post_dial_digits', 'subscription_component_name', 'readable_date', 'contact_name']
         url = "https://drive.google.com/uc?id=%s&export=download" % (self.google_drive_file_id)
         response = urlopen(url).read()
         tree = ET.fromstring(response)
         call_items = tree.findall('call')
-        #info
+        # info
         timezone_utc = pytz.timezone('UTC')
         timezone_user_id = pytz.timezone(self.user_id.tz)
-        #operations
-        _logger.info('Total elementos=' +str(len(call_items)))
-        if len(call_items)>0:
+        # operations
+        _logger.info('Total elementos=%s' % len(call_items))
+        if len(call_items) > 0:
             for call_item in call_items:
                 call_item_array = {}
                 for key_call in keys_call:
@@ -62,21 +61,21 @@ class PhoneCallLogFile(models.Model):
                         call_item_array[key_call] = call_item.get(key_call)
                     except:
                         call_item_array[key_call] = None
-                #change type
-                if call_item_array['type']!=None:
+                # change type
+                if call_item_array['type'] != None:
                     call_item_array['type'] = int(call_item_array['type'])
-                #change duration
-                if call_item_array['duration']!=None:
+                # change duration
+                if call_item_array['duration'] != None:
                     call_item_array['duration'] = int(call_item_array['duration'])
-                #change presentation
+                # change presentation
                 if call_item_array['presentation'] != None:
                     call_item_array['presentation'] = int(call_item_array['presentation'])
-                #date_convert
+                # date_convert
                 readable_date_timezone_user_id = datetime.strptime(call_item_array['readable_date'], '%Y/%m/%d %H:%M:%S')
                 readable_date_timezone_user_id = timezone_user_id.localize(readable_date_timezone_user_id)
-                #convert_to_timezone_utc
+                # convert_to_timezone_utc
                 readable_date_timezone_utc = readable_date_timezone_user_id.astimezone(timezone_utc)
-                #search
+                # search
                 phone_call_log_ids = self.env['phone.call.log'].search(
                     [
                         ('phone_call_log_file_id', '=', self.id),
@@ -84,9 +83,9 @@ class PhoneCallLogFile(models.Model):
                         ('number', '=', call_item_array['number']),
                     ]
                 )
-                if len(phone_call_log_ids)==0:
-                    #phone_call_log_vars
-                    phone_call_log_vars = {
+                if len(phone_call_log_ids) == 0:
+                    # phone_call_log_vars
+                    vals = {
                         'phone_call_log_file_id': self.id,
                         'user_id': self.user_id.id,
                         'number': call_item_array['number'],
@@ -95,18 +94,21 @@ class PhoneCallLogFile(models.Model):
                         'type': call_item_array['type'],
                         'presentation': call_item_array['presentation']
                     }
-                    #contact_name
+                    # contact_name
                     if call_item_array['contact_name']!='(Unknown)':
-                        phone_call_log_vars['contact_name'] = call_item_array['contact_name']
-                    #create
-                    phone_call_log_obj = self.env['phone.call.log'].sudo().create(phone_call_log_vars)
+                        vals['contact_name'] = call_item_array['contact_name']
+                    # create
+                    self.env['phone.call.log'].sudo().create(vals)
 
     @api.model
     def cron_phone_call_log_files(self):
         _logger.info('cron_phone_call_log_files')
-        #all
-        phone_call_log_file_ids = self.env['phone.call.log.file'].search([('id', '>', 0)])
-        if len(phone_call_log_file_ids)>0:
-            #phone_call_log_file_ids
+        # all
+        phone_call_log_file_ids = self.env['phone.call.log.file'].search(
+            [
+                ('id', '>', 0)
+            ]
+        )
+        if phone_call_log_file_ids:
             for phone_call_log_file_id in phone_call_log_file_ids:
                 phone_call_log_file_id.action_read_google_drive_file_id()

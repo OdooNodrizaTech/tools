@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="phone_call_log_mail_activity_type_view_form" model="ir.ui.view">
         <field name="name">phone_call_log_mail_activity_type_view_form</field>
         <field name="model">mail.activity.type</field>
@@ -11,4 +12,5 @@
             </field>
         </field>
     </record>
+
 </odoo>

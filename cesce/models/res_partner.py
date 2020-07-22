@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from odoo import api, models, fields
 from odoo.exceptions import Warning
@@ -31,56 +30,62 @@ class ResPartner(models.Model):
     cesce_error = fields.Char(
         string='Cesce Error'
     )
-    cesce_risk_classification_count = fields.Integer(compute='_compute_cesce_risk_classification_count', string="Cesce clasificaciones de riesgo")
+    cesce_risk_classification_count = fields.Integer(
+        compute='_compute_cesce_risk_classification_count',
+        string="Cesce clasificaciones de riesgo"
+    )
     
     @api.one
     def write(self, vals):
         allow_write = True
-        #vat
+        # vat
         if 'vat' in vals:
-            if vals['vat']!=False:
+            if vals['vat']:
                 vals['vat'] = vals['vat'].upper()
-        #credit_limit
+        # credit_limit
         if 'credit_limit' in vals:            
-            if vals['credit_limit']<0:
+            if vals['credit_limit'] < 0:
                 allow_write = False
                 raise Warning("El Limite de credito NO puede ser < 0")                                
-        #allow_write                                        
-        if allow_write==True:                        
+        # allow_write
+        if allow_write:
             return_write = super(ResPartner, self).write(vals)
-        #operations
-        if allow_write == True:
+        # operations
+        if allow_write:
             if 'credit_limit' in vals:
-                # Solo se notificara cuando el estado sea algo que haya venido de Cesce (bien sea porque nos han dado riesgo o porque lo han actualizado a 0 -denegado o nos han dado riesgo aunque sea menos de lo que hemos pedido-)
+                #  Solo se notificara cuando el estado sea algo que haya venido de Cesce (bien sea porque nos han dado riesgo
+                #  o porque lo han actualizado a 0 -denegado o nos han dado riesgo aunque sea menos de lo que hemos pedido-)
                 if self.cesce_risk_state in ['classification_ok', 'classification_error', 'canceled_ok']:
                     if self.user_id.id > 0:
-                        if self.user_id.partner_id.id!=self._uid:
+                        if self.user_id.partner_id.id != self._uid:
                             mail_message_ids = self.env['mail.message'].sudo().search(
                                 [
                                     ('model', '=', 'res.partner'),
                                     ('res_id', '=', self.id),
                                     ('message_type', '=', 'notification')
-                                ], order='date desc', limit=2
+                                ],
+                                order='date desc',
+                                limit=2
                             )
-                            if len(mail_message_ids)>0:
+                            if mail_message_ids:
                                 for mail_message_id in mail_message_ids:
                                     mail_message_need_starred = False
-                                    if len(mail_message_id.tracking_value_ids)>0:
+                                    if mail_message_id.tracking_value_ids:
                                         for tracking_value_id in mail_message_id.tracking_value_ids:
-                                            if tracking_value_id.field=='credit_limit':
-                                                if tracking_value_id.old_value_monetary!=tracking_value_id.new_value_monetary:
+                                            if tracking_value_id.field == 'credit_limit':
+                                                if tracking_value_id.old_value_monetary != tracking_value_id.new_value_monetary:
                                                     mail_message_need_starred = True
-                                    #mail_message_need_starred
-                                    if mail_message_need_starred==True:
-                                        #previously_insert (very strange)
+                                    # mail_message_need_starred
+                                    if mail_message_need_starred:
+                                        # previously_insert (very strange)
                                         previously_insert = False
                                         for starred_partner_id in mail_message_id.starred_partner_ids:
-                                            if starred_partner_id.id==self.user_id.partner_id.id:
+                                            if starred_partner_id.id == self.user_id.partner_id.id:
                                                 previously_insert = True
-                                        #insert
-                                        if previously_insert==False:
+                                        # insert
+                                        if previously_insert == False:
                                             mail_message_id.starred_partner_ids = [(4, self.user_id.partner_id.id)]            
-        #return
+        # return
         return return_write
     
     @api.multi
@@ -93,15 +98,19 @@ class ResPartner(models.Model):
     @api.model
     def cron_cesce_risk_classification_check_file_out(self):
         _logger.info('cron_cesce_risk_classification_check_file_out')
-        #webservice
+        # webservice
         cesce_web_service = CesceWebService(self.env.user.company_id, self.env)        
-        #errors
+        # errors
         cesce_web_service.partner_classifications_error()        
-        #file_out
+        # file_out
         cesce_web_service.partner_classifications_out()        
-        #review with cesce_risk_state=classification_sent,classification_error
-        res_partner_ids = self.env['res.partner'].search([('cesce_risk_state', 'in', ('classification_sent', 'classification_error'))])
-        if len(res_partner_ids)>0:
+        # review with cesce_risk_state=classification_sent,classification_error
+        res_partner_ids = self.env['res.partner'].search(
+            [
+                ('cesce_risk_state', 'in', ('classification_sent', 'classification_error'))
+            ]
+        )
+        if res_partner_ids:
             _logger.info('revisar estos ids')
             _logger.info(res_partner_ids)
     
@@ -110,39 +119,39 @@ class ResPartner(models.Model):
         if self.id>0:
             allow_action = True
             
-            if self.cesce_amount_requested==0:
+            if self.cesce_amount_requested == 0:
                 allow_action = False
                 raise Warning("Es necesario definir una importe solicitado para Cesce para poder tramitar la solicitud de riesgo")
-            elif self.vat==False:
+            elif self.vat == False:
                 allow_action = False
                 raise Warning("Es necesario definir un NIF/CIF")
-            elif self.country_id.id==0:
+            elif self.country_id.id == 0:
                 allow_action = False
                 raise Warning("Es necesario definir un pais")
-            elif self.state_id.id==0:
+            elif self.state_id.id == 0:
                 allow_action = False
                 raise Warning("Es necesario definir una provincia")
-            elif self.zip==False:
+            elif self.zip == False:
                 allow_action = False
                 raise Warning("Es necesario definir un codigo postal")
-            elif self.city==False:
+            elif self.city == False:
                 allow_action = False
                 raise Warning("Es necesario definir una ciudad")
-            elif self.street==False:
+            elif self.street == False:
                 allow_action = False
                 raise Warning("Es necesario definir una direccion")
             
-            if allow_action==True: 
+            if allow_action:
                 cesce_web_service = CesceWebService(self.env.user.company_id, self.env)
                 return_action = cesce_web_service.generate_partner_classification(self)
                 
-                if return_action['errors']==False:
+                if return_action['errors'] == False:
                     self.cesce_risk_state = 'classification_sent'
                 else:
                     raise Warning(return_action['error'])
                 
                 return True
-                                                    
+
     @api.one
     def action_partner_canceled_sent(self):
         _logger.info('action_partner_canceled_sent')

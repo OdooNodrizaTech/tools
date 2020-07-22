@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
+
         <record id="pipedrive_domain" model="ir.config_parameter">
             <field name="key">pipedrive_domain</field>
             <field name="value">https://companydomain.pipedrive.com/</field>
         </record>
+
         <record id="pipedrive_api_token" model="ir.config_parameter">
             <field name="key">pipedrive_api_token</field>
             <field name="value">xxx</field>
         </record>
+
     </data>
 </odoo>

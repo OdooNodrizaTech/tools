@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="pipedrive_currency_form_view" model="ir.ui.view">
         <field name="name">Pipedrive Currency</field>
         <field name="model">pipedrive.currency</field>
@@ -17,6 +18,7 @@
             </form>
         </field>
     </record>
+
     <record id="pipedrive_currency_tree" model="ir.ui.view">
         <field name="name">Pipedrive Currency</field>
         <field name="model">pipedrive.currency</field>
@@ -30,6 +32,7 @@
             </tree>
         </field>
     </record>
+
     <record id="pipedrive_currency_type_action" model="ir.actions.act_window">
         <field name="name">Pipedrive Currency</field>
         <field name="type">ir.actions.act_window</field>
@@ -38,6 +41,7 @@
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="pipedrive_currency_tree"/>
     </record>
+
     <menuitem
         action="pipedrive_currency_type_action"
         name="Currency"

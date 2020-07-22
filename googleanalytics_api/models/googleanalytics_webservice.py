@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 import logging
 _logger = logging.getLogger(__name__)
@@ -41,16 +40,16 @@ class GoogleanalyticsWebservice():
             
     def get_results(self, profile_id, start_date, end_date, metrics, dimensions):
         start_index = 1
-        #result = get_results_real(profile_id, '7daysAgo', 'yesterday',  metrics, dimensions, start_index)
+        # result = get_results_real(profile_id, '7daysAgo', 'yesterday',  metrics, dimensions, start_index)
         result = self.get_results_real(profile_id, start_date, end_date,  metrics, dimensions, start_index)
         result_return = result
         
         if 'totalResults' in result:
             if result['totalResults']>result['itemsPerPage']:
-                while result['totalResults']>start_index:
+                while result['totalResults'] > start_index:
                     start_index += result['itemsPerPage']  
                     result = self.get_results_real(profile_id, start_date, end_date,  metrics, dimensions, start_index)
-                    #rows
+                    # rows
                     if 'rows' in result:
                         for row in result['rows']:
                             result_return['rows'].append(row)

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
+
     <record id="googleanalytics_result_beahavior_cron_get_yesterday_info" forcecreate="True" model="ir.cron">
         <field name="name">Cron Googleanalytics Result Beahavior Get Yesterday info</field>
         <field name="active" eval="False"/>
@@ -12,6 +13,7 @@
         <field name="state">code</field>
         <field name="code">model.cron_get_yesterday_info()</field>
     </record>
+
     <record id="googleanalytics_result_beahavior_cron_get_all_year_info" forcecreate="True" model="ir.cron">
         <field name="name">Cron Googleanalytics Result Beahavior Get All year info</field>
         <field name="active" eval="False"/>
@@ -24,6 +26,7 @@
         <field name="state">code</field>
         <field name="code">model.cron_get_all_year_info()</field>
     </record>
+
     <record id="googleanalytics_result_campaign_cron_get_yesterday_info" forcecreate="True" model="ir.cron">
         <field name="name">Cron Googleanalytics Result Campaign Get Yesterday info</field>
         <field name="active" eval="False"/>
@@ -36,6 +39,7 @@
         <field name="state">code</field>
         <field name="code">model.cron_get_yesterday_info()</field>
     </record>
+
     <record id="googleanalytics_result_campaign_cron_get_all_year_info" forcecreate="True" model="ir.cron">
         <field name="name">Cron Googleanalytics Result Campaign Get All year info</field>
         <field name="active" eval="False"/>
@@ -48,6 +52,7 @@
         <field name="state">code</field>
         <field name="code">model.cron_get_all_year_info()</field>
     </record>
+
     <record id="googleanalytics_result_general_cron_get_yesterday_info" forcecreate="True" model="ir.cron">
         <field name="name">Cron Googleanalytics Result General Get Yesterday info</field>
         <field name="active" eval="False"/>
@@ -60,6 +65,7 @@
         <field name="state">code</field>
         <field name="code">model.cron_get_yesterday_info()</field>
     </record>
+
     <record id="googleanalytics_result_general_cron_get_all_year_info" forcecreate="True" model="ir.cron">
         <field name="name">Cron Googleanalytics Result General Get All year info</field>
         <field name="active" eval="False"/>
@@ -72,4 +78,5 @@
         <field name="state">code</field>
         <field name="code">model.cron_get_all_year_info()</field>
     </record>
+
 </odoo>

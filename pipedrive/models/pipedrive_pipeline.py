@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 #https://developers.pipedrive.com/docs/api/v1/#!/Pipelines
 from odoo import api, fields, models
@@ -45,7 +44,11 @@ class PipedrivePipeline(models.Model):
             'selected': data['selected']
         }
         # search
-        pipedrive_pipeline_ids = self.env['pipedrive.pipeline'].search([('external_id', '=', vals['external_id'])])
+        pipedrive_pipeline_ids = self.env['pipedrive.pipeline'].search(
+            [
+                ('external_id', '=', vals['external_id'])
+            ]
+        )
         if len(pipedrive_pipeline_ids) == 0:
             pipedrive_pipeline_obj = self.env['pipedrive.pipeline'].sudo().create(vals)
         else:
@@ -64,6 +67,6 @@ class PipedrivePipeline(models.Model):
         # get_info
         response = client.pipelines.get_all_pipelines()
         if 'success' in response:
-            if response['success'] == True:
+            if response['success']:
                 for data_item in response['data']:
                     self.action_item(data_item)

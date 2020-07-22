@@ -1,38 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="cesce_risk_classification_situation_data_1" model="cesce.risk.classification.situation">
         <field name="id">1</field>
         <field name="code">P</field>
         <field name="name">Pendiente de estudio</field>        
     </record>
+
     <record id="cesce_risk_classification_situation_data_2" model="cesce.risk.classification.situation">
         <field name="id">2</field>
         <field name="code">PC</field>
         <field name="name">Clasificado pendiente de aceptacion por el cliente</field>        
     </record>
+
     <record id="cesce_risk_classification_situation_data_3" model="cesce.risk.classification.situation">
         <field name="id">3</field>
         <field name="code">T</field>
         <field name="name">Preestudios</field>        
     </record>
+
     <record id="cesce_risk_classification_situation_data_4" model="cesce.risk.classification.situation">
         <field name="id">4</field>
         <field name="code">C</field>
         <field name="name">Clasificado y en cobertura</field>        
     </record>
+
     <record id="cesce_risk_classification_situation_data_5" model="cesce.risk.classification.situation">
         <field name="id">5</field>
         <field name="code">N</field>
         <field name="name">Clasificado y sin cobertura (anulado)</field>        
     </record>
+
     <record id="cesce_risk_classification_situation_data_6" model="cesce.risk.classification.situation">
         <field name="id">6</field>
         <field name="code">PA</field>
         <field name="name">Clasificado pendiente de activacion (para contratos PPC)</field>        
     </record>
+
     <record id="cesce_risk_classification_situation_data_7" model="cesce.risk.classification.situation">
         <field name="id">7</field>
         <field name="code">PN</field>
         <field name="name">Clasificado no asegurado (para contratos PPC)</field>        
-    </record>        
+    </record>
+
 </odoo>

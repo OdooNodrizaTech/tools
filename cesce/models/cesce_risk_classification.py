@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from odoo import api, fields, models
 from datetime import datetime
@@ -10,19 +9,9 @@ _logger = logging.getLogger(__name__)
 class CesceRiskClassification(models.Model):
     _name = 'cesce.risk.classification'
     _description = 'Cesce Risk Classification'
-    _inherit = ['mail.thread']    
-    
-    name = fields.Char(        
-        compute='_get_name',
-        string='Nombre',
-        store=False
-    )
-    
-    @api.one        
-    def _get_name(self):            
-        for obj in self:
-            obj.name = obj.code_cesce
-    
+    _inherit = ['mail.thread']
+    _rec_name = 'code_cesce'
+
     partner_id = fields.Many2one(
         comodel_name='res.partner',
         string='Contacto'
@@ -129,7 +118,7 @@ class CesceRiskClassification(models.Model):
                 ('partner_id.cesce_risk_state', '=', 'classification_ok')
             ]
         )
-        if len(cesce_risk_classification_ids)>0:
+        if cesce_risk_classification_ids:
             for cesce_risk_classification_id in cesce_risk_classification_ids:
                 fecha_renovacion_split = cesce_risk_classification_id.fecha_renovacion.split('-')
                 year_next = int(fecha_renovacion_split[0])+1
@@ -153,7 +142,7 @@ class CesceRiskClassification(models.Model):
                 ('partner_id.cesce_risk_state', 'in', ('classification_sent','classification_ok','classification_error'))
             ]
         )
-        if len(cesce_risk_classification_ids)>0:
+        if cesce_risk_classification_ids:
             for cesce_risk_classification_id in cesce_risk_classification_ids:
                 account_invoice_amount_untaxed_sum = 0
                 account_invoice_ids = self.env['account.invoice'].search(
@@ -165,15 +154,18 @@ class CesceRiskClassification(models.Model):
                         ('type', '=', 'out_invoice')
                     ]
                 )
-                if len(account_invoice_ids)>0:
+                if account_invoice_ids:
                     for account_invoice_id in account_invoice_ids:
                         account_invoice_amount_untaxed_sum += account_invoice_id.amount_untaxed                
                 #slack_message
-                slack_message_vals = {
-                    'msg': 'El contacto '+str(cesce_risk_classification_id.partner_id.name)+' ('+str(cesce_risk_classification_id.partner_id.vat)+') ha tenido una facturacion de '+str(account_invoice_amount_untaxed_sum)+' en los ultimos 6 meses',
+                vals = {
+                    'msg': 'El contacto %s (%s) ha tenido una facturacion de %s en los ultimos 6 meses' % (
+                        cesce_risk_classification_id.partner_id.name,
+                        cesce_risk_classification_id.partner_id.vat,
+                        account_invoice_amount_untaxed_sum
+                    ),
                     'model': 'res.partner',
                     'res_id': cesce_risk_classification_id.partner_id.id,
                     'channel': self.env['ir.config_parameter'].sudo().get_param('slack_oniad_log_channel'),                                                         
                 }                        
-                slack_message_obj = self.env['slack.message'].sudo().create(slack_message_vals)                         
-                                                                   
+                self.env['slack.message'].sudo().create(vals)
