@@ -49,7 +49,7 @@
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="pipedrive_user_tree"/>
     </record>
-    
+
     <menuitem
         action="pipedrive_user_type_action"
         name="User"
