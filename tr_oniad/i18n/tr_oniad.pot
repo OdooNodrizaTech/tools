@@ -1,0 +1,78 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* tr_oniad
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0-20200601\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-23 11:07+0000\n"
+"PO-Revision-Date: 2020-07-23 11:07+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: tr_oniad
+#: model:ir.model,name:tr_oniad.model_res_partner
+msgid "Contact"
+msgstr ""
+
+#. module: tr_oniad
+#: model:ir.model,name:tr_oniad.model_crm_lead
+msgid "Lead/Opportunity"
+msgstr ""
+
+#. module: tr_oniad
+#: model:ir.actions.server,name:tr_oniad.cron_odoo_tr_oniad_api_call_update_session_data_ir_actions_server
+#: model:ir.cron,cron_name:tr_oniad.cron_odoo_tr_oniad_api_call_update_session_data
+#: model:ir.cron,name:tr_oniad.cron_odoo_tr_oniad_api_call_update_session_data
+msgid "Odoo Tr ONiAd Api Call Update Session Data"
+msgstr ""
+
+#. module: tr_oniad
+#: model:ir.model,name:tr_oniad.model_sale_order
+msgid "Sale Order"
+msgstr ""
+
+#. module: tr_oniad
+#: model_terms:ir.ui.view,arch_db:tr_oniad.tr_oniad_crm_case_form_view_oppor
+#: model_terms:ir.ui.view,arch_db:tr_oniad.tr_oniad_view_order_form
+#: model_terms:ir.ui.view,arch_db:tr_oniad.tr_oniad_view_partner_form
+msgid "Tracking"
+msgstr ""
+
+#. module: tr_oniad
+#: model:ir.model.fields,field_description:tr_oniad.field_crm_lead__tracking_cookie_uuid
+#: model:ir.model.fields,field_description:tr_oniad.field_res_partner__tracking_cookie_uuid
+#: model:ir.model.fields,field_description:tr_oniad.field_res_users__tracking_cookie_uuid
+#: model:ir.model.fields,field_description:tr_oniad.field_sale_order__tracking_cookie_uuid
+msgid "Tracking Cookie Uuid"
+msgstr ""
+
+#. module: tr_oniad
+#: model:ir.model.fields,field_description:tr_oniad.field_crm_lead__tracking_profile_uuid
+#: model:ir.model.fields,field_description:tr_oniad.field_res_partner__tracking_profile_uuid
+#: model:ir.model.fields,field_description:tr_oniad.field_res_users__tracking_profile_uuid
+#: model:ir.model.fields,field_description:tr_oniad.field_sale_order__tracking_profile_uuid
+msgid "Tracking Profile Uuid"
+msgstr ""
+
+#. module: tr_oniad
+#: model:ir.model.fields,field_description:tr_oniad.field_crm_lead__tracking_session_uuid
+#: model:ir.model.fields,field_description:tr_oniad.field_res_partner__tracking_session_uuid
+#: model:ir.model.fields,field_description:tr_oniad.field_res_users__tracking_session_uuid
+#: model:ir.model.fields,field_description:tr_oniad.field_sale_order__tracking_session_uuid
+msgid "Tracking Session Uuid"
+msgstr ""
+
+#. module: tr_oniad
+#: model:ir.model.fields,field_description:tr_oniad.field_crm_lead__tracking_user_uuid
+#: model:ir.model.fields,field_description:tr_oniad.field_res_partner__tracking_user_uuid
+#: model:ir.model.fields,field_description:tr_oniad.field_res_users__tracking_user_uuid
+#: model:ir.model.fields,field_description:tr_oniad.field_sale_order__tracking_user_uuid
+msgid "Tracking User Uuid"
+msgstr ""
+
