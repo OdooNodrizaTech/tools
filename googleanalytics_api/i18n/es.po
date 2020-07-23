@@ -1,0 +1,315 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* googleanalytics_api
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0-20200601\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-23 08:13+0000\n"
+"PO-Revision-Date: 2020-07-23 08:13+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__create_uid
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__create_uid
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__create_date
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__create_date
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: googleanalytics_api
+#: model:ir.actions.server,name:googleanalytics_api.googleanalytics_result_beahavior_cron_get_all_year_info_ir_actions_server
+#: model:ir.cron,cron_name:googleanalytics_api.googleanalytics_result_beahavior_cron_get_all_year_info
+#: model:ir.cron,name:googleanalytics_api.googleanalytics_result_beahavior_cron_get_all_year_info
+msgid "Cron Googleanalytics Result Beahavior Get All year info"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.actions.server,name:googleanalytics_api.googleanalytics_result_beahavior_cron_get_yesterday_info_ir_actions_server
+#: model:ir.cron,cron_name:googleanalytics_api.googleanalytics_result_beahavior_cron_get_yesterday_info
+#: model:ir.cron,name:googleanalytics_api.googleanalytics_result_beahavior_cron_get_yesterday_info
+msgid "Cron Googleanalytics Result Beahavior Get Yesterday info"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.actions.server,name:googleanalytics_api.googleanalytics_result_campaign_cron_get_all_year_info_ir_actions_server
+#: model:ir.cron,cron_name:googleanalytics_api.googleanalytics_result_campaign_cron_get_all_year_info
+#: model:ir.cron,name:googleanalytics_api.googleanalytics_result_campaign_cron_get_all_year_info
+msgid "Cron Googleanalytics Result Campaign Get All year info"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.actions.server,name:googleanalytics_api.googleanalytics_result_campaign_cron_get_yesterday_info_ir_actions_server
+#: model:ir.cron,cron_name:googleanalytics_api.googleanalytics_result_campaign_cron_get_yesterday_info
+#: model:ir.cron,name:googleanalytics_api.googleanalytics_result_campaign_cron_get_yesterday_info
+msgid "Cron Googleanalytics Result Campaign Get Yesterday info"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.actions.server,name:googleanalytics_api.googleanalytics_result_general_cron_get_all_year_info_ir_actions_server
+#: model:ir.cron,cron_name:googleanalytics_api.googleanalytics_result_general_cron_get_all_year_info
+#: model:ir.cron,name:googleanalytics_api.googleanalytics_result_general_cron_get_all_year_info
+msgid "Cron Googleanalytics Result General Get All year info"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.actions.server,name:googleanalytics_api.googleanalytics_result_general_cron_get_yesterday_info_ir_actions_server
+#: model:ir.cron,cron_name:googleanalytics_api.googleanalytics_result_general_cron_get_yesterday_info
+#: model:ir.cron,name:googleanalytics_api.googleanalytics_result_general_cron_get_yesterday_info
+msgid "Cron Googleanalytics Result General Get Yesterday info"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__display_name
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__display_name
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: googleanalytics_api
+#: model:ir.model,name:googleanalytics_api.model_googleanalytics_result_beahavior
+msgid "Googleanalytics Result Beahavior"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model,name:googleanalytics_api.model_googleanalytics_result_campaign
+msgid "Googleanalytics Result Campaign"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model,name:googleanalytics_api.model_googleanalytics_result_general
+msgid "Googleanalytics Result General"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__id
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__id
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__id
+msgid "ID"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior____last_update
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign____last_update
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__write_uid
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__write_uid
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__write_date
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__write_date
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__accountId
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__accountId
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__accountId
+msgid "accountId"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__adGroup
+msgid "adGroup"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__bounceRate
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__bounceRate
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__bounceRate
+msgid "bounceRate"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__campaign
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__campaign
+msgid "campaign"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__cityId
+msgid "cityId"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__date
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__date
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__date
+msgid "date"
+msgstr "fecha"
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__deviceCategory
+msgid "deviceCategory"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__entrances
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__entrances
+msgid "entrances"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__eventAction
+msgid "eventAction"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__eventCategory
+msgid "eventCategory"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__exits
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__exits
+msgid "exits"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__goal1Completions
+msgid "goal1Completions"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__goal1ConversionRate
+msgid "goal1ConversionRate"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__goal6Completions
+msgid "goal6Completions"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__goal6ConversionRate
+msgid "goal6ConversionRate"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__keyword
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__keyword
+msgid "keyword"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__landingPagePath
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__landingPagePath
+msgid "landingPagePath"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__medium
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__medium
+msgid "medium"
+msgstr "mediana"
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__newUsers
+msgid "newUsers"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__pagePath
+msgid "pagePath"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__pageviews
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__pageviews
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__pageviews
+msgid "pageviews"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__profileId
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__profileId
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__profileId
+msgid "profileId"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__profileName
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__profileName
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__profileName
+msgid "profileName"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__sessionDuration
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__sessionDuration
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__sessionDuration
+msgid "sessionDuration"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__sessions
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__sessions
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__sessions
+msgid "sessions"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__source
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__source
+msgid "source"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__timeOnPage
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__timeOnPage
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__timeOnPage
+msgid "timeOnPage"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__totalEvents
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__totalEvents
+msgid "totalEvents"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__uniqueEvents
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__uniqueEvents
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__uniqueEvents
+msgid "uniqueEvents"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__userType
+msgid "userType"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__users
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__users
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__users
+msgid "users"
+msgstr ""
+
+#. module: googleanalytics_api
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_beahavior__webPropertyId
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_campaign__webPropertyId
+#: model:ir.model.fields,field_description:googleanalytics_api.field_googleanalytics_result_general__webPropertyId
+msgid "webPropertyId"
+msgstr ""
+
