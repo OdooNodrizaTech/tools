@@ -1,0 +1,97 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* utm_websites
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0-20200601\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-23 11:10+0000\n"
+"PO-Revision-Date: 2020-07-23 11:10+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: utm_websites
+#: model:ir.model.fields,field_description:utm_websites.field_utm_website__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: utm_websites
+#: model:ir.model.fields,field_description:utm_websites.field_utm_website__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: utm_websites
+#: model:ir.model.fields,field_description:utm_websites.field_utm_website__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: utm_websites
+#: model:ir.model.fields,field_description:utm_websites.field_utm_website__id
+msgid "ID"
+msgstr ""
+
+#. module: utm_websites
+#: model:ir.model.fields,field_description:utm_websites.field_utm_website____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: utm_websites
+#: model:ir.model.fields,field_description:utm_websites.field_utm_website__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: utm_websites
+#: model:ir.model.fields,field_description:utm_websites.field_utm_website__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: utm_websites
+#: model:ir.model,name:utm_websites.model_crm_lead
+msgid "Lead/Opportunity"
+msgstr "Iniciativa/Oportunidad"
+
+#. module: utm_websites
+#: model:ir.model.fields,field_description:utm_websites.field_utm_website__mail_template_id
+msgid "Mail Template Id"
+msgstr "Plantilla email"
+
+#. module: utm_websites
+#: model:ir.model.fields,field_description:utm_websites.field_utm_website__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: utm_websites
+#: model:ir.model,name:utm_websites.model_sale_order
+msgid "Sale Order"
+msgstr "Pedido de venta"
+
+#. module: utm_websites
+#: model:ir.model.fields,field_description:utm_websites.field_utm_website__url
+msgid "Url"
+msgstr "URL"
+
+#. module: utm_websites
+#: model:ir.model,name:utm_websites.model_utm_website
+#: model:ir.model.fields,field_description:utm_websites.field_crm_lead__utm_website_id
+#: model:ir.model.fields,field_description:utm_websites.field_sale_order__utm_website_id
+#: model_terms:ir.ui.view,arch_db:utm_websites.utm_website_action_form_view
+msgid "Utm website"
+msgstr "Utm sitio web"
+
+#. module: utm_websites
+#: model:ir.actions.act_window,name:utm_websites.utm_website_action
+#: model:ir.ui.menu,name:utm_websites.menuitem_utm_website
+#: model_terms:ir.ui.view,arch_db:utm_websites.utm_website_action_tree
+msgid "Utm websites"
+msgstr ""
+
+#. module: utm_websites
+#: model_terms:ir.ui.view,arch_db:utm_websites.utm_website_action_form_view
+msgid "child"
+msgstr ""
+
