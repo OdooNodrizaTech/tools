@@ -1,0 +1,263 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* phone_call_log
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0-20200601\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-23 08:32+0000\n"
+"PO-Revision-Date: 2020-07-23 08:32+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: phone_call_log
+#: model:ir.model,name:phone_call_log.model_mail_activity
+msgid "Activity"
+msgstr "Actividad"
+
+#. module: phone_call_log
+#: model:ir.model,name:phone_call_log.model_mail_activity_type
+msgid "Activity Type"
+msgstr "Tipo de actividad"
+
+#. module: phone_call_log
+#: model_terms:ir.ui.view,arch_db:phone_call_log.view_phone_call_log_search
+msgid "Agrupar por"
+msgstr ""
+
+#. module: phone_call_log
+#: selection:phone.call.log,presentation:0
+msgid "Allowed"
+msgstr "Permitido"
+
+#. module: phone_call_log
+#: model_terms:ir.ui.view,arch_db:phone_call_log.view_phone_call_log_search
+msgid "Comercial"
+msgstr ""
+
+#. module: phone_call_log
+#: model:ir.model,name:phone_call_log.model_res_partner
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log__contact_name
+msgid "Contact name"
+msgstr ""
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log__create_uid
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log_file__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log__create_date
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log_file__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: phone_call_log
+#: model:ir.actions.server,name:phone_call_log.cron_phone_call_log_files_ir_actions_server
+#: model:ir.cron,cron_name:phone_call_log.cron_phone_call_log_files
+#: model:ir.cron,name:phone_call_log.cron_phone_call_log_files
+msgid "Cron Phone Call Log Files"
+msgstr ""
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log__date
+msgid "Date"
+msgstr "Fecha"
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log__display_name
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log_file__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log__duration
+msgid "Duration"
+msgstr "Duración"
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log_file__google_drive_file_id
+msgid "Google Drive File Id"
+msgstr ""
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log__id
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log_file__id
+msgid "ID"
+msgstr ""
+
+#. module: phone_call_log
+#: selection:mail.activity,phone_call_type:0
+#: selection:phone.call.log,type:0
+msgid "Incoming"
+msgstr "Entrada"
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_mail_activity_type__is_phone_call
+msgid "Is phone call?"
+msgstr "¿Es una llamada?"
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log____last_update
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log_file____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log__write_uid
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log_file__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log__write_date
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log_file__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: phone_call_log
+#: model:ir.model,name:phone_call_log.model_crm_lead
+msgid "Lead/Opportunity"
+msgstr "Iniciativa/Oportunidad"
+
+#. module: phone_call_log
+#: model_terms:ir.ui.view,arch_db:phone_call_log.phone_call_log_file_view
+msgid "Leer archivo"
+msgstr ""
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log__mail_activity_id
+msgid "Mail Activity id"
+msgstr "Actividad"
+
+#. module: phone_call_log
+#: model_terms:ir.ui.view,arch_db:phone_call_log.view_phone_call_log_search
+msgid "Mis llamadas"
+msgstr ""
+
+#. module: phone_call_log
+#: selection:mail.activity,phone_call_type:0
+#: selection:phone.call.log,type:0
+msgid "Missed"
+msgstr "Perdida"
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log__number
+msgid "Number"
+msgstr "Número"
+
+#. module: phone_call_log
+#: selection:mail.activity,phone_call_type:0
+#: selection:phone.call.log,type:0
+msgid "Outgoing"
+msgstr "Saliente"
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log__partner_id
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: phone_call_log
+#: selection:phone.call.log,presentation:0
+msgid "Payphone"
+msgstr "Teléfono de pago"
+
+#. module: phone_call_log
+#: model:ir.actions.act_window,name:phone_call_log.phone_call_log_action
+#: model:ir.model,name:phone_call_log.model_phone_call_log
+#: model:ir.ui.menu,name:phone_call_log.menu_phone_call_log
+#: model:ir.ui.menu,name:phone_call_log.menuitem_phone_call_log
+#: model_terms:ir.ui.view,arch_db:phone_call_log.phone_call_log_tree
+#: model_terms:ir.ui.view,arch_db:phone_call_log.phone_call_log_view
+#: model_terms:ir.ui.view,arch_db:phone_call_log.view_phone_call_log_search
+msgid "Phone Call Log"
+msgstr "Histórico de llamadas de teléfono"
+
+#. module: phone_call_log
+#: model:ir.actions.act_window,name:phone_call_log.phone_call_log_file_action
+#: model:ir.model,name:phone_call_log.model_phone_call_log_file
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log__phone_call_log_file_id
+#: model:ir.ui.menu,name:phone_call_log.menuitem_phone_call_log_file
+#: model_terms:ir.ui.view,arch_db:phone_call_log.phone_call_log_file_tree
+#: model_terms:ir.ui.view,arch_db:phone_call_log.phone_call_log_file_view
+msgid "Phone Call Log File"
+msgstr "Archivo de histórico de llamadas de teléfono"
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log_file__phone_call_log_count
+msgid "Phone Call Logs"
+msgstr "Hstórico de llamadas"
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_mail_activity__phone_call_type
+msgid "Phone Call Type"
+msgstr "Tipo de llamada de teléfono"
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_res_partner__phone_call_log_count
+#: model:ir.model.fields,field_description:phone_call_log.field_res_users__phone_call_log_count
+#: model_terms:ir.ui.view,arch_db:phone_call_log.phone_call_log_file_view
+#: model_terms:ir.ui.view,arch_db:phone_call_log.phone_call_log_view_partner_form
+msgid "Phone Calls"
+msgstr "Llamadas de teléfono"
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log__presentation
+msgid "Presentation"
+msgstr "Presentación"
+
+#. module: phone_call_log
+#: selection:mail.activity,phone_call_type:0
+#: selection:phone.call.log,type:0
+msgid "Refused"
+msgstr "Rechazada"
+
+#. module: phone_call_log
+#: selection:mail.activity,phone_call_type:0
+#: selection:phone.call.log,type:0
+msgid "Rejected"
+msgstr "Rechazado"
+
+#. module: phone_call_log
+#: selection:phone.call.log,presentation:0
+msgid "Restricted"
+msgstr "Restringido"
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log__type
+msgid "Type"
+msgstr "Tipo"
+
+#. module: phone_call_log
+#: selection:phone.call.log,presentation:0
+msgid "Unknown"
+msgstr "Desconocido"
+
+#. module: phone_call_log
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log__user_id
+#: model:ir.model.fields,field_description:phone_call_log.field_phone_call_log_file__user_id
+msgid "User"
+msgstr "Usuario"
+
+#. module: phone_call_log
+#: selection:mail.activity,phone_call_type:0
+#: selection:phone.call.log,type:0
+msgid "Voicemail"
+msgstr ""
+
+#. module: phone_call_log
+#: model_terms:ir.ui.view,arch_db:phone_call_log.phone_call_log_file_view
+#: model_terms:ir.ui.view,arch_db:phone_call_log.phone_call_log_view
+msgid "child"
+msgstr ""
+
