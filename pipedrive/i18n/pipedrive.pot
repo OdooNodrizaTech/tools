@@ -1,0 +1,683 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* pipedrive
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0-20200515\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-23 12:08+0000\n"
+"PO-Revision-Date: 2020-07-23 12:08+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pipedrive
+#: selection:pipedrive.deal,status:0
+msgid "Abierto"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_user__activated
+msgid "Activated"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__active
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_pipeline__active
+msgid "Active"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.ui.menu,name:pipedrive.menuitem_pipedrive_activity
+msgid "Activity"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.ui.menu,name:pipedrive.menuitem_pipedrive_activity_type
+msgid "Activity Types"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_organization__address
+msgid "Address"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_organization__address_country
+msgid "Address Country"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_organization__address_locality
+msgid "Address Locality"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_organization__address_postal_code
+msgid "Address Postal Code"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_organization__address_route
+msgid "Address Route"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_organization__address_street_number
+msgid "Address Street Number"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_currency__code
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_product__code
+msgid "Code"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_product__cost
+msgid "Cost"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__create_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity_type__create_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_currency__create_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__create_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_organization__create_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_person__create_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_pipeline__create_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_product__create_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_stage__create_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_user__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__create_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity_type__create_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_currency__create_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__create_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_organization__create_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_person__create_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_pipeline__create_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_product__create_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_stage__create_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_user__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.server,name:pipedrive.cron_pipedrive_activity_exec_ir_actions_server
+#: model:ir.cron,cron_name:pipedrive.cron_pipedrive_activity_exec
+#: model:ir.cron,name:pipedrive.cron_pipedrive_activity_exec
+msgid "Cron Pipedrive Activity Exec"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.server,name:pipedrive.cron_pipedrive_activity_type_exec_ir_actions_server
+#: model:ir.cron,cron_name:pipedrive.cron_pipedrive_activity_type_exec
+#: model:ir.cron,name:pipedrive.cron_pipedrive_activity_type_exec
+msgid "Cron Pipedrive Activity Type Exec"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.server,name:pipedrive.cron_pipedrive_currency_exec_ir_actions_server
+#: model:ir.cron,cron_name:pipedrive.cron_pipedrive_currency_exec
+#: model:ir.cron,name:pipedrive.cron_pipedrive_currency_exec
+msgid "Cron Pipedrive Currency Exec"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.server,name:pipedrive.cron_pipedrive_deal_exec_ir_actions_server
+#: model:ir.cron,cron_name:pipedrive.cron_pipedrive_deal_exec
+#: model:ir.cron,name:pipedrive.cron_pipedrive_deal_exec
+msgid "Cron Pipedrive Deal Exec"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.server,name:pipedrive.cron_pipedrive_organization_exec_ir_actions_server
+#: model:ir.cron,cron_name:pipedrive.cron_pipedrive_organization_exec
+#: model:ir.cron,name:pipedrive.cron_pipedrive_organization_exec
+msgid "Cron Pipedrive Organization Exec"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.server,name:pipedrive.cron_pipedrive_person_exec_ir_actions_server
+#: model:ir.cron,cron_name:pipedrive.cron_pipedrive_person_exec
+#: model:ir.cron,name:pipedrive.cron_pipedrive_person_exec
+msgid "Cron Pipedrive Person Exec"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.server,name:pipedrive.cron_pipedrive_pipeline_exec_ir_actions_server
+#: model:ir.cron,cron_name:pipedrive.cron_pipedrive_pipeline_exec
+#: model:ir.cron,name:pipedrive.cron_pipedrive_pipeline_exec
+msgid "Cron Pipedrive Pipeline Exec"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.server,name:pipedrive.cron_pipedrive_product_exec_ir_actions_server
+#: model:ir.cron,cron_name:pipedrive.cron_pipedrive_product_exec
+#: model:ir.cron,name:pipedrive.cron_pipedrive_product_exec
+msgid "Cron Pipedrive Product Exec"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.server,name:pipedrive.cron_pipedrive_stage_exec_ir_actions_server
+#: model:ir.cron,cron_name:pipedrive.cron_pipedrive_stage_exec
+#: model:ir.cron,name:pipedrive.cron_pipedrive_stage_exec
+msgid "Cron Pipedrive Stage Exec"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.server,name:pipedrive.cron_pipedrive_user_exec_ir_actions_server
+#: model:ir.cron,cron_name:pipedrive.cron_pipedrive_user_exec
+#: model:ir.cron,name:pipedrive.cron_pipedrive_user_exec
+msgid "Cron Pipedrive User Exec"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.server,name:pipedrive.cron_sqs_pipedrive_activity_ir_actions_server
+#: model:ir.cron,cron_name:pipedrive.cron_sqs_pipedrive_activity
+#: model:ir.cron,name:pipedrive.cron_sqs_pipedrive_activity
+msgid "Cron SQS Pipedrive Activity"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.server,name:pipedrive.cron_sqs_pipedrive_deal_ir_actions_server
+#: model:ir.cron,cron_name:pipedrive.cron_sqs_pipedrive_deal
+#: model:ir.cron,name:pipedrive.cron_sqs_pipedrive_deal
+msgid "Cron SQS Pipedrive Deal"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.server,name:pipedrive.cron_sqs_pipedrive_organization_ir_actions_server
+#: model:ir.cron,cron_name:pipedrive.cron_sqs_pipedrive_organization
+#: model:ir.cron,name:pipedrive.cron_sqs_pipedrive_organization
+msgid "Cron SQS Pipedrive Organization"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.server,name:pipedrive.cron_sqs_pipedrive_person_ir_actions_server
+#: model:ir.cron,cron_name:pipedrive.cron_sqs_pipedrive_person
+#: model:ir.cron,name:pipedrive.cron_sqs_pipedrive_person
+msgid "Cron SQS Pipedrive Person"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.ui.menu,name:pipedrive.menuitem_pipedrive_currency
+msgid "Currency"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_currency__currency_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_product__currency_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_user__currency_id
+msgid "Currency Id"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.ui.menu,name:pipedrive.menuitem_pipedrive_deal
+msgid "Deal"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_pipeline__deal_probability
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_stage__deal_probability
+msgid "Deal Probability"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_product__description
+msgid "Description"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__display_name
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity_type__display_name
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_currency__display_name
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__display_name
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_organization__display_name
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_person__display_name
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_pipeline__display_name
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_product__display_name
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_stage__display_name
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_user__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__done
+msgid "Done"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__due_date
+msgid "Due Date"
+msgstr ""
+
+#. module: pipedrive
+#: selection:pipedrive.deal,status:0
+msgid "Eliminado"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_person__email
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_user__email
+msgid "Email"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__expected_close_date
+msgid "Expected Close Date"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__external_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity_type__external_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_currency__external_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__external_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_organization__external_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_person__external_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_pipeline__external_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_product__external_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_stage__external_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_user__external_id
+msgid "External Id"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_person__first_name
+msgid "First Name"
+msgstr ""
+
+#. module: pipedrive
+#: selection:pipedrive.deal,status:0
+msgid "Ganado"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity_type__id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_currency__id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_organization__id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_person__id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_pipeline__id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_product__id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_stage__id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_user__id
+msgid "ID"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_user__is_admin
+msgid "Is admin"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity_type__key_string
+msgid "Key String"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity____last_update
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity_type____last_update
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_currency____last_update
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal____last_update
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_organization____last_update
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_person____last_update
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_pipeline____last_update
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_product____last_update
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_stage____last_update
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_user____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_person__last_name
+msgid "Last Name"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__write_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity_type__write_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_currency__write_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__write_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_organization__write_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_person__write_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_pipeline__write_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_product__write_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_stage__write_uid
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_user__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__write_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity_type__write_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_currency__write_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__write_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_organization__write_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_person__write_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_pipeline__write_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_product__write_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_stage__write_date
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_user__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: pipedrive
+#: selection:pipedrive.pipeline,type:0
+msgid "Lead"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__lead_id
+msgid "Lead Id"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__mail_activity_id
+msgid "Mail Activity Id"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity_type__mail_activity_type_id
+msgid "Mail Activity Type Id"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__marked_as_done_time
+msgid "Marked as done time"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity_type__name
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_currency__name
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_organization__name
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_person__name
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_pipeline__name
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_product__name
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_stage__name
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_user__name
+msgid "Name"
+msgstr ""
+
+#. module: pipedrive
+#: selection:pipedrive.pipeline,type:0
+msgid "Oportunidad"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.ui.menu,name:pipedrive.menuitem_pipedrive_organization
+msgid "Organization"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__partner_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_organization__partner_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_person__partner_id
+msgid "Partner Id"
+msgstr ""
+
+#. module: pipedrive
+#: selection:pipedrive.deal,status:0
+msgid "Perdido"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.ui.menu,name:pipedrive.menuitem_pipedrive_person
+msgid "Person"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_person__phone
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_user__phone
+msgid "Phone"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.ui.menu,name:pipedrive.menu_odoo_pipedrive
+msgid "Pipedrive"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.act_window,name:pipedrive.pipedrive_activity_type_action
+#: model:ir.model,name:pipedrive.model_pipedrive_activity
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_activity_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_activity_tree
+msgid "Pipedrive Activity"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.act_window,name:pipedrive.pipedrive_activity_type_type_action
+#: model:ir.model,name:pipedrive.model_pipedrive_activity_type
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_activity_type_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_activity_type_tree
+msgid "Pipedrive Activity Type"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__pipedrive_activity_type_id
+msgid "Pipedrive Activity Type Id"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.act_window,name:pipedrive.pipedrive_currency_type_action
+#: model:ir.model,name:pipedrive.model_pipedrive_currency
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_currency_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_currency_tree
+msgid "Pipedrive Currency"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.act_window,name:pipedrive.pipedrive_deal_type_action
+#: model:ir.model,name:pipedrive.model_pipedrive_deal
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_deal_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_deal_tree
+msgid "Pipedrive Deal"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__pipedrive_deal_id
+msgid "Pipedrive Deal Id"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.act_window,name:pipedrive.pipedrive_organization_type_action
+#: model:ir.model,name:pipedrive.model_pipedrive_organization
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_organization_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_organization_tree
+msgid "Pipedrive Organization"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__pipedrive_organization_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__pipedrive_organization_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_person__pipedrive_organization_id
+msgid "Pipedrive Organization Id"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__pipedrive_person_id
+msgid "Pipedrive Peron Id"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.act_window,name:pipedrive.pipedrive_person_type_action
+#: model:ir.model,name:pipedrive.model_pipedrive_person
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_person_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_person_tree
+msgid "Pipedrive Person"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__pipedrive_person_id
+msgid "Pipedrive Person Id"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.act_window,name:pipedrive.pipedrive_pipeline_type_action
+#: model:ir.model,name:pipedrive.model_pipedrive_pipeline
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_pipeline_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_pipeline_tree
+msgid "Pipedrive Pipeline"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__pipedrive_pipeline_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_stage__pipedrive_pipeline_id
+msgid "Pipedrive Pipeline Id"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.act_window,name:pipedrive.pipedrive_product_type_action
+#: model:ir.model,name:pipedrive.model_pipedrive_product
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_product_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_product_tree
+msgid "Pipedrive Product"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.act_window,name:pipedrive.pipedrive_stage_type_action
+#: model:ir.model,name:pipedrive.model_pipedrive_stage
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_stage_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_stage_tree
+msgid "Pipedrive Stage"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__pipedrive_stage_id
+msgid "Pipedrive Stage Id"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.actions.act_window,name:pipedrive.pipedrive_user_type_action
+#: model:ir.model,name:pipedrive.model_pipedrive_user
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_user_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_user_tree
+msgid "Pipedrive User"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__pipedrive_user_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__pipedrive_user_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_organization__pipedrive_user_id
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_person__pipedrive_user_id
+msgid "Pipedrive User Id"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.ui.menu,name:pipedrive.menuitem_pipedrive_pipeline
+msgid "Pipeline"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_product__price
+msgid "Price"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__probability
+msgid "Probability"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.ui.menu,name:pipedrive.menuitem_pipedrive_product
+msgid "Product"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_product__product_id
+msgid "Product Id"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__public_description
+msgid "Public Description"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_pipeline__selected
+msgid "Selected"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.ui.menu,name:pipedrive.menuitem_pipedrive_stage
+msgid "Stage"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_stage__stage_id
+msgid "Stage Id"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__status
+msgid "Status"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_activity__subject
+msgid "Subject"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_currency__symbol
+msgid "Symbol"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_product__tax
+msgid "Tax"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_user__timezone_name
+msgid "Timezone Name"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__title
+msgid "Title"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_pipeline__type
+msgid "Type"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.ui.menu,name:pipedrive.menuitem_pipedrive_user
+msgid "User"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_user__user_id
+msgid "User Id"
+msgstr ""
+
+#. module: pipedrive
+#: model:ir.model.fields,field_description:pipedrive.field_pipedrive_deal__value
+msgid "Value"
+msgstr ""
+
+#. module: pipedrive
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_activity_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_activity_type_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_currency_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_deal_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_organization_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_person_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_pipeline_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_product_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_stage_form_view
+#: model_terms:ir.ui.view,arch_db:pipedrive.pipedrive_user_form_view
+msgid "child"
+msgstr ""
+
