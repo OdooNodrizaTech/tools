@@ -363,36 +363,30 @@ class CesceWebService():
         if index_exists(data, 25)==True:
             item['codigo_deudor_interno'] = str(data[25]).rstrip()
         # operations codigo_deudor_interno (para calcular el partner_id)
-        if item['codigo_deudor_interno']==False:
+        if item['codigo_deudor_interno']==False or item['codigo_deudor_interno']=='':
             _logger.info('No existe la posicion 25')
             _logger.info(data)
+            # buscamos por NIF (codigo_fiscal)
+            res_partner_ids = self.custom_env['res.partner'].sudo().search(
+                [
+                    ('active', '=', True),
+                    ('customer', '=', True),
+                    ('parent_id', '=', False),
+                    ('type', '=', 'contact'),
+                    ('vat', 'like', item['codigo_fiscal'])
+                ]
+            )
+            if len(res_partner_ids) > 0:
+                item['partner_id'] = res_partner_ids[0].id
         else:
-            if item['codigo_deudor_interno'] == "":
-                res_partner_ids = self.custom_env['res.partner'].sudo().search(
-                    [
-                        ('active', '=', True),
-                        ('customer', '=', True),
-                        ('parent_id', '=', False),
-                        ('type', '=', 'contact'),
-                        ('cesce_risk_state', '!=', 'none'),
-                        ('vat', 'like', item['codigo_fiscal'])
-                    ]
-                )
-                if len(res_partner_ids) > 0:
-                    item['partner_id'] = res_partner_ids[0].id
-            else:
-                if len(str(item['codigo_deudor_interno'])) > 6:  # Fix no es un numero (es un NIF!!)
-                    res_partner_ids = self.custom_env['res.partner'].sudo().search(
-                        [
-                            ('active', '=', True),
-                            ('customer', '=', True),
-                            ('parent_id', '=', False),
-                            ('type', '=', 'contact'),
-                            ('vat', 'like', item['codigo_fiscal'])
-                        ]
-                    )
-                    if len(res_partner_ids) > 0:
-                        item['partner_id'] = res_partner_ids[0].id
+            # Si devuelven valor en codigo_deudor_interno es porque se lo hemos pasado previamente por Odoo y es nuetro partner_id (se revisa si existe por si acaso)
+            res_partner_ids = self.custom_env['res.partner'].sudo().search(
+                [
+                    ('id', '=', item['codigo_deudor_interno'])
+                ]
+            )
+            if len(res_partner_ids) > 0:
+                item['partner_id'] = res_partner_ids[0].id
         #return
         return item
 
