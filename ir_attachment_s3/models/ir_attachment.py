@@ -16,11 +16,11 @@ class IrAttachment(models.Model):
     _inherit = 'ir.attachment'    
 
     def unlink(self):
-        # operations
-        if self.type == 'url':
-            if self.url != False:
-                if 'amazonaws.com' in self.url:
-                    self.remove_to_s3()
+        for item in self:
+            if item.type == 'url':
+                if item.url != False:
+                    if 'amazonaws.com' in item.url:
+                        item.remove_to_s3()
         # return
         return models.Model.unlink(self)    
     
