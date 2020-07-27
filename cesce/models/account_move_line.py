@@ -1,9 +1,6 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from odoo import api, models, fields
 
-import logging
-_logger = logging.getLogger(__name__)
-
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 
@@ -97,14 +94,14 @@ class AccountMoveLine(models.Model):
                 if account_move_line_id.invoice_id.date_invoice!=account_move_line_id.invoice_id.date_due:                   
                     return_generate_cesce_sale = cesce_web_service.generate_cesce_sale(account_move_line_id)
                 
-                    if return_generate_cesce_sale['errors'] == False:
+                    if not return_generate_cesce_sale['errors']:
                         account_move_line_id.cesce_sale_state = 'sale_sent'
                     else:
                         _logger.info(return_generate_cesce_sale)                                        
         
     @api.model
     def cron_cesce_sale_check_file_out(self):
-        _logger.info('cron_cesce_sale_check_file_out')        
+        _logger.info('cron_cesce_sale_check_file_out')
         # webservice
         cesce_web_service = CesceWebService(self.env.user.company_id, self.env)        
         # errors
@@ -119,4 +116,4 @@ class AccountMoveLine(models.Model):
         )
         if account_move_line_ids:
             _logger.info('revisar estos ids')
-            _logger.info(account_move_line_ids)                                                                                               
+            _logger.info(account_move_line_ids)

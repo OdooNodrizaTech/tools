@@ -12,4 +12,4 @@ class CesceSaleMotiveSituation(models.Model):
     )
     name = fields.Char(        
         string='Name'
-    )                                       
+    )

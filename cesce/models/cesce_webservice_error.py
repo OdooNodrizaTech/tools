@@ -20,4 +20,4 @@ class CesceWebserviceError(models.Model):
             ('risk','Risk')
         ],
         string='Area'
-    )                                           
+    )

@@ -1,13 +1,10 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 import logging
-_logger = logging.getLogger(__name__)
-
-from odoo import api, fields, models
-import datetime, os, codecs, pysftp
-from dateutil.relativedelta import relativedelta
 
 import odoo
-import sys
+import datetime, os, codecs, pysftp
+
+_logger = logging.getLogger(__name__)
 
 def index_exists(ls, i):
     return (0 <= i < len(ls)) or (-len(ls) <= i < 0)
@@ -25,7 +22,7 @@ class CesceWebService():
         # test_mode
         self.test_mode = True
         cesce_test_mode = str(env['ir.config_parameter'].sudo().get_param('cesce_test_mode'))
-        if cesce_test_mode=='False':
+        if cesce_test_mode == 'False':
             self.test_mode = False 
         
         self.connection_risk_classification = env['ir.config_parameter'].sudo().get_param('cesce_connection_risk_classification')
@@ -117,7 +114,10 @@ class CesceWebService():
                     port=self.connection_ftp_port,
                     cnopts=cnopts
             ) as sftp:
-                remote_file = folder+'/'+file_name_real
+                remote_file = '%s/%s' % (
+                    folder,
+                    file_name_real
+                )
                 sftp.put(file_name, remote_file)
                 sftp.close()
                 
@@ -131,14 +131,17 @@ class CesceWebService():
             
         return response                        
     
-    #get_files_in_folder_ftp    
+    # get_files_in_folder_ftp
     def get_files_in_folder_ftp(self, folder, tmp_file):
         files = {}
         
         cnopts = pysftp.CnOpts()
         cnopts.hostkeys = None
-        
-        file_name_err_tmp = os.path.dirname(os.path.abspath(__file__))+'/'+tmp_file
+
+        file_name_err_tmp = '%s/%s' % (
+            os.path.dirname(os.path.abspath(__file__)),
+            tmp_file
+        )
         if os.path.isfile(file_name_err_tmp):
             os.remove(file_name_err_tmp)
                 
@@ -153,7 +156,10 @@ class CesceWebService():
             if len(files_get) > 0:
                 for file_get in files_get:
                     files[file_get] = []
-                    file_get_name = str(folder)+'/'+str(file_get)
+                    file_get_name = '%s/%s' % (
+                        folder,
+                        file_get
+                    )
                     sftp.get(file_get_name, file_name_err_tmp)
                     
                     if os.path.isfile(file_name_err_tmp):
@@ -173,7 +179,7 @@ class CesceWebService():
                                         line_real.append(line_split_item)
                                         
                                     files[file_get].append(line_real)
-        #cesce_files_check                 
+        # cesce_files_check
         cesce_files_check = []
         cesce_file_check_ids = self.custom_env['cesce.file.check'].search(
             [
@@ -212,13 +218,13 @@ class CesceWebService():
                     ]
                 )
                 if len(cesce_file_check_ids) == 0:
-                    #operations
+                    # operations
                     if 'ERR_SOLICITUDES' in file_name:
                         for file_name_items in file_name_items_real:
                             _logger.info(file_name)
                             _logger.info(file_name_items)
                             partner_id_get = int(str(file_name_items[0]))
-                            # importe_solicitado
+                            #  importe_solicitado
                             importe_solicitado = file_name_items[10].replace('.', '').replace(',', '.')
                             texto_error = file_name_items[22]
 
@@ -351,26 +357,41 @@ class CesceWebService():
                 item['cesce_risk_classification_situation_id'] = cesce_risk_classification_situation_ids[0].id
         # fecha_solicitud
         if index_exists(data, 16):
-            fecha_solicitud_pre = data[16]
-            item['fecha_solicitud'] = str(fecha_solicitud_pre[0:4]) + '-' + str(fecha_solicitud_pre[4:6]) + '-' + str(fecha_solicitud_pre[6:8])
+            item['fecha_solicitud'] = '%s-%s-%s' % (
+                data[16][0:4],
+                data[16][4:6],
+                data[16][6:8]
+            )
         # fecha_efecto + fecha_renovacion
         if index_exists(data, 17):
-            fecha_efecto_pre = data[17]
-            year_fecha_efecto = int(fecha_efecto_pre[0:4])
-            item['fecha_efecto'] = str(fecha_efecto_pre[0:4]) + '-' + str(fecha_efecto_pre[4:6]) + '-' + str(fecha_efecto_pre[6:8])
-            item['fecha_renovacion'] = str(year_fecha_efecto + 1) + '-' + str(fecha_efecto_pre[4:6]) + '-' + str(fecha_efecto_pre[6:8])
+            item['fecha_efecto'] = '%s-%s-%s' % (
+                data[17][0:4],
+                data[17][4:6],
+                data[17][6:8]
+            )
+            item['fecha_renovacion'] = '%s-%s-%s' % (
+                (int(data[17][0:4]) + 1),
+                data[17][4:6],
+                data[17][6:8]
+            )
         # fecha_anulacion
         if index_exists(data, 18):
-            fecha_anulacion_pre = data[18]
-            if fecha_anulacion_pre != "0":
-                item['fecha_anulacion'] = str(fecha_anulacion_pre[0:4]) + '-' + str(fecha_anulacion_pre[4:6]) + '-' + str(fecha_anulacion_pre[6:8])
+            if data[18] != "0":
+                item['fecha_anulacion'] = '%s-%s-%s' % (
+                    data[18][0:4],
+                    data[18][4:6],
+                    data[18][6:8]
+                )
                 if item['fecha_anulacion'] == '--':
                     item['fecha_anulacion'] = False
         # fecha_validez
         if index_exists(data, 19):
-            fecha_validez_pre = data[19]
-            if fecha_validez_pre != "0":
-                item['fecha_validez'] = str(fecha_validez_pre[0:4]) + '-' + str(fecha_validez_pre[4:6]) + '-' + str(fecha_validez_pre[6:8])
+            if data[19] != "0":
+                item['fecha_validez'] = '%s-%s-%s' % (
+                    data[19][0:4],
+                    data[19][4:6],
+                    data[19][6:8]
+                )
         # motivo_validez
         if index_exists(data, 20):
             item['motivo_validez'] = int(str(data[20]))
@@ -412,7 +433,8 @@ class CesceWebService():
             if len(res_partner_ids) > 0:
                 item['partner_id'] = res_partner_ids[0].id
         else:
-            # Si devuelven valor en codigo_deudor_interno es porque se lo hemos pasado previamente por Odoo y es nuetro partner_id (se revisa si existe por si acaso)
+            # Si devuelven valor en codigo_deudor_interno es porque se lo hemos pasado
+            # previamente por Odoo y es nuetro partner_id (se revisa si existe por si acaso)
             res_partner_ids = self.custom_env['res.partner'].sudo().search(
                 [
                     ('id', '=', item['codigo_deudor_interno'])
@@ -437,34 +459,34 @@ class CesceWebService():
                 _logger.info('RARO, no se encuentra el partner_id=%s' % data['partner_id'])
                 _logger.info(data)
             else:
-                res_partner_id_obj = res_partner_ids[0]
-                _logger.info('Se actualiza la informacion desde CESCE respecto al partner_id=%s'  % res_partner_id_obj.id)
+                partner = res_partner_ids[0]
+                _logger.info('Se actualiza la informacion desde CESCE respecto al partner_id=%s' % partner.id)
                 _logger.info(data)
                 # operations
-                if res_partner_id_obj.cesce_risk_state == 'classification_ok':
+                if partner.cesce_risk_state == 'classification_ok':
                     # cesce_risk_classification_id
-                    cesce_risk_classification_ids = self.custom_env['cesce.risk.classification'].sudo().search(
+                    ids = self.custom_env['cesce.risk.classification'].sudo().search(
                         [
-                            ('partner_id', '=', res_partner_id_obj.id)
+                            ('partner_id', '=', partner.id)
                         ]
                     )
-                    if cesce_risk_classification_ids:
-                        for cesce_risk_classification_id in cesce_risk_classification_ids:
-                            cesce_risk_classification_id.importe_solicitado = data['importe_solicitado']
-                            cesce_risk_classification_id.importe_concedido = data['importe_concedido']
-                            cesce_risk_classification_id.fecha_efecto = data['fecha_efecto']
-                            cesce_risk_classification_id.fecha_anulacion = data['fecha_anulacion']
-                            cesce_risk_classification_id.fecha_renovacion = data['fecha_renovacion']
-                            res_partner_id_obj.credit_limit = cesce_risk_classification_id.importe_concedido
+                    if ids:
+                        for crc in ids:
+                            crc.importe_solicitado = data['importe_solicitado']
+                            crc.importe_concedido = data['importe_concedido']
+                            crc.fecha_efecto = data['fecha_efecto']
+                            crc.fecha_anulacion = data['fecha_anulacion']
+                            crc.fecha_renovacion = data['fecha_renovacion']
+                            crc.credit_limit = cesce_risk_classification_id.importe_concedido
                             # cesce_risk_state
-                            if cesce_risk_classification_id.importe_concedido == 0:
-                                res_partner_id_obj.cesce_risk_state = 'canceled_ok'
+                            if crc.importe_concedido == 0:
+                                partner.cesce_risk_state = 'canceled_ok'
                             # tipo_movimiento
-                            cesce_risk_classification_id.tipo_movimiento = data['tipo_movimiento']
+                            crc.tipo_movimiento = data['tipo_movimiento']
                             # cesce_risk_classification_situation_id
-                            if data['cesce_risk_classification_situation_id'] != False:
-                                cesce_risk_classification_id.cesce_risk_classification_situation_id = data['cesce_risk_classification_situation_id']
-                elif res_partner_id_obj.cesce_risk_state == 'classification_sent':
+                            if data['cesce_risk_classification_situation_id']:
+                                crc.cesce_risk_classification_situation_id = data['cesce_risk_classification_situation_id']
+                elif partner.cesce_risk_state == 'classification_sent':
                     # cesce_risk_clasification_vals
                     vals = {
                         'partner_id': res_partner_id_obj.id,
@@ -496,16 +518,16 @@ class CesceWebService():
                         'codigo_deudor_interno': data['codigo_deudor_interno'],
                         'fecha_renovacion': data['fecha_renovacion']
                     }
-                    cesce_risk_clasification_obj = self.custom_env['cesce.risk.classification'].sudo().create(vals)
+                    crc_obj = self.custom_env['cesce.risk.classification'].sudo().create(vals)
                     # check_partner and update
-                    if cesce_risk_clasification_obj.partner_id:
-                        cesce_risk_clasification_obj.partner_id.credit_limit = cesce_risk_clasification_obj.importe_concedido
+                    if crc_obj.partner_id:
+                        crc_obj.partner_id.credit_limit = crc_obj.importe_concedido
                         # cesce_risk_state
-                        if cesce_risk_clasification_obj.partner_id.credit_limit > 0:
-                            cesce_risk_clasification_obj.partner_id.cesce_risk_state = 'classification_ok'
-                            cesce_risk_clasification_obj.cesce_error = ''
+                        if crc_obj.partner_id.credit_limit > 0:
+                            crc_obj.partner_id.cesce_risk_state = 'classification_ok'
+                            crc_obj.cesce_error = ''
                         else:
-                            cesce_risk_clasification_obj.partner_id.cesce_risk_state = 'canceled_ok'
+                            crc_obj.partner_id.cesce_risk_state = 'canceled_ok'
 
     def partner_classifications_out_ftp(self):
         tmp_file = 'out_solicitudes_tmp.txt'
@@ -526,7 +548,7 @@ class CesceWebService():
                         for file_name_items in file_name_items_real:
                             data_item = self.partner_classification_item_define(file_name_items)# define normal object
                             self.partner_classification_item(data_item)# operations
-                    #save cesce_file_check
+                    # save cesce_file_check
                     vals = {
                         'folder': self.ftp_folder_out,
                         'file': file_name
@@ -544,7 +566,7 @@ class CesceWebService():
         _logger.info('generate_partner_classification_webservice')
     
     def generate_partner_classification_ftp(self, partner):                                
-        today = datetime.datetime.today()                    
+        today = datetime.datetime.today()
         # provincia_estado
         provincia_estado = ''
         if partner.country_id and partner.country_id.code != 'ES':
@@ -563,7 +585,6 @@ class CesceWebService():
                 'type': 'codigo_deudor_intero_compania',
                 'value': str(partner.id),
                 'value_test': str(partner.id),
-                #'value_test': 'Valor cliente',
                 'size': 50,
             },
             {
@@ -708,21 +729,31 @@ class CesceWebService():
             'return': "",
         }                                
         # open file for reading
-        file_name_real = "In_SOLICITUDES"+str(today.strftime('%d%m%Y%H%M'))+"_"+str(partner.id)+'.csv'                        
-        file_name = os.path.dirname(os.path.abspath(__file__))+'/'+file_name_real
+        file_name_real = "In_SOLICITUDES%s_%s.csv" % (
+            today.strftime('%d%m%Y%H%M'),
+            partner.id
+        )
+        file_name = '%s/%s' % (
+            os.path.dirname(os.path.abspath(__file__)),
+            file_name_real
+        )
         # check if exists file
         line_exist_in_file = False
         if os.path.isfile(file_name):
             line_exist_in_file=True                                                                                        
         # continue line_exist_in_file
-        if line_exist_in_file == False:
+        if not line_exist_in_file:
             fh = codecs.open(file_name, "a", "utf-8")
             fh.write(txt_line)
             fh.close()
         
-            response_upload_file_ftp = self.upload_file_ftp(file_name, file_name_real, self.ftp_folder_in)# upload_file_ftp
-            response['errors'] = response_upload_file_ftp['errors']
-            response['error'] = response_upload_file_ftp['error']                                                  
+            res = self.upload_file_ftp(
+                file_name,
+                file_name_real,
+                self.ftp_folder_in
+            )
+            response['errors'] = res['errors']
+            response['error'] = res['error']
         else:
             response = {
                 'errors': True, 
@@ -829,16 +860,25 @@ class CesceWebService():
                                                 # nif_filial
                                                 nif_filial = file_name_items[1].replace(' ', '').strip()
                                                 # fecha_movimiento
-                                                fecha_movimiento_pre = file_name_items[3]
-                                                fecha_movimiento = str(fecha_movimiento_pre[0:4])+'-'+str(fecha_movimiento_pre[4:6])+'-'+str(fecha_movimiento_pre[6:8])
+                                                fecha_movimiento = '%s-%s-%s' % (
+                                                    file_name_items[3][0:4],
+                                                    file_name_items[3][4:6],
+                                                    file_name_items[3][6:8]
+                                                )
                                                 # nif_deudor
                                                 nif_deudor = file_name_items[5].replace(' ', '').strip()
                                                 # fecha_factura
-                                                fecha_factura_pre = file_name_items[8]
-                                                fecha_factura = str(fecha_factura_pre[0:4])+'-'+str(fecha_factura_pre[4:6])+'-'+str(fecha_factura_pre[6:8])
+                                                fecha_factura = '%s-%s-%s' % (
+                                                    file_name_items[8][0:4],
+                                                    file_name_items[8][4:6],
+                                                    file_name_items[8][6:8]
+                                                )
                                                 # fecha_vencimiento
-                                                fecha_vencimiento_pre = file_name_items[9]
-                                                fecha_vencimiento = str(fecha_vencimiento_pre[0:4])+'-'+str(fecha_vencimiento_pre[4:6])+'-'+str(fecha_vencimiento_pre[6:8])
+                                                fecha_vencimiento = '%s-%s-%s' % (
+                                                    file_name_items[9][0:4],
+                                                    file_name_items[9][4:6],
+                                                    file_name_items[9][6:8]
+                                                )
                                                 # cesce_sale_situation_id
                                                 cesce_sale_situation_id = False
                                                 cesce_sale_situation_ids = self.custom_env['cesce.sale.situation'].search(
@@ -847,8 +887,7 @@ class CesceWebService():
                                                     ]
                                                 )
                                                 if cesce_sale_situation_ids:
-                                                    cesce_sale_situation_id_obj = cesce_sale_situation_ids[0]
-                                                    cesce_sale_situation_id = cesce_sale_situation_id_obj.id
+                                                    cesce_sale_situation_id = cesce_sale_situation_ids[0].id
                                                 # cesce_sale_motive_situation_id
                                                 cesce_sale_motive_situation_id = False
                                                 cesce_sale_motive_situation_ids = self.custom_env['cesce.sale.motive.situation'].search(
@@ -872,8 +911,11 @@ class CesceWebService():
                                                 # nif_cedente
                                                 nif_cedente = file_name_items[21].replace(' ', '').strip()
                                                 # fecha_adquisicion
-                                                fecha_adquisicion_pre = file_name_items[22]
-                                                fecha_adquisicion = str(fecha_adquisicion_pre[0:4])+'-'+str(fecha_adquisicion_pre[4:6])+'-'+str(fecha_adquisicion_pre[6:8])
+                                                fecha_adquisicion = '%s-%s-%s' % (
+                                                    file_name_items[22][0:4],
+                                                    file_name_items[22][4:6],
+                                                    file_name_items[22][6:8]
+                                                )
                                                 if fecha_adquisicion == '0000-00-00':
                                                     fecha_adquisicion = False
                                                 # vals
@@ -1044,21 +1086,31 @@ class CesceWebService():
             'return': "",
         }                                
         # open file for reading
-        file_name_real = "In_VENTAS%s_%s.csv" % (today.strftime('%d%m%Y%H%M'), account_move_line.id)
-        file_name = os.path.dirname(os.path.abspath(__file__))+'/'+file_name_real
+        file_name_real = "In_VENTAS%s_%s.csv" % (
+            today.strftime('%d%m%Y%H%M'),
+            account_move_line.id
+        )
+        file_name = '%s/%s' % (
+            os.path.dirname(os.path.abspath(__file__)),
+            file_name_real
+        )
         # check if exists line
         line_exist_in_file = False
         if os.path.isfile(file_name):
             line_exist_in_file=True                        
         # continue line_exist_in_file
-        if line_exist_in_file == False:
+        if not line_exist_in_file:
             fh = codecs.open(file_name, "a", "utf-8")
             fh.write(txt_line)
             fh.close()
         
-            response_upload_file_ftp = self.upload_file_ftp(file_name, file_name_real, self.ftp_folder_in)# upload_file_ftp
-            response['errors'] = response_upload_file_ftp['errors']
-            response['error'] = response_upload_file_ftp['error']                                                  
+            res = self.upload_file_ftp(
+                file_name,
+                file_name_real,
+                self.ftp_folder_in
+            )
+            response['errors'] = res['errors']
+            response['error'] = res['error']
         else:
             response = {
                 'errors': True, 

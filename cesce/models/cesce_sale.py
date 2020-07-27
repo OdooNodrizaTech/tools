@@ -84,4 +84,4 @@ class CesceSale(models.Model):
     )
     id_interno_factura_cliente = fields.Char(        
         string='Id interno factura cliente'
-    )                                                
+    )

@@ -3,8 +3,6 @@ from odoo import api, fields, models
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-import logging
-_logger = logging.getLogger(__name__)
 
 class CesceRiskClassification(models.Model):
     _name = 'cesce.risk.classification'
@@ -120,9 +118,11 @@ class CesceRiskClassification(models.Model):
         )
         if cesce_risk_classification_ids:
             for cesce_risk_classification_id in cesce_risk_classification_ids:
-                fecha_renovacion_split = cesce_risk_classification_id.fecha_renovacion.split('-')
-                year_next = int(fecha_renovacion_split[0])+1
-                fecha_renovacion_new = str(year_next)+'-'+fecha_renovacion_split[1]+'-'+fecha_renovacion_split[2]
+                fecha_renovacion_new = str(year_next) + '%s-%s-%s' % (
+                    (int(cesce_risk_classification_id.fecha_renovacion.split('-')[0])+1),
+                    cesce_risk_classification_id.fecha_renovacion.split('-')[1],
+                    cesce_risk_classification_id.fecha_renovacion.split('-')[2]
+                )
                 cesce_risk_classification_id.fecha_renovacion = fecha_renovacion_new                  
     
     @api.model
@@ -157,7 +157,7 @@ class CesceRiskClassification(models.Model):
                 if account_invoice_ids:
                     for account_invoice_id in account_invoice_ids:
                         account_invoice_amount_untaxed_sum += account_invoice_id.amount_untaxed                
-                #slack_message
+                # slack_message
                 vals = {
                     'msg': 'El contacto %s (%s) ha tenido una facturacion de %s en los ultimos 6 meses' % (
                         cesce_risk_classification_id.partner_id.name,
