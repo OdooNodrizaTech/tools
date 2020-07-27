@@ -12,13 +12,14 @@ except ImportError:
 
 _logger = logging.getLogger(__name__)
 
+
 class IrAttachment(models.Model):
     _inherit = 'ir.attachment'    
 
     def unlink(self):
         for item in self:
             if item.type == 'url':
-                if item.url != False:
+                if item.url:
                     if 'amazonaws.com' in item.url:
                         item.remove_to_s3()
         # return
@@ -110,4 +111,4 @@ class IrAttachment(models.Model):
         )                
         if len(ir_attachment_ids)>0:
             for ir_attachment_id in ir_attachment_ids:
-                ir_attachment_id.upload_to_s3()                            
+                ir_attachment_id.upload_to_s3()

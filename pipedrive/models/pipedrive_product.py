@@ -6,6 +6,7 @@ from pipedrive.client import Client
 import logging
 _logger = logging.getLogger(__name__)
 
+
 class PipedriveProduct(models.Model):
     _name = 'pipedrive.product'
     _description = 'Pipedrive Product'

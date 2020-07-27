@@ -5,21 +5,22 @@ from odoo.exceptions import Warning
 
 from ..cesce.web_service import CesceWebService
 
+
 class ResPartner(models.Model):
     _inherit = 'res.partner'
     
-    cesce_amount_requested = fields.Integer(        
+    cesce_amount_requested = fields.Integer(
         string='Cesce Importe solicitado'
     )
     cesce_risk_state = fields.Selection(
         selection=[
-            ('none','Ninguno'), 
-            ('classification_sent','Clasificacion enviada'), 
-            ('classification_ok','Clasificacion ok'),
-            ('classification_error','Clasificacion error'), 
-            ('canceled_sent','Cancelacion enviada'),
-            ('canceled_ok','Cancelacion ok'),
-            ('canceled_error','Cancelacion error')             
+            ('none', 'Ninguno'),
+            ('classification_sent', 'Clasificacion enviada'),
+            ('classification_ok', 'Clasificacion ok'),
+            ('classification_error', 'Clasificacion error'),
+            ('canceled_sent', 'Cancelacion enviada'),
+            ('canceled_ok', 'Cancelacion ok'),
+            ('canceled_error', 'Cancelacion error')
         ],
         string='Estado',
         default='none',
@@ -56,7 +57,7 @@ class ResPartner(models.Model):
                 if self.cesce_risk_state in ['classification_ok', 'classification_error', 'canceled_ok']:
                     if self.user_id:
                         if self.user_id.partner_id.id != self._uid:
-                            mail_message_ids = self.env['mail.message'].sudo().search(
+                            ids = self.env['mail.message'].sudo().search(
                                 [
                                     ('model', '=', 'res.partner'),
                                     ('res_id', '=', self.id),
@@ -65,11 +66,11 @@ class ResPartner(models.Model):
                                 order='date desc',
                                 limit=2
                             )
-                            if mail_message_ids:
-                                for mail_message_id in mail_message_ids:
+                            if ids:
+                                for mm_id in ids:
                                     mail_message_need_starred = False
-                                    if mail_message_id.tracking_value_ids:
-                                        for tracking_value_id in mail_message_id.tracking_value_ids:
+                                    if mm_id.tracking_value_ids:
+                                        for tracking_value_id in mm_id.tracking_value_ids:
                                             if tracking_value_id.field == 'credit_limit':
                                                 if tracking_value_id.old_value_monetary != tracking_value_id.new_value_monetary:
                                                     mail_message_need_starred = True
@@ -77,12 +78,12 @@ class ResPartner(models.Model):
                                     if mail_message_need_starred:
                                         # previously_insert (very strange)
                                         previously_insert = False
-                                        for starred_partner_id in mail_message_id.starred_partner_ids:
+                                        for starred_partner_id in mm_id.starred_partner_ids:
                                             if starred_partner_id.id == self.user_id.partner_id.id:
                                                 previously_insert = True
                                         # insert
                                         if not previously_insert:
-                                            mail_message_id.starred_partner_ids = [(4, self.user_id.partner_id.id)]            
+                                            mm_id.starred_partner_ids = [(4, self.user_id.partner_id.id)]
         # return
         return return_write
     

@@ -9,6 +9,7 @@ from botocore.exceptions import ClientError
 import logging
 _logger = logging.getLogger(__name__)
 
+
 class PipedriveOrganization(models.Model):
     _name = 'pipedrive.organization'
     _description = 'Pipedrive Organization'

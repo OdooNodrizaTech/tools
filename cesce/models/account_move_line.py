@@ -6,15 +6,16 @@ from datetime import datetime
 
 from ..cesce.web_service import CesceWebService
 
+
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
-    
+
     cesce_sale_state = fields.Selection(
         selection=[
-            ('none','Ninguno'), 
-            ('sale_sent','Venta enviada'), 
-            ('sale_ok','Venta ok'),
-            ('sale_error','Venta error')                         
+            ('none', 'Ninguno'),
+            ('sale_sent', 'Venta enviada'),
+            ('sale_ok', 'Venta ok'),
+            ('sale_error', 'Venta error')
         ],
         string='Cesce Sale State',
         default='none'
@@ -46,32 +47,32 @@ class AccountMoveLine(models.Model):
         compute='_get_partner_id_credit_limit',
         string='Credit limit',
         store=False        
-    )    
-    
-    @api.one        
+    )
+
+    @api.one
     def _get_partner_vat(self):                              
         self.partner_vat = self.partner_id.vat
-            
-    @api.one        
+
+    @api.one
     def _get_invoice_id_date(self):                              
         self.invoice_id_date = self.invoice_id.date
-            
-    @api.one        
+
+    @api.one
     def _get_invoice_id_amount_total(self):                              
         self.invoice_id_amount_total = self.invoice_id.amount_total
-            
-    @api.one        
+
+    @api.one
     def _get_invoice_id_amount_untaxed(self):                              
         self.invoice_id_amount_untaxed = self.invoice_id.amount_untaxed
-            
-    @api.one        
+
+    @api.one
     def _get_partner_id_credit_limit(self):                              
         self.partner_id_credit_limit = self.partner_id.credit_limit
-        
+
     @api.model
     def cron_cesce_sale_generate_file(self):
-        _logger.info('cron_cesce_sale_generate_file')                                
-        
+        _logger.info('cron_cesce_sale_generate_file')
+
         current_date = datetime.today()
         start_date = current_date + relativedelta(months=-1, day=1)
         end_date = datetime(start_date.year, start_date.month, 1) + relativedelta(months=1, days=-1)                
@@ -91,9 +92,10 @@ class AccountMoveLine(models.Model):
             cesce_web_service = CesceWebService(self.env.user.company_id, self.env)
             
             for account_move_line_id in account_move_line_ids:
-                if account_move_line_id.invoice_id.date_invoice!=account_move_line_id.invoice_id.date_due:                   
-                    return_generate_cesce_sale = cesce_web_service.generate_cesce_sale(account_move_line_id)
-                
+                if account_move_line_id.invoice_id.date_invoice != account_move_line_id.invoice_id.date_due:
+                    return_generate_cesce_sale = cesce_web_service.generate_cesce_sale(
+                        account_move_line_id
+                    )
                     if not return_generate_cesce_sale['errors']:
                         account_move_line_id.cesce_sale_state = 'sale_sent'
                     else:

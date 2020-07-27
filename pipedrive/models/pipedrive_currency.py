@@ -6,6 +6,7 @@ from pipedrive.client import Client
 import logging
 _logger = logging.getLogger(__name__)
 
+
 class PipedriveCurrency(models.Model):
     _name = 'pipedrive.currency'
     _description = 'Pipedrive Currency'

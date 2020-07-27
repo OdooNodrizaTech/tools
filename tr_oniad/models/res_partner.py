@@ -2,9 +2,11 @@
 from odoo import api, fields, models
 
 import logging
+import requests
+import json
+
 _logger = logging.getLogger(__name__)
 
-import requests, json
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'

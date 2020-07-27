@@ -11,6 +11,7 @@ logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
 
 from .googleanalytics_webservice import GoogleanalyticsWebservice
 
+
 class GoogleanalyticsResultBeahavior(models.Model):
     _name = 'googleanalytics.result.beahavior'
     _description = 'Googleanalytics Result Beahavior'

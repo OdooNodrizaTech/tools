@@ -8,6 +8,7 @@ from botocore.exceptions import ClientError
 import logging
 _logger = logging.getLogger(__name__)
 
+
 class PipedriveActivity(models.Model):
     _name = 'pipedrive.activity'
     _description = 'Pipedrive Activity'
@@ -204,7 +205,7 @@ class PipedriveActivity(models.Model):
                     if len(pipedrive_person_ids) == 0:
                         result_message['delete_message'] = False
                         result_message['errors'] = True
-                        result_message['return_body'] = 'No existe el (pipedrive.person) person_id=%s'  % data['current']['person_id']
+                        result_message['return_body'] = 'No existe el (pipedrive.person) person_id=%s' % data['current']['person_id']
                     else:
                         vals['pipedrive_person_id'] = pipedrive_person_ids[0].id
             # deal_id
@@ -218,7 +219,7 @@ class PipedriveActivity(models.Model):
                     if len(pipedrive_deal_ids) == 0:
                         result_message['delete_message'] = False
                         result_message['errors'] = True
-                        result_message['return_body'] = 'No existe el (pipedrive.deal) deal_id=%s'  % data['current']['deal_id']
+                        result_message['return_body'] = 'No existe el (pipedrive.deal) deal_id=%s' % data['current']['deal_id']
                     else:
                         vals['pipedrive_deal_id'] = pipedrive_deal_ids[0].id
         # all operations (if errors False)
@@ -311,7 +312,7 @@ class PipedriveActivity(models.Model):
                     _logger.info('result_message')
                     _logger.info(result_message)
                     # remove_message
-                    if result_message['delete_message'] == True:
+                    if result_message['delete_message']:
                         response_delete_message = sqs.delete_message(
                             QueueUrl=sqs_pipedrive_activity_url,
                             ReceiptHandle=message['ReceiptHandle']

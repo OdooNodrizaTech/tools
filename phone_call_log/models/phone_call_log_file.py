@@ -12,6 +12,7 @@ try:
 except ImportError:
     from urllib2 import urlopen
 
+
 class PhoneCallLogFile(models.Model):
     _name = 'phone.call.log.file'
     _description = 'Phone Call Log File'
@@ -32,7 +33,11 @@ class PhoneCallLogFile(models.Model):
 
     def _compute_phone_call_log_count(self):
         for item in self:
-            item.phone_call_log_count = len(self.env['phone.call.log'].search([('phone_call_log_file_id', '=', self.id)]))
+            item.phone_call_log_count = len(self.env['phone.call.log'].search(
+                [
+                    ('phone_call_log_file_id', '=', self.id)
+                ]
+            ))
 
     @api.multi
     def action_read_google_drive_file_id_multi(self):
@@ -44,7 +49,7 @@ class PhoneCallLogFile(models.Model):
         _logger.info(self.google_drive_file_id)
         # define
         keys_call = ['number', 'duration', 'type', 'presentation', 'subscription_id', 'post_dial_digits', 'subscription_component_name', 'readable_date', 'contact_name']
-        url = "https://drive.google.com/uc?id=%s&export=download" % (self.google_drive_file_id)
+        url = "https://drive.google.com/uc?id=%s&export=download" % self.google_drive_file_id
         response = urlopen(url).read()
         tree = ET.fromstring(response)
         call_items = tree.findall('call')

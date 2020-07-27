@@ -16,4 +16,4 @@ class UtmWebsite(models.Model):
     mail_template_id = fields.Many2one(
         comodel_name='mail.template',        
         string='Mail Template Id'
-    )                                
+    )

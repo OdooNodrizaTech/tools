@@ -8,4 +8,4 @@ class ResPartner(models.Model):
         
     not_allow_marketing_mails = fields.Boolean(
         string="Not allow marketing mails"
-    )                                                                                                     
+    )

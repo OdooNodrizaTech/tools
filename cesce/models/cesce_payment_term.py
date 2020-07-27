@@ -7,9 +7,9 @@ class CescePaymentTerm(models.Model):
     _name = 'cesce.payment.term'
     _description = 'Cesce Payment Term'    
     
-    code = fields.Char(        
+    code = fields.Char(
         string='Code'
     )
-    name = fields.Char(        
+    name = fields.Char(
         string='Name'
     )

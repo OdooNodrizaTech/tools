@@ -12,4 +12,8 @@ class ResPartner(models.Model):
 
     def _compute_phone_call_log_count(self):
         for partner in self:
-            partner.phone_call_log_count = len(self.env['phone.call.log'].search([('partner_id', 'child_of', partner.ids)]))
+            partner.phone_call_log_count = len(self.env['phone.call.log'].search(
+                [
+                    ('partner_id', 'child_of', partner.ids)
+                ]
+            ))

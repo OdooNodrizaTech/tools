@@ -4,6 +4,7 @@ from odoo import api, fields, models, tools
 import logging
 _logger = logging.getLogger(__name__)
 
+
 class PhoneCallLog(models.Model):
     _name = 'phone.call.log'
     _description = 'Phone Call Log'

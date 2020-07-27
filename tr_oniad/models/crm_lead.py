@@ -6,6 +6,7 @@ import requests, json
 import logging
 _logger = logging.getLogger(__name__)
 
+
 class CrmLead(models.Model):
     _inherit = 'crm.lead'
 
@@ -48,7 +49,6 @@ class CrmLead(models.Model):
     @api.model    
     def cron_odoo_tr_oniad_api_call_update_session_data(self):
         _logger.info('cron_odoo_tr_oniad_api_call_update_session_data')
-        
         crm_lead_account_invoice_report_ids = self.env['crm.lead.account.invoice.report'].search(
             [
                 ('amount_untaxed_total_out_invoice', '>', 0),
@@ -80,4 +80,4 @@ class CrmLead(models.Model):
                     # return
                     return response.status_code
                 except:
-                    return 500                                
+                    return 500

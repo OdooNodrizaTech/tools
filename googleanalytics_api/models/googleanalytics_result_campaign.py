@@ -11,6 +11,7 @@ logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
 
 from .googleanalytics_webservice import GoogleanalyticsWebservice
 
+
 class GoogleanalyticsResultCampaign(models.Model):
     _name = 'googleanalytics.result.campaign'
     _description = 'Googleanalytics Result Campaign'

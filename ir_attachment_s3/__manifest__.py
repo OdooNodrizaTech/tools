@@ -18,5 +18,5 @@
         "data/ir_cron.xml",
         "data/ir_configparameter_data.xml",
     ],
-    "installable": True,
+    "installable": True
 }
