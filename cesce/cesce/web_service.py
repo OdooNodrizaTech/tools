@@ -9,20 +9,19 @@ import pysftp
 
 _logger = logging.getLogger(__name__)
 
+
 def index_exists(ls, i):
     return (0 <= i < len(ls)) or (-len(ls) <= i < 0)
+
 
 class CesceWebService():
 
     def __init__(self, company, env):
         self.company = company
         self.custom_env = env
-
         ir_cf = env['ir.config_parameter']
-                            
         self.modalidad = ir_cf.sudo().get_param('cesce_modalidad')
         self.poliza = ir_cf.sudo().get_param('cesce_poliza')
-        
         self.separator_fields = ir_cf.sudo().get_param('cesce_csv_delimiter')
         # test_mode
         self.test_mode = True
@@ -30,88 +29,84 @@ class CesceWebService():
         if cesce_test_mode == 'False':
             self.test_mode = False 
         
-        self.connection_risk_classification = ir_cf.sudo().get_param('cesce_connection_risk_classification')
+        self.connection_risk_classification = ir_cf.sudo().get_param(
+            'cesce_connection_risk_classification'
+        )
         self.connection_sale = ir_cf.sudo().get_param('cesce_connection_sale')
-        
         self.connection_ftp_host = odoo.tools.config.get('cesce_ftp_host')
         self.connection_ftp_user = odoo.tools.config.get('cesce_ftp_user')
         self.connection_ftp_password = odoo.tools.config.get('cesce_ftp_password')
-        self.connection_ftp_port = int(odoo.tools.config.get('cesce_ftp_port'))        
-        
+        self.connection_ftp_port = int(odoo.tools.config.get('cesce_ftp_port'))
         self.ftp_folder_in = str(ir_cf.sudo().get_param('cesce_ftp_folder_in'))
         self.ftp_folder_out = str(ir_cf.sudo().get_param('cesce_ftp_folder_out'))
         self.ftp_folder_error = str(ir_cf.sudo().get_param('cesce_ftp_folder_error'))
         self.ftp_folder_processed = str(ir_cf.sudo().get_param('cesce_ftp_folder_processed'))
-        
         self.cod_provicnasi_esp = {
-            'VI': '01',# Alava
-            'AB': '02',# Albacete
-            'A': '03',# Alicante
-            'AL': '04',# Almeria
-            'AV': '05',# Avila
-            'BA': '06',# Badajoz
-            'PM': '07',# Baleares
-            'B': '08',# Barcelona
-            'BU': '09',# Burgos
-            'CC': '10',# Caceres
-            'CA': '11',# Cadiz
-            'CS': '12',# Castellon
-            'CR': '13',# Ciudad Real
-            'CO': '14',# Cordoba
-            'C': '15',#La coruña
-            'CU': '16',# Cuenca
-            'GI': '17',# Gerona
-            'GR': '18',# Granada
-            'GU': '19',# Guadalajara
-            'SS': '20',# Guipuzcoa
-            'H': '21',# Huelva
-            'HU': '22',# Huesca
-            'J': '23',# Jaen
-            'LE': '24',# Leon
-            'L': '25',# Lerida
-            'LO': '26',# La Rioja
-            'LU': '27',# Lugo
-            'M': '28',# Madrid
-            'MA': '29',# Malaga
-            'MU': '30',# Murcia
-            'NA': '31',# Navarra
-            'OR': '32',# Orense
-            'O': '33',# Asturias
-            'P': '34',# Palencia
-            'GC': '35',# Las palmas
-            'PO': '36',# Pontevedra
-            'SA': '37',# Salamanca
-            'TF': '38',# SC Tenerife
-            'S': '39',# Cantabria
-            'SG': '40',# Segovia
-            'SE': '41',# Sevilla
-            'SO': '42',# Soria
-            'T': '43',# Tarragona
-            'TE': '44',# Teruel
-            'TO': '45',# Toledo
-            'V': '46',# Valencia
-            'VA': '47',# Valladolid
-            'BI': '48',# Vizcaya
-            'ZA': '49',# Zamora
-            'Z': '50',# Zaragoza
-            'CE': '51',# Ceuta
-            'ME': '52',# Melilla
+            'VI': '01',
+            'AB': '02',
+            'A': '03',
+            'AL': '04',
+            'AV': '05',
+            'BA': '06',
+            'PM': '07',
+            'B': '08',
+            'BU': '09',
+            'CC': '10',
+            'CA': '11',
+            'CS': '12',
+            'CR': '13',
+            'CO': '14',
+            'C': '15',
+            'CU': '16',
+            'GI': '17',
+            'GR': '18',
+            'GU': '19',
+            'SS': '20',
+            'H': '21',
+            'HU': '22',
+            'J': '23',
+            'LE': '24',
+            'L': '25',
+            'LO': '26',
+            'LU': '27',
+            'M': '28',
+            'MA': '29',
+            'MU': '30',
+            'NA': '31',
+            'OR': '32',
+            'O': '33',
+            'P': '34',
+            'GC': '35',
+            'PO': '36',
+            'SA': '37',
+            'TF': '38',
+            'S': '39',
+            'SG': '40',
+            'SE': '41',
+            'SO': '42',
+            'T': '43',
+            'TE': '44',
+            'TO': '45',
+            'V': '46',
+            'VA': '47',
+            'BI': '48',
+            'ZA': '49',
+            'Z': '50',
+            'CE': '51',
+            'ME': '52'
         }
     
     # upload_file_ftp
     def upload_file_ftp(self, file_name, file_name_real, folder):
         response = {
             'errors': True, 
-            'error': "", 
+            'error': ""
         }
-        
         cnopts = pysftp.CnOpts()
         cnopts.hostkeys = None
-        
         try:
             response['errors'] = True
             response['error'] = 'Error de conexion'
-            
             with pysftp.Connection(
                     host=self.connection_ftp_host,
                     username=self.connection_ftp_user,
@@ -125,31 +120,27 @@ class CesceWebService():
                 )
                 sftp.put(file_name, remote_file)
                 sftp.close()
-                
                 response['errors'] = False
                 response['error'] = ''
         except Exception as e:
             _logger.info(cnopts)
-                                     
             response['errors'] = True
             response['error'] = str(e.message)
-            
+
         return response                        
     
     # get_files_in_folder_ftp
     def get_files_in_folder_ftp(self, folder, tmp_file):
         files = {}
-        
         cnopts = pysftp.CnOpts()
         cnopts.hostkeys = None
-
         file_name_err_tmp = '%s/%s' % (
             os.path.dirname(os.path.abspath(__file__)),
             tmp_file
         )
         if os.path.isfile(file_name_err_tmp):
             os.remove(file_name_err_tmp)
-                
+
         with pysftp.Connection(
                 host=self.connection_ftp_host,
                 username=self.connection_ftp_user,
@@ -166,12 +157,10 @@ class CesceWebService():
                         file_get
                     )
                     sftp.get(file_get_name, file_name_err_tmp)
-                    
                     if os.path.isfile(file_name_err_tmp):
                         # fh = codecs.open(file_name_err_tmp, "r", "utf-8-sig")
                         fh = codecs.open(file_name_err_tmp, mode="r")
                         lines = fh.readlines()
-                        
                         if len(lines) > 0:
                             for line in lines:
                                 # line = unicode(line, errors='replace')#fix errors
@@ -229,7 +218,6 @@ class CesceWebService():
                             _logger.info(file_name)
                             _logger.info(file_name_items)
                             partner_id_get = int(str(file_name_items[0]))
-                            #  importe_solicitado
                             importe_solicitado = file_name_items[10].replace('.', '').replace(',', '.')
                             texto_error = file_name_items[22]
 
@@ -246,7 +234,7 @@ class CesceWebService():
                                     # cesce_error
                                     res_partner_id_obj.cesce_error = texto_error
                                 else:
-                                    _logger.info('raro, no se encuentra el partner_id=' + str(partner_id_get))
+                                    _logger.info('raro, no se encuentra el partner_id=%s' % partner_id_get)
                     # save cesce_file_check
                     vals = {
                         'folder': self.ftp_folder_error,
@@ -796,7 +784,6 @@ class CesceWebService():
                         for file_name_items in file_name_items_real:
                             account_move_line_id_get = int(str(file_name_items[14]))
                             texto_error = file_name_items[13]
-
                             if account_move_line_id_get > 0:
                                 account_move_line_ids = self.custom_env['account.move.line'].search(
                                     [
@@ -932,12 +919,10 @@ class CesceWebService():
                                                     'num_sumplemento_cesce': str(file_name_items[4]),
                                                     'nif_deudor': str(nif_deudor),
                                                     'codigo_deudor_cesce': str(file_name_items[6]),
-                                                    #'partner_id': file_name_items[7],
                                                     'partner_id': account_move_line_id_obj.partner_id.id,
                                                     'fecha_factura': fecha_factura,
                                                     'fecha_vencimiento': fecha_vencimiento,
                                                     'importe_credito': str(file_name_items[10]),
-                                                    #'account_invoice_id': file_name_items[11],
                                                     'account_invoice_id': account_move_line_id_obj.invoice_id.id,
                                                     'cesce_sale_situation_id': cesce_sale_situation_id,
                                                     'cesce_sale_motive_situation_id': cesce_sale_motive_situation_id,
@@ -1082,7 +1067,6 @@ class CesceWebService():
                 
         txt_line = txt_line[:-1]# fix remove last character
         txt_line = txt_line + '\r\n'# fix new line
-        
         _logger.info(txt_line)
         # error prev
         response = {
@@ -1108,7 +1092,6 @@ class CesceWebService():
             fh = codecs.open(file_name, "a", "utf-8")
             fh.write(txt_line)
             fh.close()
-        
             res = self.upload_file_ftp(
                 file_name,
                 file_name_real,
