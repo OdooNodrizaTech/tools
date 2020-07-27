@@ -5,19 +5,19 @@ from odoo import fields, models
 
 class CesceWebserviceError(models.Model):
     _name = 'cesce.webservice.error'
-    _description = 'Cesce Webservice Error'    
+    _description = 'Cesce Webservice Error'
     
-    code = fields.Char(        
+    code = fields.Char(
         string='Code'
     )
-    name = fields.Char(        
+    name = fields.Char(
         string='Name'
     )
     area = fields.Selection(
         selection=[
-            ('none','None'),
-            ('security','Security'),
-            ('risk','Risk')
+            ('none', 'None'),
+            ('security', 'Security'),
+            ('risk', 'Risk')
         ],
         string='Area'
     )

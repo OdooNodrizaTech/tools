@@ -25,7 +25,7 @@ class CesceRiskClassification(models.Model):
     )
     codigo_fiscal = fields.Char(
         string='Codigo fiscal'
-    )   
+    )
     codigo_deudor_cesce = fields.Char(
         string='Codigo deudor Cesce'
     )
@@ -51,7 +51,7 @@ class CesceRiskClassification(models.Model):
     currency_id = fields.Many2one(
         comodel_name='res.currency',
         string='Moneda'
-    )    
+    )
     plazo_solicitado = fields.Integer(
         string='Plazo solicitado'
     )
@@ -65,7 +65,7 @@ class CesceRiskClassification(models.Model):
         string='Tipo movimiento'
     )
     cesce_risk_classification_situation_id = fields.Many2one(
-        comodel_name='cesce.risk.classification.situation',        
+        comodel_name='cesce.risk.classification.situation',
         string='Situacion',
     )
     fecha_solicitud = fields.Date(
@@ -93,21 +93,20 @@ class CesceRiskClassification(models.Model):
         string='Avalistas'
     )
     cesce_risk_classification_motive_id = fields.Many2one(
-        comodel_name='cesce.risk.classification.motive',        
+        comodel_name='cesce.risk.classification.motive',
         string='Motivo clasificacion',
     )
     codigo_deudor_interno = fields.Char(
         string='Codigo deudor interno'
-    ) 
+    )
     fecha_renovacion = fields.Date(
         string='Fecha renovacion'
     )
-    
+
     @api.model
     def cron_cesce_risk_classification_cambiar_fecha_renovacion(self):
         start_date = datetime.today()
         end_date = start_date + relativedelta(months=-2)
-        
         ids = self.env['cesce.risk.classification'].search(
             [
                 ('fecha_renovacion', '<=', end_date.strftime("%Y-%m-%d")),
@@ -117,21 +116,21 @@ class CesceRiskClassification(models.Model):
         )
         if ids:
             for crc_id in ids:
-                fecha_renovacion_new = str(year_next) + '%s-%s-%s' % (
+                fecha_renovacion_new = '%s-%s-%s' % (
                     (int(crc_id.fecha_renovacion.split('-')[0])+1),
                     crc_id.fecha_renovacion.split('-')[1],
                     crc_id.fecha_renovacion.split('-')[2]
                 )
                 crc_id.fecha_renovacion = fecha_renovacion_new
-    
+
     @api.model
     def cron_cesce_risk_classification_fecha_renovacion(self):
         current_date = datetime.today()
         start_date = current_date
         end_date = start_date + relativedelta(days=-30)
         
-        start_date_account_invoice = current_date + relativedelta(months=-6)
-        end_date_account_invoice = current_date                
+        start_date_invoice = current_date + relativedelta(months=-6)
+        end_date_invoice = current_date
         
         ids = self.env['cesce.risk.classification'].search(
             [
@@ -149,8 +148,8 @@ class CesceRiskClassification(models.Model):
                 invoice_ids = self.env['account.invoice'].search(
                     [
                         ('partner_id', '=', crc_id.partner_id.id),
-                        ('date_invoice', '>=', start_date_account_invoice.strftime("%Y-%m-%d")),
-                        ('date_invoice', '<=', end_date_account_invoice.strftime("%Y-%m-%d")),
+                        ('date_invoice', '>=', start_date_invoice.strftime("%Y-%m-%d")),
+                        ('date_invoice', '<=', end_date_invoice.strftime("%Y-%m-%d")),
                         ('state', '!=', 'draft'),
                         ('type', '=', 'out_invoice')
                     ]

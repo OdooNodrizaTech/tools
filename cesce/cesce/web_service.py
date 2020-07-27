@@ -274,7 +274,7 @@ class CesceWebService():
             'pais_provincia': False,  # 7
             'importe_solicitado': False,  # 8
             'importe_concedido': False,  # 9
-            'currency_id': 1,  #  10
+            'currency_id': 1,  # 10
             'plazo_solicitado': False,  # 11
             'plazo_concedido': False,  # 12
             'condicion_pago': False,  # 13
@@ -417,7 +417,8 @@ class CesceWebService():
         if index_exists(data, 25):
             item['codigo_deudor_interno'] = str(data[25]).rstrip()
         # operations codigo_deudor_interno (para calcular el partner_id)
-        if item['codigo_deudor_interno'] == False or item['codigo_deudor_interno'] == '':
+        if not item['codigo_deudor_interno'] \
+                or item['codigo_deudor_interno'] == '':
             _logger.info('No existe la posicion 25')
             _logger.info(data)
             # buscamos por NIF (codigo_fiscal)
@@ -434,7 +435,8 @@ class CesceWebService():
                 item['partner_id'] = ids[0].id
         else:
             # Si devuelven valor en codigo_deudor_interno es porque se lo hemos pasado
-            # previamente por Odoo y es nuetro partner_id (se revisa si existe por si acaso)
+            # previamente por Odoo y es nuetro partner_id
+            # s(se revisa si existe por si acaso)
             ids = self.custom_env['res.partner'].sudo().search(
                 [
                     ('id', '=', item['codigo_deudor_interno'])
@@ -446,7 +448,7 @@ class CesceWebService():
         return item
 
     def partner_classification_item(self, data):
-        if data['partner_id'] == False:
+        if not data['partner_id']:
             _logger.info('RARO, no hemos encontrado el ID de cliente')
             _logger.info(data)
         else:
@@ -456,11 +458,17 @@ class CesceWebService():
                 ]
             )
             if len(res_partner_ids) == 0:
-                _logger.info('RARO, no se encuentra el partner_id=%s' % data['partner_id'])
+                _logger.info(
+                    'RARO, no se encuentra el partner_id=%s'
+                    % data['partner_id']
+                )
                 _logger.info(data)
             else:
                 partner = res_partner_ids[0]
-                _logger.info('Se actualiza la informacion desde CESCE respecto al partner_id=%s' % partner.id)
+                _logger.info(
+                    'Se actualiza la informacion desde CESCE respecto al partner_id=%s'
+                    % partner.id
+                )
                 _logger.info(data)
                 # operations
                 if partner.cesce_risk_state == 'classification_ok':
@@ -477,7 +485,7 @@ class CesceWebService():
                             crc.fecha_efecto = data['fecha_efecto']
                             crc.fecha_anulacion = data['fecha_anulacion']
                             crc.fecha_renovacion = data['fecha_renovacion']
-                            crc.credit_limit = cesce_risk_classification_id.importe_concedido
+                            crc.credit_limit = crc.importe_concedido
                             # cesce_risk_state
                             if crc.importe_concedido == 0:
                                 partner.cesce_risk_state = 'canceled_ok'
@@ -485,11 +493,12 @@ class CesceWebService():
                             crc.tipo_movimiento = data['tipo_movimiento']
                             # cesce_risk_classification_situation_id
                             if data['cesce_risk_classification_situation_id']:
-                                crc.cesce_risk_classification_situation_id = data['cesce_risk_classification_situation_id']
+                                crc.cesce_risk_classification_situation_id = \
+                                    data['cesce_risk_classification_situation_id']
                 elif partner.cesce_risk_state == 'classification_sent':
                     # cesce_risk_clasification_vals
                     vals = {
-                        'partner_id': res_partner_id_obj.id,
+                        'partner_id': partner.id,
                         'code_cesce': data['code_cesce'],
                         'num_sup_cesce': data['num_sup_cesce'],
                         'nombre_deudor': data['nombre_deudor'],
@@ -505,7 +514,8 @@ class CesceWebService():
                         'plazo_concedido': data['plazo_concedido'],
                         'condicion_pago': data['condicion_pago'],
                         'tipo_movimiento': data['tipo_movimiento'],
-                        'cesce_risk_classification_situation_id': data['cesce_risk_classification_situation_id'],
+                        'cesce_risk_classification_situation_id':
+                            data['cesce_risk_classification_situation_id'],
                         'fecha_solicitud': data['fecha_solicitud'],
                         'fecha_efecto': data['fecha_efecto'],
                         'fecha_anulacion': data['fecha_anulacion'],
@@ -514,7 +524,8 @@ class CesceWebService():
                         'riesgo_comercial': data['riesgo_comercial'],
                         'riesgo_politico': data['riesgo_politico'],
                         'avalistas': data['avalistas'],
-                        'cesce_risk_classification_motive_id': data['cesce_risk_classification_motive_id'],
+                        'cesce_risk_classification_motive_id':
+                            data['cesce_risk_classification_motive_id'],
                         'codigo_deudor_interno': data['codigo_deudor_interno'],
                         'fecha_renovacion': data['fecha_renovacion']
                     }
@@ -549,8 +560,8 @@ class CesceWebService():
                     # operations
                     if 'OUT_SOLICITUDES' in file_name:
                         for file_name_items in file_name_items_real:
-                            data_item = self.partner_classification_item_define(file_name_items)# define normal object
-                            self.partner_classification_item(data_item)# operations
+                            data_item = self.partner_classification_item_define(file_name_items)  # define normal object
+                            self.partner_classification_item(data_item)  # operations
                     # save cesce_file_check
                     vals = {
                         'folder': self.ftp_folder_out,
@@ -598,7 +609,9 @@ class CesceWebService():
             },            
             {
                 'type': 'nif',
-                'value': str(partner_vat.replace('EU', '').replace(partner.country_id.code, '')),
+                'value': str(partner_vat.replace('EU', '').replace(
+                    partner.country_id.code, ''
+                )),
                 'value_test': '41980736D',
                 'size': 9,
             },
@@ -711,18 +724,21 @@ class CesceWebService():
                 'size': 150,
             },                                                                                                                        
         ]
-        
         txt_line = ''
         for txt_field in txt_fields:
             if self.test_mode:
                 value_txt_field = txt_field['value_test']
             else:
                 value_txt_field = txt_field['value']
+
+            txt_line = "%s%s%s" % (
+                txt_line,
+                str(str(value_txt_field).ljust(txt_field['size'], ' ')),
+                self.separator_fields
+            )
                 
-            txt_line = txt_line + str(str(value_txt_field).ljust(txt_field['size'], ' '))+self.separator_fields                                        
-                
-        txt_line = txt_line[:-1]# fix remove last character
-        txt_line = txt_line + '\r\n'# fix new line
+        txt_line = txt_line[:-1]  # fix remove last character
+        txt_line = txt_line + '\r\n'  # fix new line
         
         _logger.info(txt_line)
         # error prev
@@ -983,7 +999,6 @@ class CesceWebService():
         fecha_vencimiento = date_maturity_slit[0]+date_maturity_slit[1]+date_maturity_slit[2]              
         # partner_vat
         partner_vat = account_move_line.partner_id.vat.upper()
-        
         txt_fields = [
             {
                 'type': 'codigo_operacion_cesce',
@@ -1005,7 +1020,9 @@ class CesceWebService():
             },
             {
                 'type': 'nif_deudor',
-                'value': str(partner_vat.replace('EU', '').replace(account_move_line.partner_id.country_id.code, '')),
+                'value': str(partner_vat.replace('EU', '').replace(
+                    account_move_line.partner_id.country_id.code, ''
+                )),
                 'value_test': '62261643E',
                 'size': 20,
             },
@@ -1077,11 +1094,15 @@ class CesceWebService():
                 value_txt_field = txt_field['value_test']
             else:
                 value_txt_field = txt_field['value']
+
+            txt_line = "%s%s%s" % (
+                txt_line,
+                str(str(value_txt_field).ljust(txt_field['size'], ' ')),
+                self.separator_fields
+            )
                 
-            txt_line = txt_line + str(str(value_txt_field).ljust(txt_field['size'], ' '))+self.separator_fields                                        
-                
-        txt_line = txt_line[:-1]# fix remove last character
-        txt_line = txt_line + '\r\n'# fix new line
+        txt_line = txt_line[:-1]  # fix remove last character
+        txt_line = txt_line + '\r\n'  # fix new line
         _logger.info(txt_line)
         # error prev
         response = {

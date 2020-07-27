@@ -15,74 +15,74 @@ from .googleanalytics_webservice import GoogleanalyticsWebservice
 class GoogleanalyticsResultGeneral(models.Model):
     _name = 'googleanalytics.result.general'
     _description = 'Googleanalytics Result General'
-    
-    medium = fields.Char(        
+
+    medium = fields.Char(
         string='medium'
     )
-    pageviews = fields.Integer(        
+    pageviews = fields.Integer(
         string='pageviews'
     )
-    keyword = fields.Char(        
+    keyword = fields.Char(
         string='keyword'
     )
-    campaign = fields.Char(        
+    campaign = fields.Char(
         string='campaign'
     )
-    sessions = fields.Integer(        
+    sessions = fields.Integer(
         string='sessions'
     )
-    deviceCategory = fields.Char(        
+    deviceCategory = fields.Char(
         string='deviceCategory'
     )
     goal1ConversionRate = fields.Float(
         string='goal1ConversionRate'
     )
-    goal6ConversionRate = fields.Float(        
+    goal6ConversionRate = fields.Float(
         string='goal6ConversionRate'
     )
-    newUsers = fields.Integer(        
+    newUsers = fields.Integer(
         string='newUsers'
     )
-    webPropertyId = fields.Char(        
+    webPropertyId = fields.Char(
         string='webPropertyId'
     )
-    cityId = fields.Char(        
+    cityId = fields.Char(
         string='cityId'
     )
-    source = fields.Char(        
+    source = fields.Char(
         string='source'
     )
     goal1Completions = fields.Integer(
         string='goal1Completions'
     )
-    goal6Completions = fields.Integer(        
+    goal6Completions = fields.Integer(
         string='goal6Completions'
     )
-    sessionDuration = fields.Float(        
+    sessionDuration = fields.Float(
         string='sessionDuration'
     )
-    bounceRate = fields.Float(        
+    bounceRate = fields.Float(
         string='bounceRate'
     )
-    profileName = fields.Char(        
+    profileName = fields.Char(
         string='profileName'
     )
-    date = fields.Date(        
+    date = fields.Date(
         string='date'
     )
-    profileId = fields.Integer(        
+    profileId = fields.Integer(
         string='profileId'
     )
-    users = fields.Integer(        
+    users = fields.Integer(
         string='users'
     )
-    timeOnPage = fields.Float(        
+    timeOnPage = fields.Float(
         string='timeOnPage'
     )
-    uniqueEvents = fields.Integer(        
+    uniqueEvents = fields.Integer(
         string='uniqueEvents'
     )
-    accountId = fields.Integer(        
+    accountId = fields.Integer(
         string='accountId'
     )
 
@@ -94,8 +94,11 @@ class GoogleanalyticsResultGeneral(models.Model):
         key_file_location = odoo.tools.config.get('googleanalytics_api_key_file')
         googleanalytics_webservice = GoogleanalyticsWebservice(key_file_location)
         # define
-        metrics = ['ga:users', 'ga:newUsers', 'ga:sessions', 'ga:sessionDuration', 'ga:bounceRate', 'ga:pageviews', 'ga:timeOnPage', 'ga:goalXXCompletions', 'ga:goalXXConversionRate', 'ga:uniqueEvents']
-        dimensions = ['ga:date', 'ga:source', 'ga:medium', 'ga:campaign', 'ga:keyword', 'ga:cityId', 'ga:deviceCategory']
+        metrics = ['ga:users', 'ga:newUsers', 'ga:sessions', 'ga:sessionDuration',
+                   'ga:bounceRate', 'ga:pageviews', 'ga:timeOnPage',
+                   'ga:goalXXCompletions', 'ga:goalXXConversionRate', 'ga:uniqueEvents']
+        dimensions = ['ga:date', 'ga:source', 'ga:medium', 'ga:campaign',
+                      'ga:keyword', 'ga:cityId', 'ga:deviceCategory']
         # replace_xx_metrics
         metrics_xx_by_profile = {
             '15181752': 6,#todocesped
@@ -116,15 +119,21 @@ class GoogleanalyticsResultGeneral(models.Model):
 
         metrics = metrics_new
         # search
-        googleanalytics_result_general_ids = self.env['googleanalytics.result.general'].sudo().search(
+        ids = self.env['googleanalytics.result.general'].sudo().search(
             [
                 ('date', '=', str(date)),
                 ('profileId', '=', str(profile_id))
             ]
         )
-        if len(googleanalytics_result_general_ids) == 0:
+        if len(ids) == 0:
             try:
-                results = googleanalytics_webservice.get_results(profile_id, date, date, metrics, dimensions)
+                results = googleanalytics_webservice.get_results(
+                    profile_id,
+                    date,
+                    date,
+                    metrics,
+                    dimensions
+                )
                 if 'rows' in results:
                     if len(results['rows']) > 0:
                         for row in results['rows']:
@@ -153,7 +162,11 @@ class GoogleanalyticsResultGeneral(models.Model):
                                     row_value = row_value.replace('(', '').replace(')', '')
                                 # ga:date
                                 if columnHeaderName == 'date':
-                                    new_row_value = str(row_value[0:4]) + '-' + str(row_value[4:6]) + '-' + str(row_value[6:8])
+                                    new_row_value = '%s-%s-%s' % (
+                                        row_value[0:4],
+                                        row_value[4:6],
+                                        row_value[6:8]
+                                    )
                                     row_value = new_row_value
                                 # types
                                 if columnHeaderDataType == 'INTEGER':
@@ -175,7 +188,9 @@ class GoogleanalyticsResultGeneral(models.Model):
     def cron_get_yesterday_info(self):
         _logger.info('cron_get_yesterday_info')
         # vars
-        profile_ids = str(self.env['ir.config_parameter'].sudo().get_param('googleanalytics_api_profile_ids')).split(',')
+        profile_ids = str(self.env['ir.config_parameter'].sudo().get_param(
+            'googleanalytics_api_profile_ids'
+        )).split(',')
         current_date = datetime.today()
         date_yesterday = current_date + relativedelta(days=-1)
         # config
@@ -186,7 +201,9 @@ class GoogleanalyticsResultGeneral(models.Model):
     def cron_get_all_year_info(self):
         _logger.info('cron_get_all_year_info')
         # vars
-        profile_ids = str(self.env['ir.config_parameter'].sudo().get_param('googleanalytics_api_profile_ids')).split(',')
+        profile_ids = str(self.env['ir.config_parameter'].sudo().get_param(
+            'googleanalytics_api_profile_ids'
+        )).split(',')
         end_date = datetime.today()
         start_date = datetime(end_date.year, 1, 1)
         date_item = start_date

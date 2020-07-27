@@ -1,10 +1,13 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+
+import logging
 from odoo import api, models, fields
 
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 
 from ..cesce.web_service import CesceWebService
+_logger = logging.getLogger(__name__)
 
 
 class AccountMoveLine(models.Model):
@@ -31,48 +34,46 @@ class AccountMoveLine(models.Model):
     invoice_id_date = fields.Date(
         compute='_get_invoice_id_date',
         string='Invoice date',
-        store=False        
+        store=False
     )
     invoice_id_amount_total = fields.Monetary(
         compute='_get_invoice_id_amount_total',
         string='Amount invoice total',
-        store=False        
+        store=False
     )
     invoice_id_amount_untaxed = fields.Monetary(
         compute='_get_invoice_id_amount_untaxed',
         string='Invoice amount untaxed',
-        store=False        
+        store=False
     )    
     partner_id_credit_limit = fields.Monetary(
         compute='_get_partner_id_credit_limit',
         string='Credit limit',
-        store=False        
+        store=False
     )
 
     @api.one
-    def _get_partner_vat(self):                              
+    def _get_partner_vat(self):
         self.partner_vat = self.partner_id.vat
 
     @api.one
-    def _get_invoice_id_date(self):                              
+    def _get_invoice_id_date(self):
         self.invoice_id_date = self.invoice_id.date
 
     @api.one
-    def _get_invoice_id_amount_total(self):                              
+    def _get_invoice_id_amount_total(self):
         self.invoice_id_amount_total = self.invoice_id.amount_total
 
     @api.one
-    def _get_invoice_id_amount_untaxed(self):                              
+    def _get_invoice_id_amount_untaxed(self):
         self.invoice_id_amount_untaxed = self.invoice_id.amount_untaxed
 
     @api.one
-    def _get_partner_id_credit_limit(self):                              
+    def _get_partner_id_credit_limit(self):
         self.partner_id_credit_limit = self.partner_id.credit_limit
 
     @api.model
     def cron_cesce_sale_generate_file(self):
-        _logger.info('cron_cesce_sale_generate_file')
-
         current_date = datetime.today()
         start_date = current_date + relativedelta(months=-1, day=1)
         end_date = datetime(start_date.year, start_date.month, 1) + relativedelta(months=1, days=-1)                
@@ -92,20 +93,19 @@ class AccountMoveLine(models.Model):
             cesce_web_service = CesceWebService(self.env.user.company_id, self.env)
             
             for account_move_line_id in account_move_line_ids:
-                if account_move_line_id.invoice_id.date_invoice != account_move_line_id.invoice_id.date_due:
-                    return_generate_cesce_sale = cesce_web_service.generate_cesce_sale(
+                if account_move_line_id.invoice_id.date_invoice \
+                        != account_move_line_id.invoice_id.date_due:
+                    res = cesce_web_service.generate_cesce_sale(
                         account_move_line_id
                     )
-                    if not return_generate_cesce_sale['errors']:
+                    if not res['errors']:
                         account_move_line_id.cesce_sale_state = 'sale_sent'
                     else:
-                        _logger.info(return_generate_cesce_sale)                                        
+                        _logger.info(res)
         
     @api.model
     def cron_cesce_sale_check_file_out(self):
-        _logger.info('cron_cesce_sale_check_file_out')
-        # webservice
-        cesce_web_service = CesceWebService(self.env.user.company_id, self.env)        
+        cesce_web_service = CesceWebService(self.env.user.company_id, self.env)
         # errors
         cesce_web_service.cesce_sale_error()        
         # file_out
@@ -113,7 +113,7 @@ class AccountMoveLine(models.Model):
         # review with cesce_sale_state=sale_sent,sale_error
         account_move_line_ids = self.env['account.move.line'].search(
             [
-                ('cesce_sale_state', 'in', ('sale_sent','sale_error'))
+                ('cesce_sale_state', 'in', ('sale_sent', 'sale_error'))
             ]
         )
         if account_move_line_ids:

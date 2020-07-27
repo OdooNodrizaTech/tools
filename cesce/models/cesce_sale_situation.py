@@ -5,11 +5,11 @@ from odoo import fields, models
 
 class CesceSaleSituation(models.Model):
     _name = 'cesce.sale.situation'
-    _description = 'Cesce Situacion Ventas'    
+    _description = 'Cesce Situacion Ventas'
     
-    code = fields.Char(        
+    code = fields.Char(
         string='Code'
     )
-    name = fields.Char(        
+    name = fields.Char(
         string='Name'
     )

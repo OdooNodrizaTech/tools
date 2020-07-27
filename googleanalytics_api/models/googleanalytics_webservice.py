@@ -1,9 +1,6 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 import logging
 
-import datetime, os, codecs, pysftp
-from dateutil.relativedelta import relativedelta
-#need
 from apiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -23,14 +20,18 @@ class GoogleanalyticsWebservice():
         )
 
     def get_service(self, api_name, api_version, scopes, key_file_location):
-        credentials = ServiceAccountCredentials.from_json_keyfile_name(key_file_location, scopes=scopes)    
+        credentials = ServiceAccountCredentials.from_json_keyfile_name(
+            key_file_location,
+            scopes=scopes
+        )
         # Build the service object.
         service = build(api_name, api_version, credentials=credentials)    
         return service
 
-    def get_results_real(self, profile_id, start_date, end_date,  metrics, dimensions, start_index):
+    def get_results_real(self, profile_id, start_date, end_date,
+                         metrics, dimensions, start_index):
         return self.service.data().ga().get(
-                ids='ga:' + profile_id,
+                ids='ga:%s' % profile_id,
                 start_date=start_date,
                 end_date=end_date,
                 metrics=",".join(metrics),

@@ -98,9 +98,9 @@ class IrAttachment(models.Model):
                 )
             except ClientError as e:
                 _logger.info(e)
-                
-    @api.model    
-    def cron_action_s3_upload_ir_attachments(self):            
+
+    @api.model
+    def cron_action_s3_upload_ir_attachments(self):
         ir_attachment_ids = self.env['ir.attachment'].search(
             [
                 ('type', '=', 'binary'),
@@ -108,7 +108,7 @@ class IrAttachment(models.Model):
                 ('res_id', '>', 0)
             ],
             limit=1000
-        )                
-        if len(ir_attachment_ids)>0:
+        )
+        if ir_attachment_ids:
             for ir_attachment_id in ir_attachment_ids:
                 ir_attachment_id.upload_to_s3()

@@ -16,67 +16,67 @@ class GoogleanalyticsResultCampaign(models.Model):
     _name = 'googleanalytics.result.campaign'
     _description = 'Googleanalytics Result Campaign'
     
-    sessionDuration = fields.Float(        
+    sessionDuration = fields.Float(
         string='sessionDuration'
     )
-    landingPagePath = fields.Char(        
+    landingPagePath = fields.Char(
         string='landingPagePath'
     )
-    adGroup = fields.Char(        
+    adGroup = fields.Char(
         string='adGroup'
     )
-    pageviews = fields.Integer(        
+    pageviews = fields.Integer(
         string='pageviews'
     )
-    keyword = fields.Char(        
+    keyword = fields.Char(
         string='keyword'
     )
-    campaign = fields.Char(        
+    campaign = fields.Char(
         string='campaign'
     )
-    sessions = fields.Integer(        
+    sessions = fields.Integer(
         string='sessions'
     )
-    webPropertyId = fields.Char(        
+    webPropertyId = fields.Char(
         string='webPropertyId'
     )
-    totalEvents = fields.Integer(        
+    totalEvents = fields.Integer(
         string='totalEvents'
     )
-    entrances = fields.Integer(        
+    entrances = fields.Integer(
         string='entrances'
     )
-    source = fields.Char(        
+    source = fields.Char(
         string='source'
     )
-    medium = fields.Char(        
+    medium = fields.Char(
         string='medium'
     )
-    bounceRate = fields.Float(        
+    bounceRate = fields.Float(
         string='bounceRate'
     )
-    profileName = fields.Char(        
+    profileName = fields.Char(
         string='profileName'
     )
-    date = fields.Date(        
+    date = fields.Date(
         string='date'
     )
-    profileId = fields.Integer(        
+    profileId = fields.Integer(
         string='profileId'
     )
-    users = fields.Integer(        
+    users = fields.Integer(
         string='users'
     )
-    timeOnPage = fields.Float(        
+    timeOnPage = fields.Float(
         string='timeOnPage'
     )
-    exits = fields.Integer(        
+    exits = fields.Integer(
         string='exits'
     )
-    uniqueEvents = fields.Integer(        
+    uniqueEvents = fields.Integer(
         string='uniqueEvents'
     )
-    accountId = fields.Integer(        
+    accountId = fields.Integer(
         string='accountId'
     )
 
@@ -88,17 +88,26 @@ class GoogleanalyticsResultCampaign(models.Model):
         key_file_location = odoo.tools.config.get('googleanalytics_api_key_file')
         googleanalytics_webservice = GoogleanalyticsWebservice(key_file_location)
         # define
-        metrics = ['ga:users', 'ga:sessions', 'ga:sessionDuration', 'ga:bounceRate', 'ga:pageviews', 'ga:timeOnPage', 'ga:totalEvents', 'ga:uniqueEvents', 'ga:entrances', 'ga:exits']
-        dimensions = ['ga:date', 'ga:landingPagePath', 'ga:adGroup', 'ga:campaign', 'ga:source', 'ga:medium', 'ga:keyword']
+        metrics = ['ga:users', 'ga:sessions', 'ga:sessionDuration', 'ga:bounceRate',
+                   'ga:pageviews', 'ga:timeOnPage', 'ga:totalEvents',
+                   'ga:uniqueEvents', 'ga:entrances', 'ga:exits']
+        dimensions = ['ga:date', 'ga:landingPagePath', 'ga:adGroup', 'ga:campaign',
+                      'ga:source', 'ga:medium', 'ga:keyword']
         # search
-        googleanalytics_result_campaign_ids = self.env['googleanalytics.result.campaign'].sudo().search(
+        ids = self.env['googleanalytics.result.campaign'].sudo().search(
             [
                 ('date', '=', str(date)),
                 ('profileId', '=', str(profile_id))
             ]
         )
-        if len(googleanalytics_result_campaign_ids) == 0:
-            results = googleanalytics_webservice.get_results(profile_id, date, date, metrics, dimensions)
+        if len(ids) == 0:
+            results = googleanalytics_webservice.get_results(
+                profile_id,
+                date,
+                date,
+                metrics,
+                dimensions
+            )
             if 'rows' in results:
                 if len(results['rows']) > 0:
                     for row in results['rows']:
@@ -128,7 +137,11 @@ class GoogleanalyticsResultCampaign(models.Model):
                                 row_value = row_value.replace('(', '').replace(')', '')
                             # ga:date
                             if columnHeaderName == 'date':
-                                new_row_value = str(row_value[0:4]) + '-' + str(row_value[4:6]) + '-' + str(row_value[6:8])
+                                new_row_value = '%s-%s-%s' % (
+                                    row_value[0:4],
+                                    row_value[4:6],
+                                    row_value[6:8]
+                                )
                                 row_value = new_row_value
                             # types
                             if columnHeaderDataType == 'INTEGER':
@@ -148,7 +161,9 @@ class GoogleanalyticsResultCampaign(models.Model):
     def cron_get_yesterday_info(self):
         _logger.info('cron_get_yesterday_info')
         # vars
-        profile_ids = str(self.env['ir.config_parameter'].sudo().get_param('googleanalytics_api_profile_ids')).split(',')
+        profile_ids = str(self.env['ir.config_parameter'].sudo().get_param(
+            'googleanalytics_api_profile_ids'
+        )).split(',')
         current_date = datetime.today()
         date_yesterday = current_date + relativedelta(days=-1)
         # config
@@ -159,7 +174,9 @@ class GoogleanalyticsResultCampaign(models.Model):
     def cron_get_all_year_info(self):
         _logger.info('cron_get_all_year_info')
         # vars
-        profile_ids = str(self.env['ir.config_parameter'].sudo().get_param('googleanalytics_api_profile_ids')).split(',')
+        profile_ids = str(self.env['ir.config_parameter'].sudo().get_param(
+            'googleanalytics_api_profile_ids'
+        )).split(',')
         end_date = datetime.today()
         start_date = datetime(end_date.year, 1, 1)
         date_item = start_date

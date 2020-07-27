@@ -5,8 +5,8 @@ from odoo import fields, models
 
 class CescePaymentTerm(models.Model):
     _name = 'cesce.payment.term'
-    _description = 'Cesce Payment Term'    
-    
+    _description = 'Cesce Payment Term'
+
     code = fields.Char(
         string='Code'
     )

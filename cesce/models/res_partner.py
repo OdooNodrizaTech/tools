@@ -8,7 +8,7 @@ from ..cesce.web_service import CesceWebService
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
-    
+
     cesce_amount_requested = fields.Integer(
         string='Cesce Importe solicitado'
     )
@@ -33,7 +33,7 @@ class ResPartner(models.Model):
         compute='_compute_cesce_risk_classification_count',
         string="Cesce clasificaciones de riesgo"
     )
-    
+
     @api.one
     def write(self, vals):
         allow_write = True
@@ -42,7 +42,7 @@ class ResPartner(models.Model):
             if vals['vat']:
                 vals['vat'] = vals['vat'].upper()
         # credit_limit
-        if 'credit_limit' in vals:            
+        if 'credit_limit' in vals:
             if vals['credit_limit'] < 0:
                 allow_write = False
                 raise Warning("El Limite de credito NO puede ser < 0")                                
@@ -52,8 +52,10 @@ class ResPartner(models.Model):
         # operations
         if allow_write:
             if 'credit_limit' in vals:
-                #  Solo se notificara cuando el estado sea algo que haya venido de Cesce (bien sea porque nos han dado riesgo
-                #  o porque lo han actualizado a 0 -denegado o nos han dado riesgo aunque sea menos de lo que hemos pedido-)
+                #  Solo se notificara cuando el estado sea algo que haya venido
+                #  de Cesce (bien sea porque nos han dado riesgo o porque lo han
+                #  actualizado a 0 -denegado o nos han dado riesgo aunque sea menos
+                #  de lo que hemos pedido-)
                 if self.cesce_risk_state in ['classification_ok', 'classification_error', 'canceled_ok']:
                     if self.user_id:
                         if self.user_id.partner_id.id != self._uid:
@@ -72,7 +74,8 @@ class ResPartner(models.Model):
                                     if mm_id.tracking_value_ids:
                                         for tracking_value_id in mm_id.tracking_value_ids:
                                             if tracking_value_id.field == 'credit_limit':
-                                                if tracking_value_id.old_value_monetary != tracking_value_id.new_value_monetary:
+                                                if tracking_value_id.old_value_monetary \
+                                                        != tracking_value_id.new_value_monetary:
                                                     mail_message_need_starred = True
                                     # mail_message_need_starred
                                     if mail_message_need_starred:
@@ -89,7 +92,7 @@ class ResPartner(models.Model):
     
     @api.multi
     def _compute_cesce_risk_classification_count(self):
-        cesce_risk_classification_data = self.env['cesce.risk.classification'].read_group(
+        crc_data = self.env['cesce.risk.classification'].read_group(
             [('partner_id', 'in', self.ids)],
             ['partner_id'],
             ['partner_id']
@@ -97,10 +100,10 @@ class ResPartner(models.Model):
         mapped_data = dict(
             [
                 (
-                    cesce_risk_classification['partner_id'][0],
-                    cesce_risk_classification['partner_id_count']
+                    crc in['partner_id'][0],
+                    crc in['partner_id_count']
                 )
-                for cesce_risk_classification in cesce_risk_classification_data
+                for crc in crc_data
             ]
         )
         for partner in self:
@@ -132,7 +135,8 @@ class ResPartner(models.Model):
             
             if self.cesce_amount_requested == 0:
                 allow_action = False
-                raise Warning("Es necesario definir una importe solicitado para Cesce para poder tramitar la solicitud de riesgo")
+                raise Warning("Es necesario definir una importe solicitado "
+                              "para Cesce para poder tramitar la solicitud de riesgo")
             elif not self.vat:
                 allow_action = False
                 raise Warning("Es necesario definir un NIF/CIF")
