@@ -53,7 +53,7 @@ class CesceWebService():
             'CS': '12',# Castellon
             'CR': '13',# Ciudad Real
             'CO': '14',# Cordoba
-            'C': '15',#L a coruña
+            'C': '15',#La coruña
             'CU': '16',# Cuenca
             'GI': '17',# Gerona
             'GR': '18',# Granada
