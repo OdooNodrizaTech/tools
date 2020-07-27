@@ -2,7 +2,10 @@
 import logging
 
 import odoo
-import datetime, os, codecs, pysftp
+import datetime
+import os
+import codecs
+import pysftp
 
 _logger = logging.getLogger(__name__)
 
@@ -14,29 +17,31 @@ class CesceWebService():
     def __init__(self, company, env):
         self.company = company
         self.custom_env = env
+
+        ir_cf = env['ir.config_parameter']
                             
-        self.modalidad = env['ir.config_parameter'].sudo().get_param('cesce_modalidad')                        
-        self.poliza = env['ir.config_parameter'].sudo().get_param('cesce_poliza')
+        self.modalidad = ir_cf.sudo().get_param('cesce_modalidad')
+        self.poliza = ir_cf.sudo().get_param('cesce_poliza')
         
-        self.separator_fields = env['ir.config_parameter'].sudo().get_param('cesce_csv_delimiter')
+        self.separator_fields = ir_cf.sudo().get_param('cesce_csv_delimiter')
         # test_mode
         self.test_mode = True
-        cesce_test_mode = str(env['ir.config_parameter'].sudo().get_param('cesce_test_mode'))
+        cesce_test_mode = str(ir_cf.sudo().get_param('cesce_test_mode'))
         if cesce_test_mode == 'False':
             self.test_mode = False 
         
-        self.connection_risk_classification = env['ir.config_parameter'].sudo().get_param('cesce_connection_risk_classification')
-        self.connection_sale = env['ir.config_parameter'].sudo().get_param('cesce_connection_sale')        
+        self.connection_risk_classification = ir_cf.sudo().get_param('cesce_connection_risk_classification')
+        self.connection_sale = ir_cf.sudo().get_param('cesce_connection_sale')
         
         self.connection_ftp_host = odoo.tools.config.get('cesce_ftp_host')
         self.connection_ftp_user = odoo.tools.config.get('cesce_ftp_user')
         self.connection_ftp_password = odoo.tools.config.get('cesce_ftp_password')
         self.connection_ftp_port = int(odoo.tools.config.get('cesce_ftp_port'))        
         
-        self.ftp_folder_in = str(env['ir.config_parameter'].sudo().get_param('cesce_ftp_folder_in'))
-        self.ftp_folder_out = str(env['ir.config_parameter'].sudo().get_param('cesce_ftp_folder_out'))
-        self.ftp_folder_error = str(env['ir.config_parameter'].sudo().get_param('cesce_ftp_folder_error'))
-        self.ftp_folder_processed = str(env['ir.config_parameter'].sudo().get_param('cesce_ftp_folder_processed'))
+        self.ftp_folder_in = str(ir_cf.sudo().get_param('cesce_ftp_folder_in'))
+        self.ftp_folder_out = str(ir_cf.sudo().get_param('cesce_ftp_folder_out'))
+        self.ftp_folder_error = str(ir_cf.sudo().get_param('cesce_ftp_folder_error'))
+        self.ftp_folder_processed = str(ir_cf.sudo().get_param('cesce_ftp_folder_processed'))
         
         self.cod_provicnasi_esp = {
             'VI': '01',# Alava
