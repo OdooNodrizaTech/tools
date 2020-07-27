@@ -12,4 +12,4 @@ class CesceFileCheck(models.Model):
     )
     file = fields.Char(        
         string='File'
-    )                                       
+    )

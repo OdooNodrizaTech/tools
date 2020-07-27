@@ -12,4 +12,4 @@ class CesceRiskClassificationSituation(models.Model):
     )
     name = fields.Char(        
         string='Name'
-    )                                       
+    )

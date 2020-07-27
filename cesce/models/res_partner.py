@@ -2,8 +2,6 @@
 from odoo import api, models, fields
 from odoo.exceptions import Warning
 
-import logging
-_logger = logging.getLogger(__name__)
 
 from ..cesce.web_service import CesceWebService
 
@@ -56,7 +54,7 @@ class ResPartner(models.Model):
                 #  Solo se notificara cuando el estado sea algo que haya venido de Cesce (bien sea porque nos han dado riesgo
                 #  o porque lo han actualizado a 0 -denegado o nos han dado riesgo aunque sea menos de lo que hemos pedido-)
                 if self.cesce_risk_state in ['classification_ok', 'classification_error', 'canceled_ok']:
-                    if self.user_id.id > 0:
+                    if self.user_id:
                         if self.user_id.partner_id.id != self._uid:
                             mail_message_ids = self.env['mail.message'].sudo().search(
                                 [
@@ -83,15 +81,27 @@ class ResPartner(models.Model):
                                             if starred_partner_id.id == self.user_id.partner_id.id:
                                                 previously_insert = True
                                         # insert
-                                        if previously_insert == False:
+                                        if not previously_insert:
                                             mail_message_id.starred_partner_ids = [(4, self.user_id.partner_id.id)]            
         # return
         return return_write
     
     @api.multi
     def _compute_cesce_risk_classification_count(self):
-        cesce_risk_classification_data = self.env['cesce.risk.classification'].read_group([('partner_id', 'in', self.ids)], ['partner_id'], ['partner_id'])
-        mapped_data = dict([(cesce_risk_classification['partner_id'][0], cesce_risk_classification['partner_id_count']) for cesce_risk_classification in cesce_risk_classification_data])
+        cesce_risk_classification_data = self.env['cesce.risk.classification'].read_group(
+            [('partner_id', 'in', self.ids)],
+            ['partner_id'],
+            ['partner_id']
+        )
+        mapped_data = dict(
+            [
+                (
+                    cesce_risk_classification['partner_id'][0],
+                    cesce_risk_classification['partner_id_count']
+                )
+                for cesce_risk_classification in cesce_risk_classification_data
+            ]
+        )
         for partner in self:
             partner.cesce_risk_classification_count = mapped_data.get(partner.id, 0)            
     
@@ -122,7 +132,7 @@ class ResPartner(models.Model):
             if self.cesce_amount_requested == 0:
                 allow_action = False
                 raise Warning("Es necesario definir una importe solicitado para Cesce para poder tramitar la solicitud de riesgo")
-            elif self.vat == False:
+            elif not self.vat:
                 allow_action = False
                 raise Warning("Es necesario definir un NIF/CIF")
             elif self.country_id.id == 0:
@@ -131,13 +141,13 @@ class ResPartner(models.Model):
             elif self.state_id.id == 0:
                 allow_action = False
                 raise Warning("Es necesario definir una provincia")
-            elif self.zip == False:
+            elif not self.zip:
                 allow_action = False
                 raise Warning("Es necesario definir un codigo postal")
-            elif self.city == False:
+            elif not self.city:
                 allow_action = False
                 raise Warning("Es necesario definir una ciudad")
-            elif self.street == False:
+            elif not self.street:
                 allow_action = False
                 raise Warning("Es necesario definir una direccion")
             
@@ -145,7 +155,7 @@ class ResPartner(models.Model):
                 cesce_web_service = CesceWebService(self.env.user.company_id, self.env)
                 return_action = cesce_web_service.generate_partner_classification(self)
                 
-                if return_action['errors'] == False:
+                if not return_action['errors']:
                     self.cesce_risk_state = 'classification_sent'
                 else:
                     raise Warning(return_action['error'])
@@ -155,5 +165,4 @@ class ResPartner(models.Model):
     @api.one
     def action_partner_canceled_sent(self):
         _logger.info('action_partner_canceled_sent')
-        _logger.info('Generamos el archivo .txt y lo enviamos a cesce para despues cambiar el estado de cesce_risk_state=canceled_sent')
         return True                                                                                                                                                          
