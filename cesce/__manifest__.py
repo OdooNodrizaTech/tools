@@ -28,5 +28,5 @@
         "views/cesce_risk_classification_view.xml",
         "security/ir.model.access.csv"
     ],
-    "installable": True
+    "installable": True,
 }
