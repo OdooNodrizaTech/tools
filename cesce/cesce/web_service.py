@@ -42,7 +42,7 @@ class CesceWebService():
         self.ftp_folder_error = str(ir_cf.sudo().get_param('cesce_ftp_folder_error'))
         self.ftp_folder_processed = str(ir_cf.sudo().get_param('cesce_ftp_folder_processed'))
         self.cod_provicnasi_esp = {
-            'VI': '01',
+            'VI': '01',  # VI
             'AB': '02',
             'A': '03',
             'AL': '04',
@@ -95,7 +95,7 @@ class CesceWebService():
             'CE': '51',
             'ME': '52'
         }
-    
+
     # upload_file_ftp
     def upload_file_ftp(self, file_name, file_name_real, folder):
         response = {
@@ -190,16 +190,16 @@ class CesceWebService():
         return files
 
     # partner_classifications_error
-    def partner_classifications_error(self):        
-        if self.connection_risk_classification=='ftp':
+    def partner_classifications_error(self):
+        if self.connection_risk_classification == 'ftp':
             self.partner_classifications_error_ftp()
         else:
             self.partner_classifications_error_webservice()
 
     def partner_classifications_error_webservice(self):
         _logger.info('partner_classifications_error_webservice')
-        
-    def partner_classifications_error_ftp(self):                
+
+    def partner_classifications_error_ftp(self):
         tmp_file = 'error_solicitudes_tmp.txt'
         return_files_in_folder = self.get_files_in_folder_ftp(
             self.ftp_folder_error,
@@ -228,10 +228,12 @@ class CesceWebService():
                                         ('id', '=', partner_id_get)
                                     ]
                                 )
-                                if res_partner_ids:
+                                if ids:
                                     partner = ids[0]
-                                    if partner.cesce_risk_state == 'classification_sent':
-                                        partner.cesce_risk_state = 'classification_error'
+                                    if partner.cesce_risk_state == \
+                                            'classification_sent':
+                                        partner.cesce_risk_state = \
+                                            'classification_error'
                                     # cesce_error
                                     partner.cesce_error = texto_error
                                 else:
@@ -258,32 +260,32 @@ class CesceWebService():
         item = {
             'partner_id': False,  # 25 o 23 o 6
             'code_cesce': False,  # 0
-            'num_sup_cesce': False,# 1
-            'nombre_deudor': False,# 2
-            'codigo_fiscal': False,# 3
-            'codigo_deudor_cesce': False,# 4
-            'grupo_riesgo_deudor': False,# 5
-            'mercado': 'inside',# 6
-            'pais_provincia': False,# 7
-            'importe_solicitado': False,# 8
-            'importe_concedido': False,# 9
+            'num_sup_cesce': False,  # 1
+            'nombre_deudor': False,  # 2
+            'codigo_fiscal': False,  # 3
+            'codigo_deudor_cesce': False,  # 4
+            'grupo_riesgo_deudor': False,  # 5
+            'mercado': 'inside',  # 6
+            'pais_provincia': False,  # 7
+            'importe_solicitado': False,  # 8
+            'importe_concedido': False,  # 9
             'currency_id': 1,  #  10
-            'plazo_solicitado': False,# 11
-            'plazo_concedido': False,# 12
-            'condicion_pago': False,# 13
-            'tipo_movimiento': False,# 14
-            'cesce_risk_classification_situation_id': False,# 15
-            'fecha_solicitud': False,# 16
-            'fecha_efecto': False,# 17
-            'fecha_renovacion': False,# extra
-            'fecha_anulacion': False,# 18
-            'fecha_validez': False,# 19
-            'motivo_validez': False,# 20
-            'riesgo_comercial': False,# 21
-            'riesgo_politico': False,# 22
-            'avalistas': False,# 23
-            'cesce_risk_classification_motive_id': False,# 24
-            'codigo_deudor_interno': False,# 25
+            'plazo_solicitado': False,  # 11
+            'plazo_concedido': False,  # 12
+            'condicion_pago': False,  # 13
+            'tipo_movimiento': False,  # 14
+            'cesce_risk_classification_situation_id': False,  # 15
+            'fecha_solicitud': False,  # 16
+            'fecha_efecto': False,  # 17
+            'fecha_renovacion': False,  # extra
+            'fecha_anulacion': False,  # 18
+            'fecha_validez': False,  # 19
+            'motivo_validez': False,  # 20
+            'riesgo_comercial': False,  # 21
+            'riesgo_politico': False,  # 22
+            'avalistas': False,  # 23
+            'cesce_risk_classification_motive_id': False,  # 24
+            'codigo_deudor_interno': False,  # 25
         }
         # code_cesce
         if index_exists(data, 0):
