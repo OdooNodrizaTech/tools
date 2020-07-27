@@ -27,8 +27,8 @@ class CesceWebService():
         self.test_mode = True
         cesce_test_mode = str(ir_cf.sudo().get_param('cesce_test_mode'))
         if cesce_test_mode == 'False':
-            self.test_mode = False 
-        
+            self.test_mode = False
+
         self.connection_risk_classification = ir_cf.sudo().get_param(
             'cesce_connection_risk_classification'
         )
@@ -99,7 +99,7 @@ class CesceWebService():
     # upload_file_ftp
     def upload_file_ftp(self, file_name, file_name_real, folder):
         response = {
-            'errors': True, 
+            'errors': True,
             'error': ""
         }
         cnopts = pysftp.CnOpts()
@@ -127,8 +127,8 @@ class CesceWebService():
             response['errors'] = True
             response['error'] = str(e.message)
 
-        return response                        
-    
+        return response
+
     # get_files_in_folder_ftp
     def get_files_in_folder_ftp(self, folder, tmp_file):
         files = {}
@@ -164,14 +164,13 @@ class CesceWebService():
                         if len(lines) > 0:
                             for line in lines:
                                 # line = unicode(line, errors='replace')#fix errors
-                                line = line.decode('latin-1').encode("utf-8")                                                                                                                                                
-                                line_split = line.split(self.separator_fields)                                                                
+                                line = line.decode('latin-1').encode("utf-8")
+                                line_split = line.split(self.separator_fields)
                                 if len(line_split) > 0:
                                     line_real = []
                                     for line_split_item in line_split:
-                                        # line_split_item = line_split_item.decode("UTF-8").replace(u'\ufeff', u'')
                                         line_real.append(line_split_item)
-                                        
+
                                     files[file_get].append(line_real)
         # cesce_files_check
         cesce_files_check = []
@@ -187,22 +186,25 @@ class CesceWebService():
             for file_name, file_name_items_real in files.items():
                 if file_name in cesce_files_check:
                     del files[file_name]
-        
-        return files                                    
-    
+
+        return files
+
     # partner_classifications_error
     def partner_classifications_error(self):        
         if self.connection_risk_classification=='ftp':
             self.partner_classifications_error_ftp()
         else:
             self.partner_classifications_error_webservice()
-    
+
     def partner_classifications_error_webservice(self):
         _logger.info('partner_classifications_error_webservice')
         
     def partner_classifications_error_ftp(self):                
         tmp_file = 'error_solicitudes_tmp.txt'
-        return_files_in_folder = self.get_files_in_folder_ftp(self.ftp_folder_error, tmp_file)        
+        return_files_in_folder = self.get_files_in_folder_ftp(
+            self.ftp_folder_error,
+            tmp_file
+        )
         if len(return_files_in_folder) > 0:
             for file_name, file_name_items_real in return_files_in_folder.items():
                 cesce_file_check_ids = self.custom_env['cesce.file.check'].search(
@@ -218,21 +220,20 @@ class CesceWebService():
                             _logger.info(file_name)
                             _logger.info(file_name_items)
                             partner_id_get = int(str(file_name_items[0]))
-                            importe_solicitado = file_name_items[10].replace('.', '').replace(',', '.')
                             texto_error = file_name_items[22]
 
                             if partner_id_get > 0:
-                                res_partner_ids = self.custom_env['res.partner'].search(
+                                ids = self.custom_env['res.partner'].search(
                                     [
                                         ('id', '=', partner_id_get)
                                     ]
                                 )
                                 if res_partner_ids:
-                                    res_partner_id_obj = res_partner_ids[0]
-                                    if res_partner_id_obj.cesce_risk_state == 'classification_sent':
-                                        res_partner_id_obj.cesce_risk_state = 'classification_error'
+                                    partner = ids[0]
+                                    if partner.cesce_risk_state == 'classification_sent':
+                                        partner.cesce_risk_state = 'classification_error'
                                     # cesce_error
-                                    res_partner_id_obj.cesce_error = texto_error
+                                    partner.cesce_error = texto_error
                                 else:
                                     _logger.info('raro, no se encuentra el partner_id=%s' % partner_id_get)
                     # save cesce_file_check
@@ -241,23 +242,22 @@ class CesceWebService():
                         'file': file_name
                     }
                     self.custom_env['cesce.file.check'].sudo().create(vals)
-                                                                                                                                                                                                                                                                
-        
+
     # partner_classifications_out
     def partner_classifications_out(self):
         if self.connection_risk_classification == 'ftp':
             self.partner_classifications_out_ftp()
         else:
             self.partner_classifications_out_webservice()
-    
+
     def partner_classifications_out_webservice(self):
         _logger.info('partner_classifications_out_webservice')
 
     def partner_classification_item_define(self, data):
         # define
         item = {
-            'partner_id': False,# 25 o 23 o 6
-            'code_cesce': False,# 0
+            'partner_id': False,  # 25 o 23 o 6
+            'code_cesce': False,  # 0
             'num_sup_cesce': False,# 1
             'nombre_deudor': False,# 2
             'codigo_fiscal': False,# 3
