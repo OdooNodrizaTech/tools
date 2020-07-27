@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/OdooNodrizaTech/tools.svg?branch=12.0)](https://travis-ci.org/OdooNodrizaTech/tools)
+[![Coverage Status](https://coveralls.io/repos/OdooNodrizaTech/tools/badge.svg?branch=12.0)](https://coveralls.io/r/OdooNodrizaTech/tools?branch=12.0)
+
 tools
 =========
 Módulos relacionados con Tools
