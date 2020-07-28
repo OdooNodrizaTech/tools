@@ -1,15 +1,14 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+import logging
+from .googleanalytics_webservice import GoogleanalyticsWebservice
 from odoo import api, fields, models
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 import odoo
 
-import logging
 _logger = logging.getLogger(__name__)
 logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
-
-from .googleanalytics_webservice import GoogleanalyticsWebservice
 
 
 class GoogleanalyticsResultGeneral(models.Model):
@@ -101,10 +100,10 @@ class GoogleanalyticsResultGeneral(models.Model):
                       'ga:keyword', 'ga:cityId', 'ga:deviceCategory']
         # replace_xx_metrics
         metrics_xx_by_profile = {
-            '15181752': 6,#todocesped
-            '46640523': 1,#arelux
-            '85831272': 1,#oniup
-            '138471441': 1#oniad
+            '15181752': 6,  # todocesped
+            '46640523': 1,  # arelux
+            '85831272': 1,  # oniup
+            '138471441': 1  # oniad
         }
         metrics_new = []
 
@@ -139,10 +138,14 @@ class GoogleanalyticsResultGeneral(models.Model):
                         for row in results['rows']:
                             count = 0
                             vals = {
-                                'webPropertyId': results['profileInfo']['webPropertyId'],
-                                'profileId': results['profileInfo']['profileId'],
-                                'profileName': results['profileInfo']['profileName'],
-                                'accountId': results['profileInfo']['accountId']
+                                'webPropertyId':
+                                    results['profileInfo']['webPropertyId'],
+                                'profileId':
+                                    results['profileInfo']['profileId'],
+                                'profileName':
+                                    results['profileInfo']['profileName'],
+                                'accountId':
+                                    results['profileInfo']['accountId']
                             }
                             for columnHeader in results['columnHeaders']:
                                 # row_value

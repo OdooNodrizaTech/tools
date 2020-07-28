@@ -1,5 +1,4 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-#pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
 
 {
     "name": "Phone Call Log",

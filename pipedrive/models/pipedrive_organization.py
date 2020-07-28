@@ -1,6 +1,6 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-#https://developers.pipedrive.com/docs/api/v1/#!/Organizations
-from odoo import api, fields, models, tools
+# https://developers.pipedrive.com/docs/api/v1/#!/Organizations
+from odoo import api, fields, models, tools, _
 from pipedrive.client import Client
 import json
 import boto3
@@ -47,9 +47,10 @@ class PipedriveOrganization(models.Model):
         string='Partner Id'
     )
 
-    @api.one
+    @api.multi
     def check_res_partner(self):
         _logger.info('check_res_partner')
+        self.ensure_one()
         # partner_id
         vals = {
             'type': 'contact',
@@ -68,13 +69,13 @@ class PipedriveOrganization(models.Model):
         if self.address_postal_code:
             vals['zip'] = self.address_postal_code
             # search
-            res_city_zip_ids = self.env['res.city.zip'].sudo().search(
+            items = self.env['res.city.zip'].sudo().search(
                 [
                     ('name', '=', vals['zip'])
                 ]
             )
-            if res_city_zip_ids:
-                res_city_zip_id = res_city_zip_ids[0]
+            if items:
+                res_city_zip_id = items[0]
                 vals['state_id'] = res_city_zip_id.city_id.state_id.id
                 vals['country_id'] = res_city_zip_id.city_id.country_id.id
         # user_id
@@ -118,7 +119,9 @@ class PipedriveOrganization(models.Model):
         # operations
         if data['meta']['action'] not in ['updated', 'added']:
             result_message['errors'] = True
-            result_message['return_body'] = 'El action %s no tien que realizar ninguna accion' % data['meta']['action']
+            result_message['return_body'] = \
+                _('El action %s no tien que realizar ninguna accion') \
+                % data['meta']['action']
         else:
             # vals
             vals = {
@@ -126,7 +129,8 @@ class PipedriveOrganization(models.Model):
                 'name': data['current']['name']
             }
             # fields_need_check
-            fields_need_check = ['address', 'address_street_number', 'address_route', 'address_locality', 'address_country', 'address_postal_code']
+            fields_need_check = ['address', 'address_street_number', 'address_route',
+                                 'address_locality', 'address_country', 'address_postal_code']
             for field_need_check in fields_need_check:
                 if field_need_check in data['current']:
                     if data['current'][field_need_check] == None:
@@ -135,29 +139,31 @@ class PipedriveOrganization(models.Model):
                         vals[field_need_check] = data['current'][field_need_check]
             # pipedrive_user_id
             if data['current']['owner_id'] > 0:
-                pipedrive_user_ids = self.env['pipedrive.user'].sudo().search(
+                items = self.env['pipedrive.user'].sudo().search(
                     [
                         ('external_id', '=', data['current']['owner_id'])
                     ]
                 )
-                if len(pipedrive_user_ids) == 0:
+                if len(items) == 0:
                     result_message['delete_message'] = False
                     result_message['errors'] = True
-                    result_message['return_body'] = 'No existe el (pipedrive.user) owner_id=%s' % data['current']['owner_id']
+                    result_message['return_body'] = \
+                        _('No existe el (pipedrive.user) owner_id=%s') \
+                        % data['current']['owner_id']
                 else:
-                    vals['pipedrive_user_id'] = pipedrive_user_ids[0].id
+                    vals['pipedrive_user_id'] = items[0].id
         # all operations (if errors False)
-        if result_message['errors'] == False:
+        if not result_message['errors']:
             # create-update (pipedrive.organization)
-            pipedrive_organization_ids = self.env['pipedrive.organization'].sudo().search(
+            items = self.env['pipedrive.organization'].sudo().search(
                 [
                     ('external_id', '=', vals['external_id'])
                 ]
             )
-            if len(pipedrive_organization_ids) == 0:
-                pipedrive_organization_id = self.env['pipedrive.organization'].sudo().create(vals)
+            if len(items) == 0:
+                self.env['pipedrive.organization'].sudo().create(vals)
             else:
-                pipedrive_organization_id = pipedrive_organization_ids[0]
+                pipedrive_organization_id = items[0]
                 pipedrive_organization_id.write(vals)
         # return
         return result_message
@@ -166,8 +172,12 @@ class PipedriveOrganization(models.Model):
     def cron_pipedrive_organization_exec(self):
         _logger.info('cron_pipedrive_organization_exec')
         # params
-        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_domain'))
-        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_api_token'))
+        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param(
+            'pipedrive_domain'
+        ))
+        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param(
+            'pipedrive_api_token'
+        ))
         # api client
         client = Client(domain=pipedrive_domain)
         client.set_api_token(pipedrive_api_token)

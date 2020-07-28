@@ -25,20 +25,20 @@ class GoogleanalyticsWebservice():
             scopes=scopes
         )
         # Build the service object.
-        service = build(api_name, api_version, credentials=credentials)    
+        service = build(api_name, api_version, credentials=credentials)
         return service
 
     def get_results_real(self, profile_id, start_date, end_date,
                          metrics, dimensions, start_index):
         return self.service.data().ga().get(
-                ids='ga:%s' % profile_id,
-                start_date=start_date,
-                end_date=end_date,
-                metrics=",".join(metrics),
-                dimensions=",".join(dimensions),
-                start_index=start_index,
-                max_results=1000
-            ).execute()
+            ids='ga:%s' % profile_id,
+            start_date=start_date,
+            end_date=end_date,
+            metrics=",".join(metrics),
+            dimensions=",".join(dimensions),
+            start_index=start_index,
+            max_results=1000
+        ).execute()
 
     def get_results(self, profile_id, start_date, end_date, metrics, dimensions):
         start_index = 1
@@ -52,9 +52,9 @@ class GoogleanalyticsWebservice():
         )
         result_return = result
         if 'totalResults' in result:
-            if result['totalResults']>result['itemsPerPage']:
+            if result['totalResults'] > result['itemsPerPage']:
                 while result['totalResults'] > start_index:
-                    start_index += result['itemsPerPage']  
+                    start_index += result['itemsPerPage']
                     result = self.get_results_real(
                         profile_id,
                         start_date,
@@ -67,5 +67,5 @@ class GoogleanalyticsWebservice():
                     if 'rows' in result:
                         for row in result['rows']:
                             result_return['rows'].append(row)
-                
+
         return result_return

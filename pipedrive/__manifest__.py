@@ -14,7 +14,7 @@
         "mail_activity_done"
     ],
     "external_dependencies": {
-        "python3": [
+        "python": [
             "pipedrive-python-lib",
             "boto3"
         ],

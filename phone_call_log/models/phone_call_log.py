@@ -1,5 +1,5 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-from odoo import api, fields, models, tools
+from odoo import api, fields, models
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -65,9 +65,11 @@ class PhoneCallLog(models.Model):
         if return_object.number:
             if '+' not in return_object.number:
                 if return_object.user_id.partner_id.country_id:
-                    prefix_number = return_object.user_id.partner_id.country_id.phone_code
+                    prefix_number = return_object.user_id.partner_id.\
+                        country_id.phone_code
                 else:
-                    prefix_number = return_object.user_id.company_id.country_id.phone_code
+                    prefix_number = return_object.user_id.company_id.\
+                        country_id.phone_code
                 # number
                 number = return_object.number
             else:
@@ -122,7 +124,9 @@ class PhoneCallLog(models.Model):
                             'active': False,
                             'phone_call_type': return_object.type
                         }
-                        mail_activity_obj = self.env['mail.activity'].sudo(return_object.user_id.id).create(vals)
+                        mail_activity_obj = self.env['mail.activity'].sudo(
+                            return_object.user_id.id
+                        ).create(vals)
                         # update mail_activity_id
                         return_object.mail_activity_id = mail_activity_obj.id
         # return

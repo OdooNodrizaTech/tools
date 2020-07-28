@@ -1,5 +1,5 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-#https://developers.pipedrive.com/docs/api/v1/#!/Currencies
+# https://developers.pipedrive.com/docs/api/v1/#!/Currencies
 from odoo import api, fields, models
 from pipedrive.client import Client
 
@@ -37,23 +37,23 @@ class PipedriveCurrency(models.Model):
             'symbol': data['symbol']
         }
         # currency_id
-        res_currency_ids = self.env['res.currency'].search(
+        items = self.env['res.currency'].search(
             [
                 ('name', '=', data['code'])
             ]
         )
-        if res_currency_ids:
-            vals['currency_id'] = res_currency_ids[0].id
+        if items:
+            vals['currency_id'] = items[0].id
         # search
-        pipedrive_currency_ids = self.env['pipedrive.currency'].search(
+        items = self.env['pipedrive.currency'].search(
             [
                 ('external_id', '=', vals['external_id'])
             ]
         )
-        if len(pipedrive_currency_ids) == 0:
-            pipedrive_currency_obj = self.env['pipedrive.currency'].sudo().create(vals)
+        if len(items) == 0:
+            self.env['pipedrive.currency'].sudo().create(vals)
         else:
-            pipedrive_currency_id = pipedrive_currency_ids[0]
+            pipedrive_currency_id = items[0]
             pipedrive_currency_id.write(vals)
 
     @api.model
@@ -61,13 +61,17 @@ class PipedriveCurrency(models.Model):
         _logger.info('cron_pipedrive_currency_exec')
 
         # params
-        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_domain'))
-        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_api_token'))
+        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param(
+            'pipedrive_domain'
+        ))
+        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param(
+            'pipedrive_api_token'
+        ))
         # api client
         client = Client(domain=pipedrive_domain)
         client.set_api_token(pipedrive_api_token)
         # get_info
-        response = client._get(client.BASE_URL + 'currencies')
+        response = client.get(client.BASE_URL + 'currencies')
         if 'success' in response:
             if response['success']:
                 for data_item in response['data']:

@@ -1,5 +1,5 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-#https://developers.pipedrive.com/docs/api/v1/#!/ActivityTypes
+# https://developers.pipedrive.com/docs/api/v1/#!/ActivityTypes
 from odoo import api, fields, models
 from pipedrive.client import Client
 
@@ -33,28 +33,32 @@ class PipedriveActivityType(models.Model):
             'key_string': data['key_string']
         }
         # search
-        pipedrive_activity_type_ids = self.env['pipedrive.activity.type'].search(
+        items = self.env['pipedrive.activity.type'].search(
             [
                 ('external_id', '=', vals['external_id'])
             ]
         )
-        if len(pipedrive_activity_type_ids) == 0:
-            pipedrive_currency_obj = self.env['pipedrive.activity.type'].sudo().create(vals)
+        if len(items) == 0:
+            self.env['pipedrive.activity.type'].sudo().create(vals)
         else:
-            pipedrive_activity_type_id = pipedrive_activity_type_ids[0]
+            pipedrive_activity_type_id = items[0]
             pipedrive_activity_type_id.write(vals)
 
     @api.model
     def cron_pipedrive_activity_type_exec(self):
         _logger.info('cron_pipedrive_activity_type_exec')
         # params
-        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_domain'))
-        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_api_token'))
+        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param(
+            'pipedrive_domain'
+        ))
+        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param(
+            'pipedrive_api_token'
+        ))
         # api client
         client = Client(domain=pipedrive_domain)
         client.set_api_token(pipedrive_api_token)
         # get_info
-        response = client._get(client.BASE_URL + 'activityTypes')
+        response = client.get(client.BASE_URL + 'activityTypes')
         if 'success' in response:
             if response['success']:
                 for data_item in response['data']:

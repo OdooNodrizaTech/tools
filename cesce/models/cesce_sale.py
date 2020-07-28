@@ -6,7 +6,7 @@ from odoo import fields, models
 class CesceSale(models.Model):
     _name = 'cesce.sale'
     _description = 'Cesce Sale'
-    
+
     account_move_line_id = fields.Many2one(
         comodel_name='account.move.line',
         string='Codigo Operacion Cesce'
@@ -75,10 +75,10 @@ class CesceSale(models.Model):
     currency_id = fields.Many2one(
         comodel_name='res.currency',
         string='Divisa importe'
-    )      
+    )
     nif_cedente = fields.Char(
         string='Nif cedente'
-    )  
+    )
     fecha_adquisicion = fields.Date(
         string='Fecha adquisicion'
     )

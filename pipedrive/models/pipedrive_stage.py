@@ -1,5 +1,5 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-#https://developers.pipedrive.com/docs/api/v1/#!/Stages
+# https://developers.pipedrive.com/docs/api/v1/#!/Stages
 from odoo import api, fields, models
 from pipedrive.client import Client
 
@@ -37,31 +37,35 @@ class PipedriveStage(models.Model):
             'deal_probability': data['deal_probability']
         }
         # pipedrive_pipeline_id
-        pipedrive_pipeline_ids = self.env['pipedrive.pipeline'].search(
+        items = self.env['pipedrive.pipeline'].search(
             [
                 ('external_id', '=', data['pipeline_id'])
             ]
         )
-        if pipedrive_pipeline_ids:
-            vals['pipedrive_pipeline_id'] = pipedrive_pipeline_ids[0].id
+        if items:
+            vals['pipedrive_pipeline_id'] = items[0].id
         # search
-        pipedrive_stage_ids = self.env['pipedrive.stage'].search(
+        items = self.env['pipedrive.stage'].search(
             [
                 ('external_id', '=', vals['external_id'])
             ]
         )
-        if len(pipedrive_stage_ids) == 0:
-            pipedrive_stage_obj = self.env['pipedrive.stage'].sudo().create(vals)
+        if len(items) == 0:
+            self.env['pipedrive.stage'].sudo().create(vals)
         else:
-            pipedrive_stage_id = pipedrive_stage_ids[0]
+            pipedrive_stage_id = items[0]
             pipedrive_stage_id.write(vals)
 
     @api.model
     def cron_pipedrive_stage_exec(self):
         _logger.info('cron_pipedrive_stage_exec')
         # params
-        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_domain'))
-        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_api_token'))
+        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param(
+            'pipedrive_domain'
+        ))
+        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param(
+            'pipedrive_api_token'
+        ))
         # api client
         client = Client(domain=pipedrive_domain)
         client.set_api_token(pipedrive_api_token)

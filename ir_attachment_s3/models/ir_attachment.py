@@ -4,13 +4,12 @@ import logging
 import os
 from odoo import api, models, tools
 
+_logger = logging.getLogger(__name__)
 try:
     import boto3
     from botocore.exceptions import ClientError
 except ImportError:
     _logger.debug('Cannot boto3')
-
-_logger = logging.getLogger(__name__)
 
 
 class IrAttachment(models.Model):
@@ -24,8 +23,8 @@ class IrAttachment(models.Model):
                         item.remove_to_s3()
         # return
         return models.Model.unlink(self)    
-    
-    @api.one        
+
+    @api.one
     def remove_to_s3(self):
         destination_filename = 'ir_attachments/%s/%s/%s' % (
             self.res_model,
@@ -33,11 +32,8 @@ class IrAttachment(models.Model):
             self.name.encode('ascii', 'ignore').decode('ascii')
         )
         # decode
-        if isinstance(destination_filename, str):
-            decoded = False
-        else:
-            destination_filename = unicode_or_str.decode(destination_filename)
-            decoded = True
+        if not isinstance(destination_filename, str):
+            destination_filename = unidecode.unidecode(destination_filename)
         # client
         try:
             s3_client = boto3.client(
@@ -47,7 +43,9 @@ class IrAttachment(models.Model):
                 region_name=tools.config.get('aws_region_name')
             )
             s3_client.delete_object(
-                Bucket=self.env['ir.config_parameter'].sudo().get_param('ir_attachment_s3_bucket_name'),
+                Bucket=self.env['ir.config_parameter'].sudo().get_param(
+                    'ir_attachment_s3_bucket_name'
+                ),
                 Key=destination_filename[1:-1]
             )
         except:
@@ -65,11 +63,8 @@ class IrAttachment(models.Model):
             self.name.encode('ascii', 'ignore').decode('ascii')
         )
         # decode
-        if isinstance(destination_filename, str):
-            decoded = False
-        else:
-            destination_filename = unicode_or_str.decode(destination_filename)
-            decoded = True
+        if not isinstance(destination_filename, str):
+            destination_filename = unidecode.unidecode(destination_filename)
         # operations
         if not os.path.exists(source_path):
             self.unlink()
@@ -85,15 +80,19 @@ class IrAttachment(models.Model):
                 with open(source_path, "rb") as f:
                     s3_client.upload_fileobj(
                         f,
-                        self.env['ir.config_parameter'].sudo().get_param('ir_attachment_s3_bucket_name'),
+                        self.env['ir.config_parameter'].sudo().get_param(
+                            'ir_attachment_s3_bucket_name'
+                        ),
                         destination_filename,
-                        ExtraArgs={'ACL':'public-read'}
+                        ExtraArgs={'ACL': 'public-read'}
                     )
                 # update
                 self.type = 'url'
                 self.url = "https://s3-%s.amazonaws.com/%s/%s" % (
                     tools.config.get('aws_region_name'),
-                    self.env['ir.config_parameter'].sudo().get_param('ir_attachment_s3_bucket_name'),
+                    self.env['ir.config_parameter'].sudo().get_param(
+                        'ir_attachment_s3_bucket_name'
+                    ),
                     destination_filename
                 )
             except ClientError as e:

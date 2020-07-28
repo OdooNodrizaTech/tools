@@ -27,14 +27,16 @@ class ResPartner(models.Model):
         string='Tracking Session Uuid',
         readonly=True
     )
-    
-    @api.one
+
+    @api.multi
     def tracking_user_identify(self):
-        if self.tracking_user_uuid!=False and self.tracking_profile_uuid!=False:
+        self.ensure_one()
+        if self.tracking_user_uuid and self.tracking_profile_uuid:
             headers = {
                 'Content-type': 'application/json',
                 'origin': 'erp.arelux.com',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0'
+                'User-Agent':
+                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0'
             }
             data = {
                 "profile_uuid": str(self.tracking_profile_uuid),

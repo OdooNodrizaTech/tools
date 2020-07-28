@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
+
     <record id="cron_cesce_risk_classification_check_file_out" forcecreate="True" model="ir.cron">
         <field name="name">Cron Cesce Risk Classsification Check File Out</field>
         <field name="active" eval="True"/>
@@ -12,6 +13,7 @@
         <field name="state">code</field>
         <field name="code">model.cron_cesce_risk_classification_check_file_out()</field>
     </record>
+
     <record id="cron_cesce_sale_generate_file" forcecreate="True" model="ir.cron">
         <field name="name">Cron Cesce Sale Generate File</field>
         <field name="active" eval="True"/>
@@ -24,6 +26,7 @@
         <field name="state">code</field>
         <field name="code">model.cron_cesce_sale_generate_file()</field>
     </record>
+
     <record id="cron_cesce_sale_check_file_out" forcecreate="True" model="ir.cron">
         <field name="name">Cron Cesce Sale Check File Out</field>
         <field name="active" eval="True"/>
@@ -36,6 +39,7 @@
         <field name="state">code</field>
         <field name="code">model.cron_cesce_sale_check_file_out()</field>
     </record>
+
     <record id="cron_cesce_risk_classification_fecha_renovacion" forcecreate="True" model="ir.cron">
         <field name="name">Cron Cesce Risk Classification Fecha Renovacion</field>
         <field name="active" eval="False"/>
@@ -48,6 +52,7 @@
         <field name="state">code</field>
         <field name="code">model.cron_cesce_risk_classification_fecha_renovacion()</field>
     </record>
+
     <record id="cron_cesce_risk_classification_cambiar_fecha_renovacion" forcecreate="True" model="ir.cron">
         <field name="name">Cron Cesce Risk Classification Cambiar Fecha Renovacion</field>
         <field name="active" eval="False"/>
@@ -60,4 +65,5 @@
         <field name="state">code</field>
         <field name="code">model.cron_cesce_risk_classification_cambiar_fecha_renovacion()</field>
     </record>
+
 </odoo>

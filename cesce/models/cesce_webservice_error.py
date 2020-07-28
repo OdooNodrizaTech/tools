@@ -6,7 +6,7 @@ from odoo import fields, models
 class CesceWebserviceError(models.Model):
     _name = 'cesce.webservice.error'
     _description = 'Cesce Webservice Error'
-    
+
     code = fields.Char(
         string='Code'
     )

@@ -1,21 +1,20 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+import logging
+from .googleanalytics_webservice import GoogleanalyticsWebservice
 from odoo import api, fields, models
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 import odoo
 
-import logging
 _logger = logging.getLogger(__name__)
 logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
-
-from .googleanalytics_webservice import GoogleanalyticsWebservice
 
 
 class GoogleanalyticsResultCampaign(models.Model):
     _name = 'googleanalytics.result.campaign'
     _description = 'Googleanalytics Result Campaign'
-    
+
     sessionDuration = fields.Float(
         string='sessionDuration'
     )
@@ -114,10 +113,14 @@ class GoogleanalyticsResultCampaign(models.Model):
                         count = 0
                         # vals
                         vals = {
-                            'webPropertyId': results['profileInfo']['webPropertyId'],
-                            'profileId': results['profileInfo']['profileId'],
-                            'profileName': results['profileInfo']['profileName'],
-                            'accountId': results['profileInfo']['accountId']
+                            'webPropertyId':
+                                results['profileInfo']['webPropertyId'],
+                            'profileId':
+                                results['profileInfo']['profileId'],
+                            'profileName':
+                                results['profileInfo']['profileName'],
+                            'accountId':
+                                results['profileInfo']['accountId']
                         }
                         for columnHeader in results['columnHeaders']:
                             # row_value
@@ -125,7 +128,6 @@ class GoogleanalyticsResultCampaign(models.Model):
                             # data
                             columnHeaderName = str(columnHeader['name'])
                             columnHeaderName = columnHeaderName.replace('ga:', '')
-
                             columnHeaderDataType = str(columnHeader['dataType'])
                             # pre_item
                             vals[columnHeaderName] = ''

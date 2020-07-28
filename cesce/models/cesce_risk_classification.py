@@ -128,11 +128,11 @@ class CesceRiskClassification(models.Model):
         current_date = datetime.today()
         start_date = current_date
         end_date = start_date + relativedelta(days=-30)
-        
+
         start_date_invoice = current_date + relativedelta(months=-6)
         end_date_invoice = current_date
-        
-        ids = self.env['cesce.risk.classification'].search(
+
+        items = self.env['cesce.risk.classification'].search(
             [
                 ('fecha_renovacion', '>=', start_date.strftime("%Y-%m-%d")),
                 ('fecha_renovacion', '<=', end_date.strftime("%Y-%m-%d")),
@@ -142,12 +142,12 @@ class CesceRiskClassification(models.Model):
                  )
             ]
         )
-        if ids:
-            for crc_id in ids:
+        if items:
+            for item in items:
                 account_invoice_amount_untaxed_sum = 0
                 invoice_ids = self.env['account.invoice'].search(
                     [
-                        ('partner_id', '=', crc_id.partner_id.id),
+                        ('partner_id', '=', item.partner_id.id),
                         ('date_invoice', '>=', start_date_invoice.strftime("%Y-%m-%d")),
                         ('date_invoice', '<=', end_date_invoice.strftime("%Y-%m-%d")),
                         ('state', '!=', 'draft'),
@@ -159,15 +159,16 @@ class CesceRiskClassification(models.Model):
                         account_invoice_amount_untaxed_sum += invoice_id.amount_untaxed
                 # slack_message
                 vals = {
-                    'msg': 'El contacto %s (%s) ha tenido una facturacion de %s en los ultimos 6 meses' % (
-                        cesce_risk_classification_id.partner_id.name,
-                        cesce_risk_classification_id.partner_id.vat,
+                    'msg': 'El contacto %s (%s) ha tenido una '
+                           'facturacion de %s en los ultimos 6 meses' % (
+                        item.partner_id.name,
+                        item.partner_id.vat,
                         account_invoice_amount_untaxed_sum
                     ),
                     'model': 'res.partner',
-                    'res_id': cesce_risk_classification_id.partner_id.id,
+                    'res_id': item.partner_id.id,
                     'channel': self.env['ir.config_parameter'].sudo().get_param(
                         'slack_oniad_log_channel'
                     ),
-                }                        
+                }
                 self.env['slack.message'].sudo().create(vals)

@@ -35,5 +35,6 @@
         <field name="id">6</field>
         <field name="code">180</field>
         <field name="name">180 dias</field>        
-    </record>        
+    </record>
+
 </odoo>

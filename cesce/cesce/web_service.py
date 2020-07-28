@@ -209,13 +209,13 @@ class CesceWebService():
         )
         if len(return_files_in_folder) > 0:
             for file_name, file_name_items_real in return_files_in_folder.items():
-                cesce_file_check_ids = self.custom_env['cesce.file.check'].search(
+                items = self.custom_env['cesce.file.check'].search(
                     [
                         ('folder', '=', str(self.ftp_folder_error)),
                         ('file', '=', str(file_name))
                     ]
                 )
-                if len(cesce_file_check_ids) == 0:
+                if len(items) == 0:
                     # operations
                     if 'ERR_SOLICITUDES' in file_name:
                         for file_name_items in file_name_items_real:
@@ -325,13 +325,13 @@ class CesceWebService():
             item['importe_concedido'] = str(data[9].replace('.', '').replace(',', '.'))
         # currency_id
         if index_exists(data, 10):
-            ids = self.custom_env['res.currency'].sudo().search(
+            items = self.custom_env['res.currency'].sudo().search(
                 [
                     ('name', '=', data[10])
                 ]
             )
-            if ids:
-                item['currency_id'] = ids[0].id
+            if items:
+                item['currency_id'] = items[0].id
         # plazo_solicitado
         if index_exists(data, 11):
             item['plazo_solicitado'] = int(str(data[11].replace('DIAS', '').strip()))
@@ -348,13 +348,13 @@ class CesceWebService():
             item['tipo_movimiento'] = str(data[14])
         # cesce_risk_classification_situation_id
         if index_exists(data, 15):
-            ids = self.custom_env['cesce.risk.classification.situation'].search(
+            items = self.custom_env['cesce.risk.classification.situation'].search(
                 [
                     ('code', '=', data[15])
                 ]
             )
-            if ids:
-                item['cesce_risk_classification_situation_id'] = ids[0].id
+            if items:
+                item['cesce_risk_classification_situation_id'] = items[0].id
         # fecha_solicitud
         if index_exists(data, 16):
             item['fecha_solicitud'] = '%s-%s-%s' % (
@@ -406,13 +406,13 @@ class CesceWebService():
             item['avalistas'] = str(data[23])
         # cesce_risk_classification_motive_id
         if index_exists(data, 24):
-            ids = self.custom_env['cesce.risk.classification.motive'].sudo().search(
+            items = self.custom_env['cesce.risk.classification.motive'].sudo().search(
                 [
                     ('code', '=', data[24])
                 ]
             )
-            if ids:
-                item['cesce_risk_classification_motive_id'] = ids[0].id
+            if items:
+                item['cesce_risk_classification_motive_id'] = items[0].id
         # codigo_deudor_interno
         if index_exists(data, 25):
             item['codigo_deudor_interno'] = str(data[25]).rstrip()
@@ -422,7 +422,7 @@ class CesceWebService():
             _logger.info('No existe la posicion 25')
             _logger.info(data)
             # buscamos por NIF (codigo_fiscal)
-            ids = self.custom_env['res.partner'].sudo().search(
+            items = self.custom_env['res.partner'].sudo().search(
                 [
                     ('active', '=', True),
                     ('customer', '=', True),
@@ -431,19 +431,19 @@ class CesceWebService():
                     ('vat', 'like', item['codigo_fiscal'])
                 ]
             )
-            if len(ids) > 0:
-                item['partner_id'] = ids[0].id
+            if len(items) > 0:
+                item['partner_id'] = items[0].id
         else:
             # Si devuelven valor en codigo_deudor_interno es porque se lo hemos pasado
             # previamente por Odoo y es nuetro partner_id
             # s(se revisa si existe por si acaso)
-            ids = self.custom_env['res.partner'].sudo().search(
+            items = self.custom_env['res.partner'].sudo().search(
                 [
                     ('id', '=', item['codigo_deudor_interno'])
                 ]
             )
-            if len(ids) > 0:
-                item['partner_id'] = ids[0].id
+            if len(items) > 0:
+                item['partner_id'] = items[0].id
         # return
         return item
 
@@ -452,19 +452,19 @@ class CesceWebService():
             _logger.info('RARO, no hemos encontrado el ID de cliente')
             _logger.info(data)
         else:
-            res_partner_ids = self.custom_env['res.partner'].sudo().search(
+            items = self.custom_env['res.partner'].sudo().search(
                 [
                     ('id', '=', data['partner_id'])
                 ]
             )
-            if len(res_partner_ids) == 0:
+            if len(items) == 0:
                 _logger.info(
                     'RARO, no se encuentra el partner_id=%s'
                     % data['partner_id']
                 )
                 _logger.info(data)
             else:
-                partner = res_partner_ids[0]
+                partner = items[0]
                 _logger.info(
                     'Se actualiza la informacion desde CESCE respecto al partner_id=%s'
                     % partner.id
@@ -529,7 +529,8 @@ class CesceWebService():
                         'codigo_deudor_interno': data['codigo_deudor_interno'],
                         'fecha_renovacion': data['fecha_renovacion']
                     }
-                    crc_obj = self.custom_env['cesce.risk.classification'].sudo().create(vals)
+                    crc_obj = \
+                        self.custom_env['cesce.risk.classification'].sudo().create(vals)
                     # check_partner and update
                     if crc_obj.partner_id:
                         crc_obj.partner_id.credit_limit = crc_obj.importe_concedido
@@ -550,17 +551,19 @@ class CesceWebService():
             for file_name, file_name_items_real in return_files_in_folder.items():
                 _logger.info(self.ftp_folder_out)
                 _logger.info(file_name)
-                ids = self.custom_env['cesce.file.check'].search(
+                items = self.custom_env['cesce.file.check'].search(
                     [
                         ('folder', '=', str(self.ftp_folder_out)),
                         ('file', '=', str(file_name))
                     ]
                 )
-                if len(ids) == 0:
+                if len(items) == 0:
                     # operations
                     if 'OUT_SOLICITUDES' in file_name:
                         for file_name_items in file_name_items_real:
-                            data_item = self.partner_classification_item_define(file_name_items)  # define normal object
+                            data_item = self.partner_classification_item_define(
+                                file_name_items
+                            )  # define normal object
                             self.partner_classification_item(data_item)  # operations
                     # save cesce_file_check
                     vals = {
@@ -568,18 +571,18 @@ class CesceWebService():
                         'file': file_name
                     }
                     self.custom_env['cesce.file.check'].sudo().create(vals)
-    
+
     # generate_partner_classification
     def generate_partner_classification(self, partner):
         if self.connection_risk_classification == 'ftp':
            return self.generate_partner_classification_ftp(partner)
         else:
-            return self.generate_partner_classification_webservice(partner) 
-    
+            return self.generate_partner_classification_webservice(partner)
+
     def generate_partner_classification_webservice(self, partner):
         _logger.info('generate_partner_classification_webservice')
-    
-    def generate_partner_classification_ftp(self, partner):                                
+
+    def generate_partner_classification_ftp(self, partner):
         today = datetime.datetime.today()
         # provincia_estado
         provincia_estado = ''
@@ -590,9 +593,9 @@ class CesceWebService():
         cod_provincia = ''
         if partner.state_id:
             if partner.state_id.code in self.cod_provicnasi_esp:
-                cod_provincia = str(self.cod_provicnasi_esp[partner.state_id.code])                    
+                cod_provincia = str(self.cod_provicnasi_esp[partner.state_id.code])
         # fix_partner_vat
-        partner_vat = partner.vat.upper()            
+        partner_vat = partner.vat.upper()
         # txt_fields
         txt_fields = [
             {
@@ -606,7 +609,7 @@ class CesceWebService():
                 'value': str(partner.country_id.code),
                 'value_test': 'ES',
                 'size': 2,
-            },            
+            },
             {
                 'type': 'nif',
                 'value': str(partner_vat.replace('EU', '').replace(
@@ -722,7 +725,7 @@ class CesceWebService():
                 'value': '',
                 'value_test': '',
                 'size': 150,
-            },                                                                                                                        
+            },
         ]
         txt_line = ''
         for txt_field in txt_fields:
@@ -736,17 +739,17 @@ class CesceWebService():
                 str(str(value_txt_field).ljust(txt_field['size'], ' ')),
                 self.separator_fields
             )
-                
+
         txt_line = txt_line[:-1]  # fix remove last character
         txt_line = txt_line + '\r\n'  # fix new line
-        
+
         _logger.info(txt_line)
         # error prev
         response = {
-            'errors': True, 
-            'error': "", 
+            'errors': True,
+            'error': "",
             'return': "",
-        }                                
+        }
         # open file for reading
         file_name_real = "In_SOLICITUDES%s_%s.csv" % (
             today.strftime('%d%m%Y%H%M'),
@@ -759,13 +762,13 @@ class CesceWebService():
         # check if exists file
         line_exist_in_file = False
         if os.path.isfile(file_name):
-            line_exist_in_file=True                                                                                        
+            line_exist_in_file = True
         # continue line_exist_in_file
         if not line_exist_in_file:
             fh = codecs.open(file_name, "a", "utf-8")
             fh.write(txt_line)
             fh.close()
-        
+
             res = self.upload_file_ftp(
                 file_name,
                 file_name_real,
@@ -775,25 +778,25 @@ class CesceWebService():
             response['error'] = res['error']
         else:
             response = {
-                'errors': True, 
-                'error': "Ya existe este archivo .txt", 
+                'errors': True,
+                'error': "Ya existe este archivo .txt",
                 'return': "",
             }
         return response
-    
+
     # cesce_sale_error
     def cesce_sale_error(self):
         if self.connection_sale == 'ftp':
             self.cesce_sale_error_ftp()
         else:
             self.cesce_sale_error_webservice()
-        
+
     def cesce_sale_error_webservice(self):
         _logger.info('cesce_sale_error_webservice')
-        
+
     def cesce_sale_error_ftp(self):
         _logger.info('cesce_sale_error_ftp')
-        
+
         tmp_file = 'error_ventas_tmp.txt'
         return_files_in_folder = self.get_files_in_folder_ftp(
             self.ftp_folder_error,
@@ -801,32 +804,35 @@ class CesceWebService():
         )
         if len(return_files_in_folder) > 0:
             for file_name, file_name_items_real in return_files_in_folder.items():
-                ids = self.custom_env['cesce.file.check'].search(
+                items = self.custom_env['cesce.file.check'].search(
                     [
                         ('folder', '=', str(self.ftp_folder_error)),
                         ('file', '=', str(file_name))
                     ]
                 )
-                if len(ids) == 0:
+                if len(items) == 0:
                     # operations
                     if 'ERR_VENTAS' in file_name:
                         for file_name_items in file_name_items_real:
                             account_move_line_id_get = int(str(file_name_items[14]))
                             texto_error = file_name_items[13]
                             if account_move_line_id_get > 0:
-                                ids = self.custom_env['account.move.line'].search(
+                                items = self.custom_env['account.move.line'].search(
                                     [
                                         ('id', '=', account_move_line_id_get)
                                     ]
                                 )
-                                if ids:
-                                    account_move_line = ids[0]
-                                    if account_move_line.cesce_sale_state == 'sale_sent':
-                                        account_move_line.cesce_sale_state = 'sale_error'
+                                if items:
+                                    move_line = items[0]
+                                    if move_line.cesce_sale_state == 'sale_sent':
+                                        move_line.cesce_sale_state = 'sale_error'
                                     # cesce_error
-                                    account_move_line.cesce_error = texto_error
+                                    move_line.cesce_error = texto_error
                                 else:
-                                    _logger.info('raro, no se encuentra el move_line_id=%s' % ids)
+                                    _logger.info(
+                                        'raro, no se encuentra el move_line_id=%s'
+                                        % account_move_line_id_get
+                                    )
 
                     # save cesce_file_check
                     vals = {
@@ -855,13 +861,13 @@ class CesceWebService():
         )
         if len(return_files_in_folder) > 0:
             for file_name, file_name_items_real in return_files_in_folder.items():
-                ids = self.custom_env['cesce.file.check'].search(
+                items = self.custom_env['cesce.file.check'].search(
                     [
                         ('folder', '=', str(self.ftp_folder_out)),
                         ('file', '=', str(file_name))
                     ]
                 )
-                if len(ids) == 0:
+                if len(items) == 0:
                     # operations
                     if 'OUT_VENTAS' in file_name:
                         for file_name_items in file_name_items_real:
@@ -872,16 +878,19 @@ class CesceWebService():
                                 else:
                                     account_move_line_id_get = int(file_name_pos_23)
                                     if account_move_line_id_get > 0:
-                                        ids = self.custom_env['account.move.line'].search(
+                                        items = self.custom_env['account.move.line'].search(
                                             [
                                                 ('id', '=', account_move_line_id_get)
                                             ]
                                         )
-                                        if len(ids) == 0:
-                                            _logger.info('raro, no se encuentra el move_line_id=%s' % ids)
+                                        if len(items) == 0:
+                                            _logger.info(
+                                                'raro, no se encuentra el move_line_id=%s'
+                                                % account_move_line_id_get
+                                            )
                                         else:
-                                            account_move_line_id_obj = ids[0]
-                                            if account_move_line_id_obj.cesce_sale_state == 'sale_sent':
+                                            move_line = items[0]
+                                            if move_line.cesce_sale_state == 'sale_sent':
                                                 # nif_filial
                                                 nif_filial = file_name_items[1].replace(' ', '').strip()
                                                 # fecha_movimiento
@@ -906,31 +915,31 @@ class CesceWebService():
                                                 )
                                                 # cesce_sale_situation_id
                                                 cesce_sale_situation_id = False
-                                                ids = self.custom_env['cesce.sale.situation'].search(
+                                                items = self.custom_env['cesce.sale.situation'].search(
                                                     [
                                                         ('code', '=', int(file_name_items[12]))
                                                     ]
                                                 )
-                                                if ids:
-                                                    cesce_sale_situation_id = ids[0].id
+                                                if items:
+                                                    cesce_sale_situation_id = items[0].id
                                                 # cesce_sale_motive_situation_id
                                                 cesce_sale_motive_situation_id = False
-                                                ids = self.custom_env['cesce.sale.motive.situation'].search(
+                                                items = self.custom_env['cesce.sale.motive.situation'].search(
                                                     [
                                                         ('code', '=', int(file_name_items[13]))
                                                     ]
                                                 )
-                                                if ids:
-                                                    cesce_sale_motive_situation_id = ids[0].id
+                                                if items:
+                                                    cesce_sale_motive_situation_id = items[0].id
                                                 # currency_id
                                                 currency_id = 1
-                                                ids = self.custom_env['res.currency'].search(
+                                                items = self.custom_env['res.currency'].search(
                                                     [
                                                         ('name', '=', str(file_name_items[20]))
                                                     ]
                                                 )
-                                                if ids:
-                                                    currency_id = ids[0].id
+                                                if items:
+                                                    currency_id = items[0].id
                                                 # nif_cedente
                                                 nif_cedente = file_name_items[21].replace(' ', '').strip()
                                                 # fecha_adquisicion
@@ -950,13 +959,14 @@ class CesceWebService():
                                                     'num_sumplemento_cesce': str(file_name_items[4]),
                                                     'nif_deudor': str(nif_deudor),
                                                     'codigo_deudor_cesce': str(file_name_items[6]),
-                                                    'partner_id': account_move_line_id_obj.partner_id.id,
+                                                    'partner_id': move_line.partner_id.id,
                                                     'fecha_factura': fecha_factura,
                                                     'fecha_vencimiento': fecha_vencimiento,
                                                     'importe_credito': str(file_name_items[10]),
-                                                    'account_invoice_id': account_move_line_id_obj.invoice_id.id,
+                                                    'account_invoice_id': move_line.invoice_id.id,
                                                     'cesce_sale_situation_id': cesce_sale_situation_id,
-                                                    'cesce_sale_motive_situation_id': cesce_sale_motive_situation_id,
+                                                    'cesce_sale_motive_situation_id':
+                                                        cesce_sale_motive_situation_id,
                                                     'percent_riesgo_comercial': str(file_name_items[14]),
                                                     'percent_tasa_rrcc': str(file_name_items[15]),
                                                     'prima_rrcc': str(file_name_items[16]),
@@ -1087,7 +1097,7 @@ class CesceWebService():
                 'size': 30,
             },
         ]
-        
+
         txt_line = ''
         for txt_field in txt_fields:
             if self.test_mode:
@@ -1122,7 +1132,7 @@ class CesceWebService():
         # check if exists line
         line_exist_in_file = False
         if os.path.isfile(file_name):
-            line_exist_in_file=True                        
+            line_exist_in_file = True
         # continue line_exist_in_file
         if not line_exist_in_file:
             fh = codecs.open(file_name, "a", "utf-8")
@@ -1137,8 +1147,8 @@ class CesceWebService():
             response['error'] = res['error']
         else:
             response = {
-                'errors': True, 
-                'error': "Ya existe este archivo .txt", 
+                'errors': True,
+                'error': "Ya existe este archivo .txt",
                 'return': "",
             }
         return response

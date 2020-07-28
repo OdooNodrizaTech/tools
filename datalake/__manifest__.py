@@ -10,6 +10,11 @@
     "depends": [
         "base"
     ],
+    "external_dependencies": {
+        "python": [
+            "boto3"
+        ],
+    },
     "data": [
         "data/ir_configparameter_data.xml",
         "data/ir_cron.xml",
