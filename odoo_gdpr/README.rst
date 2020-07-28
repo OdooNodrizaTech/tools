@@ -1,1 +1,1 @@
-Añade el campo Not allow marketing mails a los res.partner
+Add "Not allow marketing mails" field in res_partner
