@@ -118,7 +118,7 @@ class PipedriveActivity(models.Model):
         # return
         return return_item
 
-    @api.one
+    @api.multi
     def write(self, vals):
         return_write = super(PipedriveActivity, self).write(vals)
         # operations

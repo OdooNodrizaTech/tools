@@ -853,14 +853,128 @@ class CesceWebService():
     def cesce_sale_out_webservice(self):
         _logger.info('cesce_sale_out_webservice')
 
+    def cesce_sale_out_ftp_file_info_exec(self, file_name_items):
+        if index_exists(file_name_items, 23):
+            file_name_pos_23 = str(file_name_items[23]).strip()
+            if file_name_pos_23 == '':
+                _logger.info(
+                    'raro, no esta la posicion 23, no viene de Odoo'
+                )
+            else:
+                account_move_line_id_get = int(file_name_pos_23)
+                if account_move_line_id_get > 0:
+                    items = self.custom_env['account.move.line'].search(
+                        [
+                            ('id', '=', account_move_line_id_get)
+                        ]
+                    )
+                    if len(items) == 0:
+                        _logger.info(
+                            'raro, no se encuentra el move_line_id=%s'
+                            % account_move_line_id_get
+                        )
+                    else:
+                        move_line = items[0]
+                        if move_line.cesce_sale_state == 'sale_sent':
+                            # nif_filial
+                            nif_filial = file_name_items[1].replace(' ', '').strip()
+                            # fecha_movimiento
+                            fecha_movimiento = '%s-%s-%s' % (
+                                file_name_items[3][0:4],
+                                file_name_items[3][4:6],
+                                file_name_items[3][6:8]
+                            )
+                            # nif_deudor
+                            nif_deudor = file_name_items[5].replace(' ', '').strip()
+                            # fecha_factura
+                            fecha_factura = '%s-%s-%s' % (
+                                file_name_items[8][0:4],
+                                file_name_items[8][4:6],
+                                file_name_items[8][6:8]
+                            )
+                            # fecha_vencimiento
+                            fecha_vencimiento = '%s-%s-%s' % (
+                                file_name_items[9][0:4],
+                                file_name_items[9][4:6],
+                                file_name_items[9][6:8]
+                            )
+                            # cesce_sale_situation_id
+                            cesce_sale_situation_id = False
+                            items = self.custom_env['cesce.sale.situation'].search(
+                                [
+                                    ('code', '=', int(file_name_items[12]))
+                                ]
+                            )
+                            if items:
+                                cesce_sale_situation_id = items[0].id
+                            # cesce_sale_motive_situation_id
+                            cesce_sale_motive_situation_id = False
+                            items = self.custom_env['cesce.sale.motive.situation'].search(
+                                [
+                                    ('code', '=', int(file_name_items[13]))
+                                ]
+                            )
+                            if items:
+                                cesce_sale_motive_situation_id = items[0].id
+                            # currency_id
+                            currency_id = 1
+                            items = self.custom_env['res.currency'].search(
+                                [
+                                    ('name', '=', str(file_name_items[20]))
+                                ]
+                            )
+                            if items:
+                                currency_id = items[0].id
+                            # nif_cedente
+                            nif_cedente = file_name_items[21].replace(' ', '').strip()
+                            # fecha_adquisicion
+                            fecha_adquisicion = '%s-%s-%s' % (
+                                file_name_items[22][0:4],
+                                file_name_items[22][4:6],
+                                file_name_items[22][6:8]
+                            )
+                            if fecha_adquisicion == '0000-00-00':
+                                fecha_adquisicion = False
+                            # vals
+                            vals = {
+                                'account_move_line_id': account_move_line_id_get,
+                                'nif_filial': str(nif_filial),
+                                'numero_interno_factura': str(file_name_items[2]),
+                                'fecha_movimiento': fecha_movimiento,
+                                'num_sumplemento_cesce': str(file_name_items[4]),
+                                'nif_deudor': str(nif_deudor),
+                                'codigo_deudor_cesce': str(file_name_items[6]),
+                                'partner_id': move_line.partner_id.id,
+                                'fecha_factura': fecha_factura,
+                                'fecha_vencimiento': fecha_vencimiento,
+                                'importe_credito': str(file_name_items[10]),
+                                'account_invoice_id': move_line.invoice_id.id,
+                                'cesce_sale_situation_id': cesce_sale_situation_id,
+                                'cesce_sale_motive_situation_id': cesce_sale_motive_situation_id,
+                                'percent_riesgo_comercial': str(file_name_items[14]),
+                                'percent_tasa_rrcc': str(file_name_items[15]),
+                                'prima_rrcc': str(file_name_items[16]),
+                                'percent_riesgo_politico': str(file_name_items[17]),
+                                'percent_tasa_rrpp': str(file_name_items[18]),
+                                'prima_rrpp': str(file_name_items[19]),
+                                'currency_id': currency_id,
+                                'nif_cedente': str(nif_cedente),
+                                'fecha_adquisicion': fecha_adquisicion,
+                                'id_interno_factura_cliente': str(file_name_items[23]),
+                            }
+                            cesce_sale_obj = self.custom_env['cesce.sale'].sudo().create(vals)
+                            # check_account_move_line and update
+                            if cesce_sale_obj.account_move_line_id:
+                                cesce_sale_obj.account_move_line_id.cesce_sale_state = 'sale_ok'
+
     def cesce_sale_out_ftp(self):
         tmp_file = 'out_ventas_tmp.txt'
-        return_files_in_folder = self.get_files_in_folder_ftp(
+        res = self.get_files_in_folder_ftp(
             self.ftp_folder_out,
             tmp_file
         )
-        if len(return_files_in_folder) > 0:
-            for file_name, file_name_items_real in return_files_in_folder.items():
+        if len(res) > 0:
+            for file_name, file_name_items_real in res.items():
                 items = self.custom_env['cesce.file.check'].search(
                     [
                         ('folder', '=', str(self.ftp_folder_out)),
@@ -871,120 +985,7 @@ class CesceWebService():
                     # operations
                     if 'OUT_VENTAS' in file_name:
                         for file_name_items in file_name_items_real:
-                            if index_exists(file_name_items, 23):
-                                file_name_pos_23 = \
-                                    str(file_name_items[23]).strip()
-                                if file_name_pos_23 == '':
-                                    _logger.info(
-                                        'raro, no esta la posicion 23, no viene de Odoo'
-                                    )
-                                else:
-                                    account_move_line_id_get = int(file_name_pos_23)
-                                    if account_move_line_id_get > 0:
-                                        items = self.custom_env['account.move.line'].search(
-                                            [
-                                                ('id', '=', account_move_line_id_get)
-                                            ]
-                                        )
-                                        if len(items) == 0:
-                                            _logger.info(
-                                                'raro, no se encuentra el move_line_id=%s'
-                                                % account_move_line_id_get
-                                            )
-                                        else:
-                                            move_line = items[0]
-                                            if move_line.cesce_sale_state == 'sale_sent':
-                                                # nif_filial
-                                                nif_filial = file_name_items[1].replace(' ', '').strip()
-                                                # fecha_movimiento
-                                                fecha_movimiento = '%s-%s-%s' % (
-                                                    file_name_items[3][0:4],
-                                                    file_name_items[3][4:6],
-                                                    file_name_items[3][6:8]
-                                                )
-                                                # nif_deudor
-                                                nif_deudor = file_name_items[5].replace(' ', '').strip()
-                                                # fecha_factura
-                                                fecha_factura = '%s-%s-%s' % (
-                                                    file_name_items[8][0:4],
-                                                    file_name_items[8][4:6],
-                                                    file_name_items[8][6:8]
-                                                )
-                                                # fecha_vencimiento
-                                                fecha_vencimiento = '%s-%s-%s' % (
-                                                    file_name_items[9][0:4],
-                                                    file_name_items[9][4:6],
-                                                    file_name_items[9][6:8]
-                                                )
-                                                # cesce_sale_situation_id
-                                                cesce_sale_situation_id = False
-                                                items = self.custom_env['cesce.sale.situation'].search(
-                                                    [
-                                                        ('code', '=', int(file_name_items[12]))
-                                                    ]
-                                                )
-                                                if items:
-                                                    cesce_sale_situation_id = items[0].id
-                                                # cesce_sale_motive_situation_id
-                                                cesce_sale_motive_situation_id = False
-                                                items = self.custom_env['cesce.sale.motive.situation'].search(
-                                                    [
-                                                        ('code', '=', int(file_name_items[13]))
-                                                    ]
-                                                )
-                                                if items:
-                                                    cesce_sale_motive_situation_id = items[0].id
-                                                # currency_id
-                                                currency_id = 1
-                                                items = self.custom_env['res.currency'].search(
-                                                    [
-                                                        ('name', '=', str(file_name_items[20]))
-                                                    ]
-                                                )
-                                                if items:
-                                                    currency_id = items[0].id
-                                                # nif_cedente
-                                                nif_cedente = file_name_items[21].replace(' ', '').strip()
-                                                # fecha_adquisicion
-                                                fecha_adquisicion = '%s-%s-%s' % (
-                                                    file_name_items[22][0:4],
-                                                    file_name_items[22][4:6],
-                                                    file_name_items[22][6:8]
-                                                )
-                                                if fecha_adquisicion == '0000-00-00':
-                                                    fecha_adquisicion = False
-                                                # vals
-                                                vals = {
-                                                    'account_move_line_id': account_move_line_id_get,
-                                                    'nif_filial': str(nif_filial),
-                                                    'numero_interno_factura': str(file_name_items[2]),
-                                                    'fecha_movimiento': fecha_movimiento,
-                                                    'num_sumplemento_cesce': str(file_name_items[4]),
-                                                    'nif_deudor': str(nif_deudor),
-                                                    'codigo_deudor_cesce': str(file_name_items[6]),
-                                                    'partner_id': move_line.partner_id.id,
-                                                    'fecha_factura': fecha_factura,
-                                                    'fecha_vencimiento': fecha_vencimiento,
-                                                    'importe_credito': str(file_name_items[10]),
-                                                    'account_invoice_id': move_line.invoice_id.id,
-                                                    'cesce_sale_situation_id': cesce_sale_situation_id,
-                                                    'cesce_sale_motive_situation_id':
-                                                        cesce_sale_motive_situation_id,
-                                                    'percent_riesgo_comercial': str(file_name_items[14]),
-                                                    'percent_tasa_rrcc': str(file_name_items[15]),
-                                                    'prima_rrcc': str(file_name_items[16]),
-                                                    'percent_riesgo_politico': str(file_name_items[17]),
-                                                    'percent_tasa_rrpp': str(file_name_items[18]),
-                                                    'prima_rrpp': str(file_name_items[19]),
-                                                    'currency_id': currency_id,
-                                                    'nif_cedente': str(nif_cedente),
-                                                    'fecha_adquisicion': fecha_adquisicion,
-                                                    'id_interno_factura_cliente': str(file_name_items[23]),
-                                                }
-                                                cesce_sale_obj = self.custom_env['cesce.sale'].sudo().create(vals)
-                                                # check_account_move_line and update
-                                                if cesce_sale_obj.account_move_line_id:
-                                                    cesce_sale_obj.account_move_line_id.cesce_sale_state = 'sale_ok'
+                            self.cesce_sale_out_ftp_file_info_exec(file_name_items)
                     # save cesce_file_check
                     vals = {
                         'folder': self.ftp_folder_out,

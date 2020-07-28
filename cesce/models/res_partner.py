@@ -37,7 +37,7 @@ class ResPartner(models.Model):
         string="Cesce clasificaciones de riesgo"
     )
 
-    @api.one
+    @api.multi
     def write(self, vals):
         allow_write = True
         # vat

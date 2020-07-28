@@ -71,14 +71,14 @@ class CrmLead(models.Model):
             for item in items:
                 amount_untaxed = \
                     item.amount_untaxed_total_out_invoice\
-                    -item.amount_untaxed_total_out_refund
+                    - item.amount_untaxed_total_out_refund
                 margin = \
                     item.margin_total_out_invoice\
-                    -item.margin_total_out_refund
+                    - item.margin_total_out_refund
                 # api_call tr.oniad.com
                 headers = {
-                    'Content-type': 'application/json', 
-                    'origin': 'erp.arelux.com', 
+                    'Content-type': 'application/json',
+                    'origin': 'erp.arelux.com',
                     'User-Agent':
                         'Mozilla/5.0 (Windows NT 10.0; Win64; x64; '
                         'rv:68.0) Gecko/20100101 Firefox/68.0'

@@ -17,6 +17,7 @@ except ImportError:
 class IrAttachment(models.Model):
     _inherit = 'ir.attachment'
 
+    @api.multi
     def unlink(self):
         for item in self:
             if item.type == 'url':

@@ -96,7 +96,7 @@ class PipedriveOrganization(models.Model):
         # return
         return return_item
 
-    @api.one
+    @api.multi
     def write(self, vals):
         return_write = super(PipedriveOrganization, self).write(vals)
         # operations

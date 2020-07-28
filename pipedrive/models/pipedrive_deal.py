@@ -121,7 +121,7 @@ class PipedriveDeal(models.Model):
         # return
         return return_item
 
-    @api.one
+    @api.multi
     def write(self, vals):
         return_write = super(PipedriveDeal, self).write(vals)
         # operations
@@ -163,7 +163,7 @@ class PipedriveDeal(models.Model):
                 'status': data['current']['status'],
                 'probability': data['current']['probability']
             }
-            #expected_close_date
+            # expected_close_date
             if data['current']['expected_close_date'] is not None:
                 vals['expected_close_date'] = \
                     data['current']['expected_close_date']
@@ -278,7 +278,7 @@ class PipedriveDeal(models.Model):
         if 'success' in response:
             if response['success']:
                 for data_item in response['data']:
-                    #keys_need_check
+                    # keys_need_check
                     keys_need_check = [
                         'person_id', 'org_id', 'user_id'
                     ]
@@ -286,7 +286,8 @@ class PipedriveDeal(models.Model):
                         if key_need_check in data_item:
                             if data_item[key_need_check] is not None:
                                 if 'id' in data_item[key_need_check]:
-                                    data_item[key_need_check] = data_item[key_need_check]['id']
+                                    data_item[key_need_check] = \
+                                        data_item[key_need_check]['id']
                                 else:
                                     data_item[key_need_check] = None
                             else:
