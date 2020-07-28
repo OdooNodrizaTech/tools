@@ -158,6 +158,9 @@ class CesceRiskClassification(models.Model):
                     for invoice_id in invoice_ids:
                         account_invoice_amount_untaxed_sum += invoice_id.amount_untaxed
                 # slack_message
+                channel = self.env['ir.config_parameter'].sudo().get_param(
+                    'slack_oniad_log_channel'
+                )
                 vals = {
                     'msg': 'El contacto %s (%s) ha tenido una '
                            'facturacion de %s en los ultimos 6 meses'
@@ -168,9 +171,6 @@ class CesceRiskClassification(models.Model):
                            ),
                     'model': 'res.partner',
                     'res_id': item.partner_id.id,
-                    'channel':
-                        self.env['ir.config_parameter'].sudo().get_param(
-                            'slack_oniad_log_channel'
-                        ),
+                    'channel': channel
                 }
                 self.env['slack.message'].sudo().create(vals)

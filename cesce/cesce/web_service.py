@@ -965,10 +965,10 @@ class CesceWebService():
                                 'fecha_adquisicion': fecha_adquisicion,
                                 'id_interno_factura_cliente': str(file_name_items[23]),
                             }
-                            cesce_sale = self.custom_env['cesce.sale'].sudo().create(vals)
+                            obj = self.custom_env['cesce.sale'].sudo().create(vals)
                             # check_account_move_line and update
-                            if cesce_sale.account_move_line_id:
-                                cesce_sale.account_move_line_id.cesce_sale_state = 'sale_ok'
+                            if obj.account_move_line_id:
+                                obj.account_move_line_id.cesce_sale_state = 'sale_ok'
 
     def cesce_sale_out_ftp(self):
         tmp_file = 'out_ventas_tmp.txt'
