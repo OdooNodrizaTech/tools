@@ -1,78 +1,78 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+import logging
+from .googleanalytics_webservice import GoogleanalyticsWebservice
 from odoo import api, fields, models
 import odoo
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-import logging
 _logger = logging.getLogger(__name__)
 logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
 
-from .googleanalytics_webservice import GoogleanalyticsWebservice
 
 class GoogleanalyticsResultBeahavior(models.Model):
     _name = 'googleanalytics.result.beahavior'
     _description = 'Googleanalytics Result Beahavior'
-    
-    landingPagePath = fields.Char(        
+
+    landingPagePath = fields.Char(
         string='landingPagePath'
     )
-    sessionDuration = fields.Float(        
+    sessionDuration = fields.Float(
         string='sessionDuration'
     )
-    pageviews = fields.Integer(        
+    pageviews = fields.Integer(
         string='pageviews'
     )
-    exits = fields.Integer(        
+    exits = fields.Integer(
         string='exits'
     )
-    sessions = fields.Integer(        
+    sessions = fields.Integer(
         string='sessions'
     )
-    webPropertyId = fields.Char(        
+    webPropertyId = fields.Char(
         string='webPropertyId'
     )
-    pagePath = fields.Char(        
+    pagePath = fields.Char(
         string='pagePath'
     )
-    eventCategory = fields.Char(        
+    eventCategory = fields.Char(
         string='eventCategory'
     )
-    totalEvents = fields.Integer(        
+    totalEvents = fields.Integer(
         string='totalEvents'
     )
-    eventAction = fields.Char(        
+    eventAction = fields.Char(
         string='eventAction'
     )
-    userType = fields.Char(        
+    userType = fields.Char(
         string='userType'
     )
-    bounceRate = fields.Float(        
+    bounceRate = fields.Float(
         string='bounceRate'
     )
-    entrances = fields.Integer(        
+    entrances = fields.Integer(
         string='entrances'
     )
-    profileName = fields.Char(        
+    profileName = fields.Char(
         string='profileName'
     )
-    date = fields.Date(        
+    date = fields.Date(
         string='date'
     )
-    profileId = fields.Char(        
+    profileId = fields.Char(
         string='profileId'
     )
-    users = fields.Integer(        
+    users = fields.Integer(
         string='users'
     )
-    timeOnPage = fields.Float(        
+    timeOnPage = fields.Float(
         string='timeOnPage'
     )
-    uniqueEvents = fields.Integer(        
+    uniqueEvents = fields.Integer(
         string='uniqueEvents'
     )
-    accountId = fields.Integer(        
+    accountId = fields.Integer(
         string='accountId'
     )
 
@@ -84,27 +84,40 @@ class GoogleanalyticsResultBeahavior(models.Model):
         key_file_location = odoo.tools.config.get('googleanalytics_api_key_file')
         googleanalytics_webservice = GoogleanalyticsWebservice(key_file_location)
         # define
-        metrics = ['ga:users', 'ga:sessions', 'ga:sessionDuration', 'ga:bounceRate', 'ga:pageviews', 'ga:timeOnPage', 'ga:totalEvents', 'ga:uniqueEvents', 'ga:entrances', 'ga:exits']
-        dimensions = ['ga:date', 'ga:userType', 'ga:landingPagePath', 'ga:pagePath', 'ga:eventCategory', 'ga:eventAction', 'ga:eventLabel']
+        metrics = ['ga:users', 'ga:sessions', 'ga:sessionDuration', 'ga:bounceRate',
+                   'ga:pageviews', 'ga:timeOnPage', 'ga:totalEvents',
+                   'ga:uniqueEvents', 'ga:entrances', 'ga:exits']
+        dimensions = ['ga:date', 'ga:userType', 'ga:landingPagePath', 'ga:pagePath',
+                      'ga:eventCategory', 'ga:eventAction', 'ga:eventLabel']
         # search
-        googleanalytics_result_beahavior_ids = self.env['googleanalytics.result.beahavior'].sudo().search(
+        ids = self.env['googleanalytics.result.beahavior'].sudo().search(
             [
                 ('date', '=', str(date)),
                 ('profileId', '=', str(profile_id))
             ]
         )
-        if len(googleanalytics_result_beahavior_ids) == 0:
-            results = googleanalytics_webservice.get_results(profile_id, date, date, metrics, dimensions)
+        if len(ids) == 0:
+            results = googleanalytics_webservice.get_results(
+                profile_id,
+                date,
+                date,
+                metrics,
+                dimensions
+            )
             if 'rows' in results:
                 if len(results['rows']) > 0:
                     for row in results['rows']:
                         count = 0
                         # vals
                         vals = {
-                            'webPropertyId': str(results['profileInfo']['webPropertyId']),
-                            'profileId': str(results['profileInfo']['profileId']),
-                            'profileName': str(results['profileInfo']['profileName']),
-                            'accountId': str(results['profileInfo']['accountId'])
+                            'webPropertyId':
+                                str(results['profileInfo']['webPropertyId']),
+                            'profileId':
+                                str(results['profileInfo']['profileId']),
+                            'profileName':
+                                str(results['profileInfo']['profileName']),
+                            'accountId':
+                                str(results['profileInfo']['accountId'])
                         }
                         for columnHeader in results['columnHeaders']:
                             # row_value
@@ -124,7 +137,11 @@ class GoogleanalyticsResultBeahavior(models.Model):
                                 row_value = row_value.replace('(', '').replace(')', '')
                             # ga:date
                             if columnHeaderName == 'date':
-                                new_row_value = str(row_value[0:4]) + '-' + str(row_value[4:6]) + '-' + str(row_value[6:8])
+                                new_row_value = '%s-%s-%s' % (
+                                    row_value[0:4],
+                                    row_value[4:6],
+                                    row_value[6:8]
+                                )
                                 row_value = new_row_value
                             # types
                             if columnHeaderDataType == 'INTEGER':
@@ -147,7 +164,9 @@ class GoogleanalyticsResultBeahavior(models.Model):
     def cron_get_yesterday_info(self):
         _logger.info('cron_get_yesterday_info')
         # vars
-        profile_ids = str(self.env['ir.config_parameter'].sudo().get_param('googleanalytics_api_profile_ids')).split(',')
+        profile_ids = str(self.env['ir.config_parameter'].sudo().get_param(
+            'googleanalytics_api_profile_ids'
+        )).split(',')
         current_date = datetime.today()
         date_yesterday = current_date + relativedelta(days=-1)
         # config
@@ -158,7 +177,9 @@ class GoogleanalyticsResultBeahavior(models.Model):
     def cron_get_all_year_info(self):
         _logger.info('cron_get_all_year_info')
         # vars
-        profile_ids = str(self.env['ir.config_parameter'].sudo().get_param('googleanalytics_api_profile_ids')).split(',')
+        profile_ids = str(self.env['ir.config_parameter'].sudo().get_param(
+            'googleanalytics_api_profile_ids'
+        )).split(',')
         end_date = datetime.today()
         start_date = datetime(end_date.year, 1, 1)
         date_item = start_date

@@ -1,10 +1,11 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-#https://developers.pipedrive.com/docs/api/v1/#!/Pipelines
+# https://developers.pipedrive.com/docs/api/v1/#!/Pipelines
 from odoo import api, fields, models
 from pipedrive.client import Client
 
 import logging
 _logger = logging.getLogger(__name__)
+
 
 class PipedrivePipeline(models.Model):
     _name = 'pipedrive.pipeline'
@@ -44,23 +45,27 @@ class PipedrivePipeline(models.Model):
             'selected': data['selected']
         }
         # search
-        pipedrive_pipeline_ids = self.env['pipedrive.pipeline'].search(
+        items = self.env['pipedrive.pipeline'].search(
             [
                 ('external_id', '=', vals['external_id'])
             ]
         )
-        if len(pipedrive_pipeline_ids) == 0:
-            pipedrive_pipeline_obj = self.env['pipedrive.pipeline'].sudo().create(vals)
+        if len(items) == 0:
+            self.env['pipedrive.pipeline'].sudo().create(vals)
         else:
-            pipedrive_pipeline_id = pipedrive_pipeline_ids[0]
+            pipedrive_pipeline_id = items[0]
             pipedrive_pipeline_id.write(vals)
 
     @api.model
     def cron_pipedrive_pipeline_exec(self):
         _logger.info('cron_pipedrive_pipeline_exec')
         # params
-        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_domain'))
-        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_api_token'))
+        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param(
+            'pipedrive_domain'
+        ))
+        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param(
+            'pipedrive_api_token'
+        ))
         # api client
         client = Client(domain=pipedrive_domain)
         client.set_api_token(pipedrive_api_token)

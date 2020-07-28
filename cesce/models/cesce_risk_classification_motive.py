@@ -5,11 +5,11 @@ from odoo import fields, models
 
 class CesceRiskClassificationMotive(models.Model):
     _name = 'cesce.risk.classification.motive'
-    _description = 'Cesce Riesgo Classification Motive'    
-    
-    code = fields.Char(        
+    _description = 'Cesce Riesgo Classification Motive'
+
+    code = fields.Char(
         string='Code'
     )
-    name = fields.Char(        
+    name = fields.Char(
         string='Name'
     )

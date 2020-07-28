@@ -5,8 +5,8 @@ from odoo import models, fields
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
-    
+
     utm_website_id = fields.Many2one(
-        comodel_name='utm.website',        
+        comodel_name='utm.website',
         string='Utm website'
     )

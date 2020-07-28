@@ -1,10 +1,11 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-#https://developers.pipedrive.com/docs/api/v1/#!/Users
+#  https://developers.pipedrive.com/docs/api/v1/#!/Users
 from odoo import api, fields, models
 from pipedrive.client import Client
 
 import logging
 _logger = logging.getLogger(__name__)
+
 
 class PipedriveUser(models.Model):
     _name = 'pipedrive.user'
@@ -52,31 +53,35 @@ class PipedriveUser(models.Model):
             'timezone_name': data['timezone_name']
         }
         # currency_id
-        res_currency_ids = self.env['res.currency'].search(
+        items = self.env['res.currency'].search(
             [
                 ('name', '=', data['default_currency'])
             ]
         )
-        if res_currency_ids:
-            vals['currency_id'] = res_currency_ids[0].id
+        if items:
+            vals['currency_id'] = items[0].id
         # search
-        pipedrive_user_ids = self.env['pipedrive.user'].search(
+        items = self.env['pipedrive.user'].search(
             [
                 ('external_id', '=', vals['external_id'])
             ]
         )
-        if len(pipedrive_user_ids) == 0:
-            pipedrive_user_obj = self.env['pipedrive.user'].sudo().create(vals)
+        if len(items) == 0:
+            self.env['pipedrive.user'].sudo().create(vals)
         else:
-            pipedrive_user_id = pipedrive_user_ids[0]
+            pipedrive_user_id = items[0]
             pipedrive_user_id.write(vals)
 
     @api.model
     def cron_pipedrive_user_exec(self):
         _logger.info('cron_pipedrive_user_exec')
         # params
-        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_domain'))
-        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_api_token'))
+        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param(
+            'pipedrive_domain'
+        ))
+        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param(
+            'pipedrive_api_token'
+        ))
         # api client
         client = Client(domain=pipedrive_domain)
         client.set_api_token(pipedrive_api_token)

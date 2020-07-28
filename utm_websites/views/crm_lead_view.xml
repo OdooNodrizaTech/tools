@@ -7,9 +7,9 @@
             <field name="model">crm.lead</field>
             <field name="inherit_id" ref="crm.crm_case_form_view_oppor"/>
             <field name="arch" type="xml">
-                <field name="source_id" position="after">	    	
-                    <field name="utm_website_id"/>
-    	       </field>                           
+                <field name="source_id" position="after">
+                    <field name="utm_website_id" />
+                </field>
             </field>
         </record>
 

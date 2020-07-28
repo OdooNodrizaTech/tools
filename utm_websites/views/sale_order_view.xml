@@ -7,9 +7,9 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale_crm.sale_view_inherit123"/>
             <field name="arch" type="xml">
-                <field name="source_id" position="after">	    	
-                    <field name="utm_website_id"/>
-    	       </field>                           
+                <field name="source_id" position="after">
+                    <field name="utm_website_id" />
+                </field>
             </field>
         </record>
 

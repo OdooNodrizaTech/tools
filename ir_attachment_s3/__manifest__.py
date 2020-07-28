@@ -8,8 +8,11 @@
     "author": "Odoo Nodriza Tech (ONT), "
               "Odoo Community Association (OCA)",
     "license": "AGPL-3",
-    'external_dependencies': {
-        'python3': ['boto3'],
+    "external_dependencies": {
+        "python": [
+            "boto3",
+            "unidecode"
+        ],
     },
     "depends": [
         "base"
@@ -18,5 +21,5 @@
         "data/ir_cron.xml",
         "data/ir_configparameter_data.xml",
     ],
-    "installable": True,
+    "installable": True
 }

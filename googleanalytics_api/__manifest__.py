@@ -2,15 +2,17 @@
 
 {
     "name": "Googleanalytics Api",
-    "version": "10.0.1.0.0",
-    "author": "Odoo Nodriza Tech (ONT)",
+    "version": "12.0.1.0.0",
+    "author": "Odoo Nodriza Tech (ONT), "
+              "Odoo Community Association (OCA)",
     "website": "https://nodrizatech.com/",
     "category": "Tools",
     "license": "AGPL-3",
     "external_dependencies": {
-        "python3": [
+        "python": [
             "google-api-python-client",
-            "oauth2client"
+            "oauth2client",
+            "apiclient"
         ],
     },
     "depends": [

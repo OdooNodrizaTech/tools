@@ -35,4 +35,4 @@
         id="menuitem_cesce" 
         parent="account.menu_finance_receivables"
     />    
-</odoo>    
+</odoo>

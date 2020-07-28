@@ -1,10 +1,11 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-#https://developers.pipedrive.com/docs/api/v1/#!/Products
+# https://developers.pipedrive.com/docs/api/v1/#!/Products
 from odoo import api, fields, models
 from pipedrive.client import Client
 
 import logging
 _logger = logging.getLogger(__name__)
+
 
 class PipedriveProduct(models.Model):
     _name = 'pipedrive.product'
@@ -51,7 +52,7 @@ class PipedriveProduct(models.Model):
         }
         # price data
         if 'prices' in data:
-            if len(data['prices'])>0:
+            if len(data['prices']) > 0:
                 data_price_0 = data['prices'][0]
                 vals['price'] = data_price_0['price']
                 vals['cost'] = data_price_0['cost']
@@ -64,23 +65,27 @@ class PipedriveProduct(models.Model):
                 if res_currency_ids:
                     vals['currency_id'] = res_currency_ids[0].id
         # search
-        pipedrive_product_ids = self.env['pipedrive.product'].search(
+        items = self.env['pipedrive.product'].search(
             [
                 ('external_id', '=', vals['external_id'])
             ]
         )
-        if len(pipedrive_product_ids) == 0:
-            pipedrive_product_obj = self.env['pipedrive.product'].sudo().create(vals)
+        if len(items) == 0:
+            self.env['pipedrive.product'].sudo().create(vals)
         else:
-            pipedrive_product_id = pipedrive_product_ids[0]
+            pipedrive_product_id = items[0]
             pipedrive_product_id.write(vals)
 
     @api.model
     def cron_pipedrive_product_exec(self):
         _logger.info('cron_pipedrive_product_exec')
         # params
-        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_domain'))
-        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param('pipedrive_api_token'))
+        pipedrive_domain = str(self.env['ir.config_parameter'].sudo().get_param(
+            'pipedrive_domain'
+        ))
+        pipedrive_api_token = str(self.env['ir.config_parameter'].sudo().get_param(
+            'pipedrive_api_token'
+        ))
         # api client
         client = Client(domain=pipedrive_domain)
         client.set_api_token(pipedrive_api_token)
