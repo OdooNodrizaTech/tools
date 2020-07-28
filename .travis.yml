@@ -24,7 +24,7 @@ env:
 
 install:
   - git clone https://github.com/OCA/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
-  - git clone https://github.com/OdooNodrizaTech/sale.git -b ${VERSION} ${HOME}/OdooNodrizaTech-sale
+  - git clone https://github.com/OdooNodrizaTech/sale.git -b ${VERSION} ${HOME}/sale
   - export PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
   - pip install unidecode
   - travis_install_nightly
