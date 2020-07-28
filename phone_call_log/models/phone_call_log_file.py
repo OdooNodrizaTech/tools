@@ -48,8 +48,10 @@ class PhoneCallLogFile(models.Model):
         self.ensure_one()
         _logger.info(self.google_drive_file_id)
         # define
-        keys_call = ['number', 'duration', 'type', 'presentation', 'subscription_id',
-                     'post_dial_digits', 'subscription_component_name', 'readable_date', 'contact_name']
+        keys_call = ['number', 'duration', 'type', 'presentation',
+                     'subscription_id', 'post_dial_digits',
+                     'subscription_component_name', 'readable_date',
+                     'contact_name']
         url = "https://drive.google.com/uc?id=%s&export=download" % self.google_drive_file_id
         response = urlopen(url).read()
         tree = ET.fromstring(response)
@@ -68,13 +70,13 @@ class PhoneCallLogFile(models.Model):
                     except:
                         call_item_array[key_call] = None
                 # change type
-                if call_item_array['type'] != None:
+                if call_item_array['type'] is not None:
                     call_item_array['type'] = int(call_item_array['type'])
                 # change duration
-                if call_item_array['duration'] != None:
+                if call_item_array['duration'] is not None:
                     call_item_array['duration'] = int(call_item_array['duration'])
                 # change presentation
-                if call_item_array['presentation'] != None:
+                if call_item_array['presentation'] is not None:
                     call_item_array['presentation'] = int(call_item_array['presentation'])
                 # date_convert
                 readable_date_timezone_user_id = datetime.strptime(

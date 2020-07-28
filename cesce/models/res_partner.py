@@ -85,12 +85,13 @@ class ResPartner(models.Model):
                                     if mail_message_need_starred:
                                         # previously_insert (very strange)
                                         previously_insert = False
-                                        for starred_partner_id in item.starred_partner_ids:
-                                            if starred_partner_id.id == self.user_id.partner_id.id:
+                                        for s_p_id in item.starred_partner_ids:
+                                            if s_p_id.id == self.user_id.partner_id.id:
                                                 previously_insert = True
                                         # insert
                                         if not previously_insert:
-                                            item.starred_partner_ids = [(4, self.user_id.partner_id.id)]
+                                            item.starred_partner_ids = \
+                                                [(4, self.user_id.partner_id.id)]
         # return
         return return_write
 
@@ -113,7 +114,7 @@ class ResPartner(models.Model):
         for partner in self:
             partner.cesce_risk_classification_count = \
                 mapped_data.get(partner.id, 0)
-    
+
     @api.model
     def cron_cesce_risk_classification_check_file_out(self):
         cesce_web_service = CesceWebService(self.env.user.company_id, self.env)
@@ -132,7 +133,7 @@ class ResPartner(models.Model):
         if res_partner_ids:
             _logger.info('revisar estos ids')
             _logger.info(res_partner_ids)
-    
+
     @api.one
     def action_partner_classification_sent(self):
         if self.id > 0:
@@ -140,8 +141,10 @@ class ResPartner(models.Model):
 
             if self.cesce_amount_requested == 0:
                 allow_action = False
-                raise Warning(_('Es necesario definir una importe solicitado '
-                                'para Cesce para poder tramitar la solicitud de riesgo'))
+                raise Warning(
+                    _('Es necesario definir una importe '
+                      'solicitado para Cesce para poder tramitar '
+                      'la solicitud de riesgo'))
             elif not self.vat:
                 allow_action = False
                 raise Warning(_('Es necesario definir un NIF/CIF'))

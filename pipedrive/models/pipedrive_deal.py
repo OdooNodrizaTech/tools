@@ -165,10 +165,10 @@ class PipedriveDeal(models.Model):
                 'probability': data['current']['probability']
             }
             #expected_close_date
-            if data['current']['expected_close_date'] != None:
+            if data['current']['expected_close_date'] is not None:
                 vals['expected_close_date'] = data['current']['expected_close_date']
             # person_id
-            if data['current']['person_id'] != None:
+            if data['current']['person_id'] is not None:
                 if data['current']['person_id'] > 0:
                     items = self.env['pipedrive.person'].sudo().search(
                         [
@@ -184,7 +184,7 @@ class PipedriveDeal(models.Model):
                     else:
                         vals['pipedrive_person_id'] = items[0].id
             # org_id
-            if data['current']['org_id'] != None:
+            if data['current']['org_id'] is not None:
                 if data['current']['org_id'] > 0:
                     items = self.env['pipedrive.organization'].sudo().search(
                         [
@@ -282,7 +282,7 @@ class PipedriveDeal(models.Model):
                     keys_need_check = ['person_id', 'org_id', 'user_id']
                     for key_need_check in keys_need_check:
                         if key_need_check in data_item:
-                            if data_item[key_need_check] != None:
+                            if data_item[key_need_check] is not None:
                                 if 'id' in data_item[key_need_check]:
                                     data_item[key_need_check] = data_item[key_need_check]['id']
                                 else:
@@ -339,7 +339,7 @@ class PipedriveDeal(models.Model):
                     _logger.info(result_message)
                     # remove_message
                     if result_message['delete_message']:
-                        response_delete_message = sqs.delete_message(
+                        sqs.delete_message(
                             QueueUrl=sqs_pipedrive_deal_url,
                             ReceiptHandle=message['ReceiptHandle']
                         )

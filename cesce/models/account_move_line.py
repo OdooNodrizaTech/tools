@@ -81,8 +81,11 @@ class AccountMoveLine(models.Model):
     def cron_cesce_sale_generate_file(self):
         current_date = datetime.today()
         start_date = current_date + relativedelta(months=-1, day=1)
-        end_date = datetime(start_date.year, start_date.month, 1) + relativedelta(months=1, days=-1)
-
+        end_date = datetime(
+            start_date.year,
+            start_date.month,
+            1
+        ) + relativedelta(months=1, days=-1)
         items = self.env['account.move.line'].search(
             [
                 ('journal_id', '=', 1),
@@ -96,7 +99,6 @@ class AccountMoveLine(models.Model):
         )
         if items:
             cesce_web_service = CesceWebService(self.env.user.company_id, self.env)
-
             for item in items:
                 if item.invoice_id.date_invoice \
                         != item.invoice_id.date_due:

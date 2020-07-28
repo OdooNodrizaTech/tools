@@ -133,7 +133,7 @@ class PipedriveOrganization(models.Model):
                                  'address_locality', 'address_country', 'address_postal_code']
             for field_need_check in fields_need_check:
                 if field_need_check in data['current']:
-                    if data['current'][field_need_check] == None:
+                    if data['current'][field_need_check] is None:
                         vals[field_need_check] = False
                     else:
                         vals[field_need_check] = data['current'][field_need_check]
@@ -232,12 +232,12 @@ class PipedriveOrganization(models.Model):
                         message_body = json.loads(message_body['Message'])
                     # result_message
                     result_message = self.action_item(message_body)
-                    #operations
+                    # operations
                     _logger.info('result_message')
                     _logger.info(result_message)
                     # remove_message
                     if result_message['delete_message']:
-                        response_delete_message = sqs.delete_message(
+                        sqs.delete_message(
                             QueueUrl=sqs_pipedrive_organization_url,
                             ReceiptHandle=message['ReceiptHandle']
                         )

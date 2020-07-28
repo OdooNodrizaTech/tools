@@ -152,7 +152,7 @@ class PipedriveActivity(models.Model):
                 'public_description': data['current']['public_description']
             }
             # type
-            if data['current']['type'] != None:
+            if data['current']['type'] is not None:
                 items = self.env['pipedrive.activity.type'].sudo().search(
                     [
                         ('key_string', '=', data['current']['type'])
@@ -167,10 +167,10 @@ class PipedriveActivity(models.Model):
                 else:
                     vals['pipedrive_activity_type_id'] = items[0].id
             # due_date
-            if data['current']['due_date'] != None:
+            if data['current']['due_date'] is not None:
                 vals['due_date'] = data['current']['due_date']
             # marked_as_done_time
-            if data['current']['marked_as_done_time'] != None:
+            if data['current']['marked_as_done_time'] is not None:
                 if data['current']['marked_as_done_time'] != '':
                     vals['marked_as_done_time'] = data['current']['marked_as_done_time']
             # user_id
@@ -189,7 +189,7 @@ class PipedriveActivity(models.Model):
                 else:
                     vals['pipedrive_user_id'] = items[0].id
             # org_id
-            if data['current']['org_id'] != None:
+            if data['current']['org_id'] is not None:
                 if data['current']['org_id'] > 0:
                     items = self.env['pipedrive.organization'].sudo().search(
                         [
@@ -205,7 +205,7 @@ class PipedriveActivity(models.Model):
                     else:
                         vals['pipedrive_organization_id'] = items[0].id
             # person_id
-            if data['current']['person_id'] != None:
+            if data['current']['person_id'] is not None:
                 if data['current']['person_id'] > 0:
                     items = self.env['pipedrive.person'].sudo().search(
                         [
@@ -221,7 +221,7 @@ class PipedriveActivity(models.Model):
                     else:
                         vals['pipedrive_person_id'] = items[0].id
             # deal_id
-            if data['current']['deal_id'] != None:
+            if data['current']['deal_id'] is not None:
                 if data['current']['deal_id'] > 0:
                     items = self.env['pipedrive.deal'].sudo().search(
                         [
@@ -274,7 +274,7 @@ class PipedriveActivity(models.Model):
                     keys_need_check = ['owner_id']
                     for key_need_check in keys_need_check:
                         if key_need_check in data_item:
-                            if data_item[key_need_check] != None:
+                            if data_item[key_need_check] is not None:
                                 if 'id' in data_item[key_need_check]:
                                     data_item[key_need_check] = data_item[key_need_check]['id']
                                 else:
@@ -331,7 +331,7 @@ class PipedriveActivity(models.Model):
                     _logger.info(result_message)
                     # remove_message
                     if result_message['delete_message']:
-                        response_delete_message = sqs.delete_message(
+                        sqs.delete_message(
                             QueueUrl=sqs_pipedrive_activity_url,
                             ReceiptHandle=message['ReceiptHandle']
                         )

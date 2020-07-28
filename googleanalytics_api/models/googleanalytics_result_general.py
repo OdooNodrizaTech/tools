@@ -162,7 +162,8 @@ class GoogleanalyticsResultGeneral(models.Model):
                                     row_value = ''
                                 # ga:source
                                 if columnHeaderName == 'source':
-                                    row_value = row_value.replace('(', '').replace(')', '')
+                                    row_value = row_value.replace('(', '')
+                                    row_value = row_value.replace(')', '')
                                 # ga:date
                                 if columnHeaderName == 'date':
                                     new_row_value = '%s-%s-%s' % (
@@ -183,7 +184,9 @@ class GoogleanalyticsResultGeneral(models.Model):
                                 # count
                                 count += 1
                             # add_item
-                            self.env['googleanalytics.result.general'].sudo().create(vals)
+                            self.env[
+                                'googleanalytics.result.general'
+                            ].sudo().create(vals)
             except:
                 _logger.info('se ha producido un error')
 

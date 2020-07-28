@@ -36,7 +36,8 @@ class CrmLead(models.Model):
                 'Content-type': 'application/json',
                 'origin': 'erp.arelux.com',
                 'User-Agent':
-                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0'
+                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; '
+                    'rv:68.0) Gecko/20100101 Firefox/68.0'
             }
             data = {
                 "profile_uuid": str(self.tracking_profile_uuid),
@@ -44,9 +45,14 @@ class CrmLead(models.Model):
                     "lead_id": self.id
                 }
             }
-            url = 'https://tr.oniad.com/api/session/%s/addProperties' % self.tracking_session_uuid
+            url = 'https://tr.oniad.com/api/session/%s/addProperties' \
+                  % self.tracking_session_uuid
             try:
-                response = requests.post(url, data=json.dumps(data), headers=headers)
+                response = requests.post(
+                    url,
+                    data=json.dumps(data),
+                    headers=headers
+                )
                 return response.status_code
             except:
                 return 500
@@ -58,19 +64,22 @@ class CrmLead(models.Model):
             [
                 ('amount_untaxed_total_out_invoice', '>', 0),
                 ('lead_id.tracking_session_uuid', '!=', False),
-                ('lead_id.tracking_profile_uuid', '!=', False)                
+                ('lead_id.tracking_profile_uuid', '!=', False)
             ]
         )
         if items:
             for item in items:
-                amount_untaxed = item.amount_untaxed_total_out_invoice-item.amount_untaxed_total_out_refund
-                margin = item.margin_total_out_invoice-item.margin_total_out_refund                
+                amount_untaxed = item.amount_untaxed_total_out_invoice\
+                                 -item.amount_untaxed_total_out_refund
+                margin = item.margin_total_out_invoice\
+                         -item.margin_total_out_refund
                 # api_call tr.oniad.com
                 headers = {
                     'Content-type': 'application/json', 
                     'origin': 'erp.arelux.com', 
                     'User-Agent':
-                        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0'
+                        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; '
+                        'rv:68.0) Gecko/20100101 Firefox/68.0'
                 }
                 data = {
                     "profile_uuid": str(item.lead_id.tracking_profile_uuid),
@@ -79,9 +88,14 @@ class CrmLead(models.Model):
                         "margin_invoices": margin
                     }
                 }
-                url = 'https://tr.oniad.com/api/session/%s/addProperties' % item.lead_id.tracking_session_uuid
+                url = 'https://tr.oniad.com/api/session/%s/addProperties' \
+                      % item.lead_id.tracking_session_uuid
                 try:
-                    response = requests.post(url, data=json.dumps(data), headers=headers)
+                    response = requests.post(
+                        url,
+                        data=json.dumps(data),
+                        headers=headers
+                    )
                     # logger
                     if response.status_code != 200:
                         _logger.info(response.status_code)

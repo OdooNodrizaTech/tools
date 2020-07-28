@@ -126,7 +126,7 @@ class PipedrivePerson(models.Model):
                         if email_item['primary']:
                             vals['email'] = email_item['value']
             # pipedrive_organization_id
-            if data['current']['org_id'] != None:
+            if data['current']['org_id'] is not None:
                 if data['current']['org_id'] > 0:
                     items = self.env['pipedrive.organization'].sudo().search(
                         [
@@ -192,7 +192,7 @@ class PipedrivePerson(models.Model):
                 for data_item in response['data']:
                     data_item['owner_id'] = data_item['owner_id']['id']
                     # org_id
-                    if data_item['org_id'] != None:
+                    if data_item['org_id'] is not None:
                         if 'id' in data_item['org_id']:
                             data_item['org_id'] = data_item['org_id']['id']
                         else:
@@ -249,7 +249,7 @@ class PipedrivePerson(models.Model):
                     _logger.info(result_message)
                     # remove_message
                     if result_message['delete_message']:
-                        response_delete_message = sqs.delete_message(
+                        sqs.delete_message(
                             QueueUrl=sqs_pipedrive_person_url,
                             ReceiptHandle=message['ReceiptHandle']
                         )

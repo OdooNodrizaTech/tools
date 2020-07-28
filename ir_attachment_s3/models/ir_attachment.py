@@ -2,6 +2,8 @@
 
 import logging
 import os
+import unidecode
+
 from odoo import api, models, tools
 
 _logger = logging.getLogger(__name__)
@@ -13,7 +15,7 @@ except ImportError:
 
 
 class IrAttachment(models.Model):
-    _inherit = 'ir.attachment'    
+    _inherit = 'ir.attachment'
 
     def unlink(self):
         for item in self:
@@ -22,7 +24,7 @@ class IrAttachment(models.Model):
                     if 'amazonaws.com' in item.url:
                         item.remove_to_s3()
         # return
-        return models.Model.unlink(self)    
+        return models.Model.unlink(self)
 
     @api.one
     def remove_to_s3(self):
@@ -75,7 +77,7 @@ class IrAttachment(models.Model):
                 aws_access_key_id=tools.config.get('aws_access_key_id'),
                 aws_secret_access_key=tools.config.get('aws_secret_key_id'),
                 region_name=tools.config.get('aws_region_name')
-            )                
+            )
             try:
                 with open(source_path, "rb") as f:
                     s3_client.upload_fileobj(

@@ -1,14 +1,13 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+import logging
 from odoo import api, fields, models
 import odoo
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-import logging
 _logger = logging.getLogger(__name__)
 logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
-
 from .googleanalytics_webservice import GoogleanalyticsWebservice
 
 
@@ -111,10 +110,14 @@ class GoogleanalyticsResultBeahavior(models.Model):
                         count = 0
                         # vals
                         vals = {
-                            'webPropertyId': str(results['profileInfo']['webPropertyId']),
-                            'profileId': str(results['profileInfo']['profileId']),
-                            'profileName': str(results['profileInfo']['profileName']),
-                            'accountId': str(results['profileInfo']['accountId'])
+                            'webPropertyId':
+                                str(results['profileInfo']['webPropertyId']),
+                            'profileId':
+                                str(results['profileInfo']['profileId']),
+                            'profileName':
+                                str(results['profileInfo']['profileName']),
+                            'accountId':
+                                str(results['profileInfo']['accountId'])
                         }
                         for columnHeader in results['columnHeaders']:
                             # row_value

@@ -575,9 +575,11 @@ class CesceWebService():
     # generate_partner_classification
     def generate_partner_classification(self, partner):
         if self.connection_risk_classification == 'ftp':
-           return self.generate_partner_classification_ftp(partner)
+           response = self.generate_partner_classification_ftp(partner)
         else:
-            return self.generate_partner_classification_webservice(partner)
+            response = self.generate_partner_classification_webservice(partner)
+
+        return response
 
     def generate_partner_classification_webservice(self, partner):
         _logger.info('generate_partner_classification_webservice')
@@ -840,19 +842,19 @@ class CesceWebService():
                         'file': file_name
                     }
                     self.custom_env['cesce.file.check'].sudo().create(vals)
-        
+
     # cesce_sale_out
     def cesce_sale_out(self):
         _logger.info('cesce_sale_out')
-        
+
         if self.connection_sale == 'ftp':
             self.cesce_sale_out_ftp()
         else:
             self.cesce_sale_out_webservice()
-        
+
     def cesce_sale_out_webservice(self):
         _logger.info('cesce_sale_out_webservice')
-        
+
     def cesce_sale_out_ftp(self):
         tmp_file = 'out_ventas_tmp.txt'
         return_files_in_folder = self.get_files_in_folder_ftp(
@@ -872,9 +874,12 @@ class CesceWebService():
                     if 'OUT_VENTAS' in file_name:
                         for file_name_items in file_name_items_real:
                             if index_exists(file_name_items, 23):
-                                file_name_pos_23 = str(file_name_items[23]).strip()
+                                file_name_pos_23 = \
+                                    str(file_name_items[23]).strip()
                                 if file_name_pos_23 == '':
-                                    _logger.info('raro, no esta la posicion 23, no viene de Odoo')
+                                    _logger.info(
+                                        'raro, no esta la posicion 23, no viene de Odoo'
+                                    )
                                 else:
                                     account_move_line_id_get = int(file_name_pos_23)
                                     if account_move_line_id_get > 0:
@@ -995,10 +1000,10 @@ class CesceWebService():
             return self.generate_cesce_sale_ftp(account_move_line)
         else:
             return self.generate_cesce_sale_webservice(account_move_line)
-        
+
     def generate_cesce_sale_webservice(self, account_move_line):
         _logger.info('generate_cesce_sale_webservice')
-        
+
     def generate_cesce_sale_ftp(self, account_move_line):
         today = datetime.datetime.today()
         # fecha_factura
@@ -1097,7 +1102,6 @@ class CesceWebService():
                 'size': 30,
             },
         ]
-
         txt_line = ''
         for txt_field in txt_fields:
             if self.test_mode:
@@ -1110,7 +1114,7 @@ class CesceWebService():
                 str(str(value_txt_field).ljust(txt_field['size'], ' ')),
                 self.separator_fields
             )
-                
+
         txt_line = txt_line[:-1]  # fix remove last character
         txt_line = txt_line + '\r\n'  # fix new line
         _logger.info(txt_line)

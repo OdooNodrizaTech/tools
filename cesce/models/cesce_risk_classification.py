@@ -160,11 +160,12 @@ class CesceRiskClassification(models.Model):
                 # slack_message
                 vals = {
                     'msg': 'El contacto %s (%s) ha tenido una '
-                           'facturacion de %s en los ultimos 6 meses' % (
-                        item.partner_id.name,
-                        item.partner_id.vat,
-                        account_invoice_amount_untaxed_sum
-                    ),
+                           'facturacion de %s en los ultimos 6 meses'
+                           % (
+                               item.partner_id.name,
+                               item.partner_id.vat,
+                               account_invoice_amount_untaxed_sum
+                           ),
                     'model': 'res.partner',
                     'res_id': item.partner_id.id,
                     'channel': self.env['ir.config_parameter'].sudo().get_param(
