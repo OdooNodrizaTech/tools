@@ -909,7 +909,9 @@ class CesceWebService():
                                 cesce_sale_situation_id = items[0].id
                             # cesce_sale_motive_situation_id
                             cesce_sale_motive_situation_id = False
-                            items = self.custom_env['cesce.sale.motive.situation'].search(
+                            items = self.custom_env[
+                                'cesce.sale.motive.situation'
+                            ].search(
                                 [
                                     ('code', '=', int(file_name_items[13]))
                                 ]
@@ -950,7 +952,8 @@ class CesceWebService():
                                 'importe_credito': str(file_name_items[10]),
                                 'account_invoice_id': move_line.invoice_id.id,
                                 'cesce_sale_situation_id': cesce_sale_situation_id,
-                                'cesce_sale_motive_situation_id': cesce_sale_motive_situation_id,
+                                'cesce_sale_motive_situation_id':
+                                    cesce_sale_motive_situation_id,
                                 'percent_riesgo_comercial': str(file_name_items[14]),
                                 'percent_tasa_rrcc': str(file_name_items[15]),
                                 'prima_rrcc': str(file_name_items[16]),
@@ -962,10 +965,10 @@ class CesceWebService():
                                 'fecha_adquisicion': fecha_adquisicion,
                                 'id_interno_factura_cliente': str(file_name_items[23]),
                             }
-                            cesce_sale_obj = self.custom_env['cesce.sale'].sudo().create(vals)
+                            cesce_sale = self.custom_env['cesce.sale'].sudo().create(vals)
                             # check_account_move_line and update
-                            if cesce_sale_obj.account_move_line_id:
-                                cesce_sale_obj.account_move_line_id.cesce_sale_state = 'sale_ok'
+                            if cesce_sale.account_move_line_id:
+                                cesce_sale.account_move_line_id.cesce_sale_state = 'sale_ok'
 
     def cesce_sale_out_ftp(self):
         tmp_file = 'out_ventas_tmp.txt'

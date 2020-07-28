@@ -24,8 +24,9 @@ class IrAttachment(models.Model):
                 if item.url:
                     if 'amazonaws.com' in item.url:
                         item.remove_to_s3()
-        # return
-        return models.Model.unlink(self)
+
+        # return models.Model.unlink(self)
+        return super(IrAttachment, self).unlink()
 
     @api.multi
     def remove_to_s3(self):
