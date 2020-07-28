@@ -26,8 +26,9 @@ class IrAttachment(models.Model):
         # return
         return models.Model.unlink(self)
 
-    @api.one
+    @api.multi
     def remove_to_s3(self):
+        self.ensure_one()
         destination_filename = 'ir_attachments/%s/%s/%s' % (
             self.res_model,
             self.res_id,

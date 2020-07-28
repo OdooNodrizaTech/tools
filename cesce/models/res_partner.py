@@ -2,7 +2,7 @@
 
 import logging
 from odoo import api, models, fields, _
-from odoo.exceptions import Warning
+from odoo.exceptions import Warning as UserError
 
 
 from ..cesce.web_service import CesceWebService
@@ -48,7 +48,7 @@ class ResPartner(models.Model):
         if 'credit_limit' in vals:
             if vals['credit_limit'] < 0:
                 allow_write = False
-                raise Warning("El Limite de credito NO puede ser < 0")
+                raise UserError(_('El Limite de credito NO puede ser < 0'))
         # allow_write
         if allow_write:
             return_write = super(ResPartner, self).write(vals)
@@ -134,35 +134,36 @@ class ResPartner(models.Model):
             _logger.info('revisar estos ids')
             _logger.info(res_partner_ids)
 
-    @api.one
+    @api.multi
     def action_partner_classification_sent(self):
+        self.ensure_one()
         if self.id > 0:
             allow_action = True
 
             if self.cesce_amount_requested == 0:
                 allow_action = False
-                raise Warning(
+                raise UserError(
                     _('Es necesario definir una importe '
                       'solicitado para Cesce para poder tramitar '
                       'la solicitud de riesgo'))
             elif not self.vat:
                 allow_action = False
-                raise Warning(_('Es necesario definir un NIF/CIF'))
+                raise UserError(_('Es necesario definir un NIF/CIF'))
             elif self.country_id.id == 0:
                 allow_action = False
-                raise Warning(_('Es necesario definir un pais'))
+                raise UserError(_('Es necesario definir un pais'))
             elif self.state_id.id == 0:
                 allow_action = False
-                raise Warning(_('Es necesario definir una provincia'))
+                raise UserError(_('Es necesario definir una provincia'))
             elif not self.zip:
                 allow_action = False
-                raise Warning(_('Es necesario definir un codigo postal'))
+                raise UserError(_('Es necesario definir un codigo postal'))
             elif not self.city:
                 allow_action = False
-                raise Warning(_('Es necesario definir una ciudad'))
+                raise UserError(_('Es necesario definir una ciudad'))
             elif not self.street:
                 allow_action = False
-                raise Warning(_('Es necesario definir una direccion'))
+                raise UserError(_('Es necesario definir una direccion'))
 
             if allow_action:
                 cesce_web_service = CesceWebService(self.env.user.company_id, self.env)
@@ -171,11 +172,12 @@ class ResPartner(models.Model):
                 if not return_action['errors']:
                     self.cesce_risk_state = 'classification_sent'
                 else:
-                    raise Warning(return_action['error'])
+                    raise UserError(return_action['error'])
 
                 return True
 
-    @api.one
+    @api.multi
     def action_partner_canceled_sent(self):
         _logger.info('action_partner_canceled_sent')
+        self.ensure_one()
         return True

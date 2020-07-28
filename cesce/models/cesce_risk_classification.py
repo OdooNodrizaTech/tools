@@ -168,8 +168,7 @@ class CesceRiskClassification(models.Model):
                            ),
                     'model': 'res.partner',
                     'res_id': item.partner_id.id,
-                    'channel': self.env['ir.config_parameter'].sudo().get_param(
-                        'slack_oniad_log_channel'
-                    ),
+                    'channel':
+                        self.env['ir.config_parameter'].sudo().get_param('slack_oniad_log_channel'),
                 }
                 self.env['slack.message'].sudo().create(vals)

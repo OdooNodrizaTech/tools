@@ -4,7 +4,6 @@ from odoo import api, fields, models, tools, _
 from pipedrive.client import Client
 import json
 import boto3
-from botocore.exceptions import ClientError
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -166,7 +165,8 @@ class PipedriveDeal(models.Model):
             }
             #expected_close_date
             if data['current']['expected_close_date'] is not None:
-                vals['expected_close_date'] = data['current']['expected_close_date']
+                vals['expected_close_date'] = \
+                    data['current']['expected_close_date']
             # person_id
             if data['current']['person_id'] is not None:
                 if data['current']['person_id'] > 0:
@@ -279,7 +279,9 @@ class PipedriveDeal(models.Model):
             if response['success']:
                 for data_item in response['data']:
                     #keys_need_check
-                    keys_need_check = ['person_id', 'org_id', 'user_id']
+                    keys_need_check = [
+                        'person_id', 'org_id', 'user_id'
+                    ]
                     for key_need_check in keys_need_check:
                         if key_need_check in data_item:
                             if data_item[key_need_check] is not None:

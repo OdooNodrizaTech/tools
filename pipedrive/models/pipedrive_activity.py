@@ -4,7 +4,6 @@ from odoo import api, fields, models, tools, _
 from pipedrive.client import Client
 import json
 import boto3
-from botocore.exceptions import ClientError
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -98,7 +97,8 @@ class PipedriveActivity(models.Model):
             # activity_type_id
             if self.pipedrive_activity_type_id:
                 if self.pipedrive_activity_type_id.mail_activity_type_id:
-                    vals['activity_type_id'] = self.pipedrive_activity_type_id.mail_activity_type_id.id
+                    vals['activity_type_id'] = \
+                        self.pipedrive_activity_type_id.mail_activity_type_id.id
             # user_id
             if self.pipedrive_user_id:
                 if self.pipedrive_user_id.user_id:
@@ -276,7 +276,8 @@ class PipedriveActivity(models.Model):
                         if key_need_check in data_item:
                             if data_item[key_need_check] is not None:
                                 if 'id' in data_item[key_need_check]:
-                                    data_item[key_need_check] = data_item[key_need_check]['id']
+                                    data_item[key_need_check] = \
+                                        data_item[key_need_check]['id']
                                 else:
                                     data_item[key_need_check] = None
                             else:

@@ -4,7 +4,6 @@ from odoo import api, fields, models, tools, _
 from pipedrive.client import Client
 import json
 import boto3
-from botocore.exceptions import ClientError
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -129,8 +128,10 @@ class PipedriveOrganization(models.Model):
                 'name': data['current']['name']
             }
             # fields_need_check
-            fields_need_check = ['address', 'address_street_number', 'address_route',
-                                 'address_locality', 'address_country', 'address_postal_code']
+            fields_need_check = [
+                'address', 'address_street_number',
+                'address_route', 'address_locality',
+                'address_country', 'address_postal_code']
             for field_need_check in fields_need_check:
                 if field_need_check in data['current']:
                     if data['current'][field_need_check] is None:
@@ -198,7 +199,9 @@ class PipedriveOrganization(models.Model):
     @api.model
     def cron_sqs_pipedrive_organization(self):
         _logger.info('cron_sqs_pipedrive_organization')
-        sqs_pipedrive_organization_url = tools.config.get('sqs_pipedrive_organization_url')
+        sqs_pipedrive_organization_url = tools.config.get(
+            'sqs_pipedrive_organization_url'
+        )
         AWS_ACCESS_KEY_ID = tools.config.get('aws_access_key_id')
         AWS_SECRET_ACCESS_KEY = tools.config.get('aws_secret_key_id')
         AWS_SMS_REGION_NAME = tools.config.get('aws_region_name')

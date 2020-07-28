@@ -4,7 +4,6 @@ from odoo import api, fields, models, tools, _
 from pipedrive.client import Client
 import json
 import boto3
-from botocore.exceptions import ClientError
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -119,7 +118,7 @@ class PipedrivePerson(models.Model):
                     for phone_item in data['current']['phone']:
                         if phone_item['primary']:
                             vals['phone'] = phone_item['value']
-            #email
+            # email
             if 'email' in data['current']:
                 if len(data['current']['email']) > 0:
                     for email_item in data['current']['email']:
@@ -158,7 +157,7 @@ class PipedrivePerson(models.Model):
                     vals['pipedrive_user_id'] = items[0].id
         # all operations (if errors False)
         if not result_message['errors']:
-            #create-update (pipedrive.person)
+            # create-update (pipedrive.person)
             items = self.env['pipedrive.person'].sudo().search(
                 [
                     ('external_id', '=', vals['external_id'])

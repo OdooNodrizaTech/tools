@@ -52,7 +52,7 @@ class PipedriveProduct(models.Model):
         }
         # price data
         if 'prices' in data:
-            if len(data['prices'])>0:
+            if len(data['prices']) > 0:
                 data_price_0 = data['prices'][0]
                 vals['price'] = data_price_0['price']
                 vals['cost'] = data_price_0['cost']

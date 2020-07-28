@@ -69,10 +69,12 @@ class CrmLead(models.Model):
         )
         if items:
             for item in items:
-                amount_untaxed = item.amount_untaxed_total_out_invoice\
-                                 -item.amount_untaxed_total_out_refund
-                margin = item.margin_total_out_invoice\
-                         -item.margin_total_out_refund
+                amount_untaxed = \
+                    item.amount_untaxed_total_out_invoice\
+                    -item.amount_untaxed_total_out_refund
+                margin = \
+                    item.margin_total_out_invoice\
+                    -item.margin_total_out_refund
                 # api_call tr.oniad.com
                 headers = {
                     'Content-type': 'application/json', 

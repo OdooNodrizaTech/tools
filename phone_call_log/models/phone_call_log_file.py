@@ -52,7 +52,8 @@ class PhoneCallLogFile(models.Model):
                      'subscription_id', 'post_dial_digits',
                      'subscription_component_name', 'readable_date',
                      'contact_name']
-        url = "https://drive.google.com/uc?id=%s&export=download" % self.google_drive_file_id
+        url = "https://drive.google.com/uc?id=%s&export=download" \
+              % self.google_drive_file_id
         response = urlopen(url).read()
         tree = ET.fromstring(response)
         call_items = tree.findall('call')
@@ -77,7 +78,8 @@ class PhoneCallLogFile(models.Model):
                     call_item_array['duration'] = int(call_item_array['duration'])
                 # change presentation
                 if call_item_array['presentation'] is not None:
-                    call_item_array['presentation'] = int(call_item_array['presentation'])
+                    call_item_array['presentation'] = \
+                        int(call_item_array['presentation'])
                 # date_convert
                 readable_date_timezone_user_id = datetime.strptime(
                     call_item_array['readable_date'],

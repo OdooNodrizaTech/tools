@@ -1,5 +1,6 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 import logging
+from .googleanalytics_webservice import GoogleanalyticsWebservice
 from odoo import api, fields, models
 import odoo
 
@@ -8,13 +9,12 @@ from dateutil.relativedelta import relativedelta
 
 _logger = logging.getLogger(__name__)
 logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
-from .googleanalytics_webservice import GoogleanalyticsWebservice
 
 
 class GoogleanalyticsResultBeahavior(models.Model):
     _name = 'googleanalytics.result.beahavior'
     _description = 'Googleanalytics Result Beahavior'
-    
+
     landingPagePath = fields.Char(
         string='landingPagePath'
     )

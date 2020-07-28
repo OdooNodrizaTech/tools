@@ -575,11 +575,9 @@ class CesceWebService():
     # generate_partner_classification
     def generate_partner_classification(self, partner):
         if self.connection_risk_classification == 'ftp':
-           response = self.generate_partner_classification_ftp(partner)
+            return self.generate_partner_classification_ftp(partner)
         else:
-            response = self.generate_partner_classification_webservice(partner)
-
-        return response
+            return self.generate_partner_classification_webservice(partner)
 
     def generate_partner_classification_webservice(self, partner):
         _logger.info('generate_partner_classification_webservice')
@@ -1007,11 +1005,17 @@ class CesceWebService():
     def generate_cesce_sale_ftp(self, account_move_line):
         today = datetime.datetime.today()
         # fecha_factura
-        date_invoice_slit = account_move_line.invoice_id.date_invoice.split("-")
-        fecha_factura = date_invoice_slit[0]+date_invoice_slit[1]+date_invoice_slit[2]                  
+        fecha_factura = "%s%s%" % (
+            account_move_line.invoice_id.date_invoice.split("-")[0],
+            account_move_line.invoice_id.date_invoice.split("-")[1],
+            account_move_line.invoice_id.date_invoice.split("-")[2]
+        )
         # fecha_vencimiento
-        date_maturity_slit = account_move_line.date_maturity.split("-")
-        fecha_vencimiento = date_maturity_slit[0]+date_maturity_slit[1]+date_maturity_slit[2]              
+        fecha_vencimiento = "%s%s%s" % (
+            account_move_line.date_maturity.split("-")[0],
+            account_move_line.date_maturity.split("-")[1],
+            account_move_line.date_maturity.split("-")[2]
+        )
         # partner_vat
         partner_vat = account_move_line.partner_id.vat.upper()
         txt_fields = [
@@ -1073,7 +1077,7 @@ class CesceWebService():
             },
             {
                 'type': 'importe_credito',
-                'value': str(str(account_move_line.debit).replace('.', ''))+'0',                
+                'value': str(str(account_move_line.debit).replace('.', ''))+'0',
                 'value_test': '26828100',
                 'size': 18,
             },
@@ -1120,10 +1124,10 @@ class CesceWebService():
         _logger.info(txt_line)
         # error prev
         response = {
-            'errors': True, 
-            'error': "", 
+            'errors': True,
+            'error': "",
             'return': "",
-        }                                
+        }
         # open file for reading
         file_name_real = "In_VENTAS%s_%s.csv" % (
             today.strftime('%d%m%Y%H%M'),

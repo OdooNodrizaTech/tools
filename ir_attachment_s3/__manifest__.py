@@ -8,8 +8,11 @@
     "author": "Odoo Nodriza Tech (ONT), "
               "Odoo Community Association (OCA)",
     "license": "AGPL-3",
-    'external_dependencies': {
-        'python3': ['boto3'],
+    "external_dependencies": {
+        "python3": [
+            "boto3",
+            "unidecode"
+        ],
     },
     "depends": [
         "base"

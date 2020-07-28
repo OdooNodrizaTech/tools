@@ -93,7 +93,7 @@ class AccountMoveLine(models.Model):
                 ('debit', '>', 0),
                 ('invoice_id.date_invoice', '>=', start_date.strftime("%Y-%m-%d")),
                 ('invoice_id.date_invoice', '<=', end_date.strftime("%Y-%m-%d")),
-                ('invoice_id.invoice_with_risk', '=', True),                
+                ('invoice_id.invoice_with_risk', '=', True),
                 ('cesce_sale_state', '=', 'none')
             ]
         )
