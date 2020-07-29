@@ -30,32 +30,32 @@ class CrmLead(models.Model):
 
     @api.multi
     def tracking_session_addProperties(self):
-        self.ensure_one()
-        if self.tracking_profile_uuid and self.tracking_session_uuid:
-            headers = {
-                'Content-type': 'application/json',
-                'origin': 'erp.arelux.com',
-                'User-Agent':
-                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; '
-                    'rv:68.0) Gecko/20100101 Firefox/68.0'
-            }
-            data = {
-                "profile_uuid": str(self.tracking_profile_uuid),
-                "properties": {
-                    "lead_id": self.id
+        for item in self:
+            if item.tracking_profile_uuid and item.tracking_session_uuid:
+                headers = {
+                    'Content-type': 'application/json',
+                    'origin': 'erp.arelux.com',
+                    'User-Agent':
+                        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; '
+                        'rv:68.0) Gecko/20100101 Firefox/68.0'
                 }
-            }
-            url = 'https://tr.oniad.com/api/session/%s/addProperties' \
-                  % self.tracking_session_uuid
-            try:
-                response = requests.post(
-                    url,
-                    data=json.dumps(data),
-                    headers=headers
-                )
-                return response.status_code
-            except:
-                return 500
+                data = {
+                    "profile_uuid": str(item.tracking_profile_uuid),
+                    "properties": {
+                        "lead_id": item.id
+                    }
+                }
+                url = 'https://tr.oniad.com/api/session/%s/addProperties' \
+                      % item.tracking_session_uuid
+                try:
+                    response = requests.post(
+                        url,
+                        data=json.dumps(data),
+                        headers=headers
+                    )
+                    return response.status_code
+                except:
+                    return 500
 
     @api.model
     def cron_odoo_tr_oniad_api_call_update_session_data(self):
