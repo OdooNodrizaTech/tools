@@ -1,1 +1,1 @@
-OdooNodrizaTech-financial-risk https://github.com/OdooNodrizaTech/financial-risk
+OdooNodrizaTech-financial_risk https://github.com/OdooNodrizaTech/financial_risk
