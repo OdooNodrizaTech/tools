@@ -1,1 +1,2 @@
 OdooNodrizaTech-financial_risk https://github.com/OdooNodrizaTech/financial_risk
+social
