@@ -12,7 +12,7 @@
         "base",
         "sale",
         "account",
-        "partner_financial_risk"
+        "partner_financial_risk"  # https://github.com/OdooNodrizaTech/financial-risk
     ],
     "external_dependencies": {
         "python": [
