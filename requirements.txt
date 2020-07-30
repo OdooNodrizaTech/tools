@@ -2,3 +2,4 @@ boto3
 google-api-python-client
 oauth2client
 apiclient
+pipedrive-python-lib
