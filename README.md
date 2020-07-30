@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/OdooNodrizaTech/tools.svg?branch=12.0)](https://travis-ci.org/OdooNodrizaTech/tools)
+[![Coverage Status](https://coveralls.io/repos/github/OdooNodrizaTech/tools/badge.svg?branch=12.0)](https://coveralls.io/github/OdooNodrizaTech/tools?branch=12.0)
 
 tools
 =========
