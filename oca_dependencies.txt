@@ -1,2 +1,2 @@
-OdooNodrizaTech-financial_risk https://github.com/OdooNodrizaTech/financial_risk
 bank-payment
+OdooNodrizaTech-financial_risk https://github.com/OdooNodrizaTech/financial_risk
