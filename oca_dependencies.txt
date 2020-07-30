@@ -1,1 +1,1 @@
-OdooNodrizaTech-sale https://github.com/OdooNodrizaTech/sale
+OdooNodrizaTech-financial-risk https://github.com/OdooNodrizaTech/financial-risk
