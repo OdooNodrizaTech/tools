@@ -113,7 +113,6 @@ class PipedriveActivity(models.Model):
     @api.model
     def create(self, values):
         return_item = super(PipedriveActivity, self).create(values)
-        # operations
         return_item.check_mail_activity()
         # return
         return return_item

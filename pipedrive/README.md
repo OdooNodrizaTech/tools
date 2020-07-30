@@ -1,4 +1,4 @@
-Se realiza la integración mediante webhooks y SQS con el CRM https://www.pipedrive.com/
+Se realiza la integración mediante webhooks y SQS con el CRM Pipedrive (https://www.pipedrive.com/)
 
 ## Parámetros de configuración
 ```

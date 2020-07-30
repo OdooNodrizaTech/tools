@@ -10,7 +10,7 @@
     "license": "AGPL-3",
     "depends": [
         "base",
-        "mail_activity_done"
+        "mail_activity_done"  # https://github.com/OCA/social
     ],
     "data": [
         "data/ir_cron.xml",
