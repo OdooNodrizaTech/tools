@@ -12,7 +12,6 @@
         "python": [
             "oauth2client",
             "apiclient",
-            # "googleapiclient"
         ],
     },
     "depends": [

@@ -16,7 +16,6 @@
     ],
     "external_dependencies": {
         "python": [
-            "pipedrive-python-lib",
             "pipedrive",
             "boto3"
         ],
