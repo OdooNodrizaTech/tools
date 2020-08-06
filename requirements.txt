@@ -1,5 +1,6 @@
 boto3
 oauth2client
+googleapiclient
 # apiclient
 # pipedrive-python-lib
 pysftp
