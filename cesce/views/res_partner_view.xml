@@ -7,7 +7,7 @@
         <field name="view_mode">tree,form</field>                
     </record>
 
-    <record id="cesce_risk_classification_situation_action" model="ir.actions.act_window">
+    <record id="cesce_risk_classification_motive_action" model="ir.actions.act_window">
         <field name="name">Cesce Riesgo Motivos Clasificaciones</field>
         <field name="res_model">cesce.risk.classification.motive</field>
         <field name="view_mode">tree,form</field>                
