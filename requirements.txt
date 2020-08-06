@@ -1,4 +1,5 @@
 boto3
 oauth2client
 apiclient
+google-api-python-client
 pysftp
