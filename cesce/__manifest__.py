@@ -31,7 +31,6 @@
         "views/account_move_line_view.xml",
         "views/cesce_view.xml",
         "views/res_partner_view.xml",
-        "views/cesce_risk_classification_view.xml",
         "security/ir.model.access.csv"
     ],
     "installable": True

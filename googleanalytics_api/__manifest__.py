@@ -10,9 +10,9 @@
     "license": "AGPL-3",
     "external_dependencies": {
         "python": [
-            "google-api-python-client",
             "oauth2client",
-            "apiclient"
+            "apiclient",
+            # "googleapiclient"
         ],
     },
     "depends": [
