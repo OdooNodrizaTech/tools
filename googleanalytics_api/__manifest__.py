@@ -9,8 +9,10 @@
     "category": "Tools",
     "license": "AGPL-3",
     "external_dependencies": {
+        "bin": {
+            "google-api-python-client",
+        },
         "python": [
-            # "google-api-python-client",
             "oauth2client",
             "apiclient"
         ],

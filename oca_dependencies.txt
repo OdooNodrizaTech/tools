@@ -1,4 +1,5 @@
 bank-payment
 social
 OdooNodrizaTech-financial_risk https://github.com/OdooNodrizaTech/financial_risk
-googleapis-google-api-python-client https://github.com/googleapis/google-api-python-client master
+google-api-python-client https://github.com/googleapis/google-api-python-client master
+pipedrive-python https://github.com/googleapis/GearPlug/pipedrive-python master
