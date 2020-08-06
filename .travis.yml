@@ -18,8 +18,8 @@ env:
 
   matrix:
   - LINT_CHECK="1"
-  - TESTS="1" ODOO_REPO="OCA/OCB" EXCLUDE="cesce,googleanalytics_api,pipedrive"
-  - TESTS="1" ODOO_REPO="odoo/odoo" EXCLUDE="cesce,googleanalytics_api,pipedrive" MAKEPOT="1"
+  - TESTS="1" ODOO_REPO="OCA/OCB"
+  - TESTS="1" ODOO_REPO="odoo/odoo" MAKEPOT="1"
 
 
 install:
