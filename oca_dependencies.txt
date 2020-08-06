@@ -1,3 +1,2 @@
 social
 OdooNodrizaTech-financial_risk https://github.com/OdooNodrizaTech/financial_risk
-pipedrive-python https://github.com/GearPlug/pipedrive-python master
