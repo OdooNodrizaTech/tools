@@ -11,7 +11,6 @@
     "external_dependencies": {
         "python": [
             "oauth2client",
-            "apiclient"
         ],
     },
     "depends": [
