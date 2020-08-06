@@ -11,6 +11,7 @@
     "external_dependencies": {
         "python": [
             "oauth2client",
+            "apiclient",
             # "googleapiclient"
         ],
     },
