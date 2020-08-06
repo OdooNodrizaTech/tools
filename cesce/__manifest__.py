@@ -12,6 +12,9 @@
         "base",
         "sale",
         "account",
+        "account_payment_mode",  # https://github.com/OCA/bank-payment
+        "account_payment_partner",  # https://github.com/OCA/bank-payment
+        "account_payment_sale"  # https://github.com/OCA/bank-payment
         "partner_financial_risk"  # https://github.com/OdooNodrizaTech/financial_risk
     ],
     "external_dependencies": {
