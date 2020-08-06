@@ -8,3 +8,4 @@ access_cesce_sale_admin,cesce.sale,model_cesce_sale,,1,1,1,1
 access_cesce_sale_motive_situation_admin,cesce.sale.motive.situation,model_cesce_sale_motive_situation,,1,1,1,1
 access_cesce_sale_situation_admin,cesce.sale.situation,model_cesce_sale_situation,,1,1,1,1
 access_cesce_webservice_error_admin,cesce.webservice.error,model_cesce_webservice_error,,1,1,1,1
+access_cesce_file_check,access_cesce_file_check,model_cesce_file_check,base.group_user,1,0,0,0

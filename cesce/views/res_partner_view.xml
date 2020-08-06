@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="cesce_risk_classification_tree_form" model="ir.actions.act_window">
+    <record id="cesce_risk_classification_action" model="ir.actions.act_window">
         <field name="name">Cesce Riesgo Clasificacion</field>
         <field name="res_model">cesce.risk.classification</field>
         <field name="view_mode">tree,form</field>                
     </record>
 
-    <record id="cesce_risk_classification_motive_tree_form" model="ir.actions.act_window">
+    <record id="cesce_risk_classification_motive_action" model="ir.actions.act_window">
         <field name="name">Cesce Riesgo Motivos Clasificaciones</field>
         <field name="res_model">cesce.risk.classification.motive</field>
         <field name="view_mode">tree,form</field>                
     </record>
 
-    <record id="cesce_risk_classification_situation_tree_form" model="ir.actions.act_window">
+    <record id="cesce_risk_classification_situation_action" model="ir.actions.act_window">
         <field name="name">Cesce Riesgo Clasificacion Situaciones</field>
         <field name="res_model">cesce.risk.classification.situation</field>
         <field name="view_mode">tree,form</field>                
     </record>
 
-    <record id="cesce_sale_tree_form" model="ir.actions.act_window">
+    <record id="cesce_sale_action" model="ir.actions.act_window">
         <field name="name">Cesce Ventas</field>
         <field name="res_model">cesce.sale</field>
         <field name="view_mode">tree,form</field>                
     </record>
 
-    <record id="cesce_sale_situation_tree_form" model="ir.actions.act_window">
+    <record id="cesce_sale_situation_action" model="ir.actions.act_window">
         <field name="name">Cesce Ventas Situaciones</field>
         <field name="res_model">cesce.sale.situation</field>
         <field name="view_mode">tree,form</field>                
     </record>
 
-    <record id="cesce_sale_motive_situation_tree_form" model="ir.actions.act_window">
+    <record id="cesce_sale_motive_situation_action" model="ir.actions.act_window">
         <field name="name">Cesce Ventas Motivos Situaciones</field>
         <field name="res_model">cesce.sale.motive.situation</field>
         <field name="view_mode">tree,form</field>                
     </record>
 
-    <record id="cesce_classification_payment_term_tree_form" model="ir.actions.act_window">
+    <record id="cesce_classification_payment_term_action" model="ir.actions.act_window">
         <field name="name">Cesce Plazos de pago</field>
         <field name="res_model">cesce.payment.term</field>
         <field name="view_mode">tree,form</field>                
     </record>
 
-    <record id="cesce_webservice_error_tree_form" model="ir.actions.act_window">
+    <record id="cesce_webservice_error_action" model="ir.actions.act_window">
         <field name="name">Cesce Webservice Error</field>
         <field name="res_model">cesce.webservice.error</field>
         <field name="view_mode">tree,form</field>                
