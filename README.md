@@ -1,3 +1,4 @@
+[![Build Status](https://runbot.nodrizatech.com/runbot/badge/19/12.0.svg)](https://runbot.nodrizatech.com/runbot/repo/https-github-com-odoonodrizatech-tools-19)
 [![Build Status](https://travis-ci.org/OdooNodrizaTech/tools.svg?branch=12.0)](https://travis-ci.org/OdooNodrizaTech/tools)
 [![codecov](https://codecov.io/gh/OdooNodrizaTech/tools/branch/12.0/graph/badge.svg)](https://codecov.io/gh/OdooNodrizaTech/tools)
 
