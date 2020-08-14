@@ -37,7 +37,7 @@ class CesceSale(models.Model):
         string='Fecha factura'
     )
     fecha_vencimiento = fields.Date(
-        string='Fecha movimiento'
+        string='Fecha vencimiento'
     )
     importe_credito = fields.Float(
         string='Importe credito'
