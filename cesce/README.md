@@ -148,16 +148,6 @@ id | code | name | area
 
 En el apartado Contabilidad > Ventas se añade el apartado "Cesce" con los apuntes contables que correspondería para exportara a Cesce.
 
-Para instalarlo será necesario eliminar estas líneas en res_partner_view.xml
-```
-                <div>
-                    <button type="action" class="btn-link" name="%(oniad_cesce.cesce_risk_classification_action)d" context="{'search_default_partner_id': active_id}">
-                        <field string="Cesce clasificaciones de riesgo" name="cesce_risk_classification_count" widget="statinfo"/>
-                    </button>
-                </div>
-```                
-y una vez instalado, colocarlas de nuevo y actualizar el addon
-
  
 Aplicar permisos 777 a la carpeta /ont/tools/cesce/
 
