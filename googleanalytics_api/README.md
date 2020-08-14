@@ -5,10 +5,8 @@ Se realiza la integración con GoogleAnalytics para obtener información respect
 - googleanalytics_result_general
 
 ## odoo.conf
-```
-#googleanalytics_api
-googleanalytics_api_key_file=/home/ubuntu/googleanalytics_api_key_file.json
-```
+- #googleanalytics_api
+- googleanalytics_api_key_file=/home/ubuntu/googleanalytics_api_key_file.json
 
 ## Crones
 

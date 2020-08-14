@@ -1,15 +1,11 @@
 El módulo contiene el desarrollo respecto a enviar los datos a datalake
 
 ## odoo.conf
-```
-aws_access_key_id=xxx
-aws_secret_key_id=xxxx
-```
+- aws_access_key_id=xxx
+- aws_secret_key_id=xxxx
 
 ## Parámetros de configuración
-```
-ses_datalake_test
-```
+- ses_datalake_test
 
 ## Crones
 
