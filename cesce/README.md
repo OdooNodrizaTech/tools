@@ -7,7 +7,7 @@ Las horas en las que CESCE ‘procesa’ la información y la devuelve (o devuel
 - cesce_ftp_host=cesceconnect.cesce.es
 - cesce_ftp_user=xxx
 - cesce_ftp_password=xxx
-- cesce_ftp_port=2022 
+- cesce_ftp_port=2022
 
 ## Parámetros de configuración
 - oniad_cesce_modalidad
@@ -19,7 +19,7 @@ Las horas en las que CESCE ‘procesa’ la información y la devuelve (o devuel
 - oniad_cesce_ftp_folder_error        
 - oniad_cesce_ftp_folder_processed        
 - oniad_cesce_connection_risk_classification        
-- oniad_cesce_connection_sale 
+- oniad_cesce_connection_sale
 
 ### cesce.payment.term
 id | code | name

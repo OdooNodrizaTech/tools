@@ -2,7 +2,7 @@ Se realiza la integración mediante webhooks y SQS con el CRM Pipedrive (https:/
 
 ## Parámetros de configuración
 - pipedrive_domain
-- pipedrive_api_token 
+- pipedrive_api_token
 
 pipedrive_domain > https://companydomain.pipedrive.com/
 pipedrive_api_token > https://companydomain.pipedrive.com/settings/api
