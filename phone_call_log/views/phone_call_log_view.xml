@@ -61,9 +61,19 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">phone.call.log</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,pivot</field>
         <field name="view_id" ref="phone_call_log_tree"/>
         <field name="search_view_id" ref="view_phone_call_log_search"/>
+    </record>
+    <record id="phone_call_log_pivot" model="ir.ui.view">
+        <field name="name">Phone Call Log</field>
+        <field name="model">phone.call.log</field>
+        <field name="arch" type="xml">
+            <pivot string="Phone Call Log">
+                <field name="user_id" type="row"/>
+                <field name="type" type="col"/>
+            </pivot>
+        </field>
     </record>
     <record id="phone_call_log_file_view" model="ir.ui.view">
         <field name="name">Phone Call Log File</field>
