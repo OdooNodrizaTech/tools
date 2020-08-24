@@ -58,8 +58,8 @@ class PhoneCallLogFile(models.Model):
         tree = ET.fromstring(response)
         call_items = tree.findall('call')
         # info
-        timezone_utc = pytz.timezone('UTC')
-        timezone_user_id = pytz.timezone(self.user_id.tz)
+        tz_utc = pytz.timezone('UTC')
+        tz_user_id = pytz.timezone(self.user_id.tz)
         # operations
         _logger.info('Total elementos=%s' % len(call_items))
         if len(call_items) > 0:
@@ -70,50 +70,53 @@ class PhoneCallLogFile(models.Model):
                         call_item_array[key_call] = call_item.get(key_call)
                     except:
                         call_item_array[key_call] = None
-                # change type
-                if call_item_array['type'] is not None:
-                    call_item_array['type'] = int(call_item_array['type'])
-                # change duration
-                if call_item_array['duration'] is not None:
-                    call_item_array['duration'] = int(call_item_array['duration'])
-                # change presentation
-                if call_item_array['presentation'] is not None:
-                    call_item_array['presentation'] = \
-                        int(call_item_array['presentation'])
-                # date_convert
-                readable_date_timezone_user_id = datetime.strptime(
-                    call_item_array['readable_date'],
-                    '%Y/%m/%d %H:%M:%S'
-                )
-                readable_date_timezone_user_id = timezone_user_id.localize(
-                    readable_date_timezone_user_id
-                )
-                # convert_to_timezone_utc
-                readable_date = readable_date_timezone_user_id.astimezone(timezone_utc)
-                # search
-                phone_call_log_ids = self.env['phone.call.log'].search(
-                    [
-                        ('phone_call_log_file_id', '=', self.id),
-                        ('date', '=', readable_date.strftime('%Y/%m/%d %H:%M:%S')),
-                        ('number', '=', call_item_array['number']),
-                    ]
-                )
-                if len(phone_call_log_ids) == 0:
-                    # phone_call_log_vars
-                    vals = {
-                        'phone_call_log_file_id': self.id,
-                        'user_id': self.user_id.id,
-                        'number': call_item_array['number'],
-                        'duration': call_item_array['duration'],
-                        'date': readable_date.strftime('%Y/%m/%d %H:%M:%S'),
-                        'type': call_item_array['type'],
-                        'presentation': call_item_array['presentation']
-                    }
-                    # contact_name
-                    if call_item_array['contact_name'] != '(Unknown)':
-                        vals['contact_name'] = call_item_array['contact_name']
-                    # create
-                    self.env['phone.call.log'].sudo().create(vals)
+                if len(call_item_array['number']) > 4:
+                    # change type
+                    if call_item_array['type'] is not None:
+                        call_item_array['type'] = int(call_item_array['type'])
+                    # change duration
+                    if call_item_array['duration'] is not None:
+                        call_item_array['duration'] = "{0:.2f}".format(
+                            (float(call_item_array['duration'])/60)
+                        )
+                    # change presentation
+                    if call_item_array['presentation'] is not None:
+                        call_item_array['presentation'] = \
+                            int(call_item_array['presentation'])
+                    # date_convert
+                    readable_date_timezone_user_id = datetime.strptime(
+                        call_item_array['readable_date'],
+                        '%Y/%m/%d %H:%M:%S'
+                    )
+                    readable_date_timezone_user_id = tz_user_id.localize(
+                        readable_date_timezone_user_id
+                    )
+                    # convert_to_timezone_utc
+                    readable_date = readable_date_timezone_user_id.astimezone(tz_utc)
+                    # search
+                    phone_call_log_ids = self.env['phone.call.log'].search(
+                        [
+                            ('phone_call_log_file_id', '=', self.id),
+                            ('date', '=', readable_date.strftime('%Y/%m/%d %H:%M:%S')),
+                            ('number', '=', call_item_array['number']),
+                        ]
+                    )
+                    if len(phone_call_log_ids) == 0:
+                        # phone_call_log_vars
+                        vals = {
+                            'phone_call_log_file_id': self.id,
+                            'user_id': self.user_id.id,
+                            'number': call_item_array['number'],
+                            'duration': call_item_array['duration'],
+                            'date': readable_date.strftime('%Y/%m/%d %H:%M:%S'),
+                            'type': call_item_array['type'],
+                            'presentation': call_item_array['presentation']
+                        }
+                        # contact_name
+                        if call_item_array['contact_name'] != '(Unknown)':
+                            vals['contact_name'] = call_item_array['contact_name']
+                        # create
+                        self.env['phone.call.log'].sudo().create(vals)
 
     @api.model
     def cron_phone_call_log_files(self):

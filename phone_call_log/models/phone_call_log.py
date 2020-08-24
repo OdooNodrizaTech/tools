@@ -20,7 +20,7 @@ class PhoneCallLog(models.Model):
     number = fields.Char(
         string='Number'
     )
-    duration = fields.Integer(
+    duration = fields.Float(
         string='Duration'
     )
     date = fields.Datetime(

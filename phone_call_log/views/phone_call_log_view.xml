@@ -10,8 +10,8 @@
                     <group>
                         <field name="phone_call_log_file_id" options='{"no_create": True, "no_create_edit": True}' />
                         <field name="user_id" options='{"no_create": True, "no_create_edit": True}' />
-                        <field name="number"/>
-                        <field name="duration"/>
+                        <field name="number" widget="phone"/>
+                        <field name="duration" widget="float_time"/>
                         <field name="date"/>
                         <field name="type"/>
                         <field name="presentation"/>
@@ -48,7 +48,7 @@
                 <field name="phone_call_log_file_id"/>
                 <field name="user_id"/>
                 <field name="number"/>
-                <field name="duration"/>
+                <field name="duration" widget="float_time" sum="Duration"/>
                 <field name="date"/>
                 <field name="type"/>
                 <field name="presentation"/>
@@ -75,6 +75,7 @@
             <pivot string="Phone Call Log">
                 <field name="user_id" type="row"/>
                 <field name="type" type="col"/>
+                <field name="duration" widget="float_time" type="measure" />
             </pivot>
         </field>
     </record>
