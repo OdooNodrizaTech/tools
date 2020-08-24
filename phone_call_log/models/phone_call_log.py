@@ -20,7 +20,7 @@ class PhoneCallLog(models.Model):
     number = fields.Char(
         string='Number'
     )
-    duration = fields.Integer(
+    duration = fields.Float(
         string='Duration'
     )
     date = fields.Datetime(
@@ -68,15 +68,31 @@ class PhoneCallLog(models.Model):
         #operations
         if return_object.number!=False:
             if '+' not in return_object.number:
-                res_country_ids = self.env['res.country'].search([('phone_code', '=', 34)])
+                res_country_ids = self.env['res.country'].search(
+                    [
+                        ('phone_code', '=', 34)
+                    ]
+                )
                 if len(res_country_ids)>0:
                     code_res_country_id = res_country_ids[0].id
                 #number
                 number = return_object.number
             else:
-                res_country_ids = self.env['res.country'].search([('phone_code', '=', return_object.number[1:3])])
+                res_country_ids = self.env['res.country'].search(
+                    [
+                        ('phone_code', '=', return_object.number[1:3])
+                    ]
+                )
                 if len(res_country_ids)>0:
                     code_res_country_id = res_country_ids[0].id
+                else:
+                    res_country_ids = self.env['res.country'].search(
+                        [
+                            ('phone_code', '=', 34)
+                        ]
+                    )
+                    if len(res_country_ids) > 0:
+                        code_res_country_id = res_country_ids[0].id
                 #number
                 number = return_object.number[3:]
             #phone_is_mobile
@@ -85,34 +101,52 @@ class PhoneCallLog(models.Model):
                 phone_is_mobile = False
             #search
             if phone_is_mobile==True:
-                res_partner_ids = self.env['res.partner'].search([('mobile_code_res_country_id', '=', code_res_country_id),('mobile', '=', number)])
+                res_partner_ids = self.env['res.partner'].search(
+                    [
+                        ('mobile_code_res_country_id', '=', code_res_country_id),
+                        ('mobile', '=', number)
+                    ]
+                )
             else:
-                res_partner_ids = self.env['res.partner'].search([('phone_code_res_country_id', '=', code_res_country_id),('phone', '=', number)])
+                res_partner_ids = self.env['res.partner'].search(
+                    [
+                        ('phone_code_res_country_id', '=', code_res_country_id),
+                        ('phone', '=', number)
+                    ]
+                )
             #items
             if len(res_partner_ids)>0:
                 return_object.partner_id = res_partner_ids[0].id
                 #search_lead_id
-                crm_lead_ids = self.env['crm.lead'].search([('partner_id', '=', return_object.partner_id.id)])
+                crm_lead_ids = self.env['crm.lead'].search(
+                    [
+                        ('partner_id', '=', return_object.partner_id.id)
+                    ]
+                )
                 if len(crm_lead_ids)>0:
                     #update lead_id
                     return_object.lead_id = crm_lead_ids[0].id
                     #get mail_message_subtype
-                    mail_message_subtype_ids = self.env['mail.message.subtype'].search([('is_phone_call', '=', True)])
+                    mail_message_subtype_ids = self.env['mail.message.subtype'].search(
+                        [
+                            ('is_phone_call', '=', True)
+                        ]
+                    )
                     if len(mail_message_subtype_ids)>0:
                         #mail_message_without_parent_ids
-                        mail_message_without_parent_ids = self.env['mail.message'].search(
+                        mail_message_ids = self.env['mail.message'].search(
                             [
                                 ('parent_id', '=', False),
-                                ('res_id', '=', return_object.lead_id),
+                                ('res_id', '=', return_object.lead_id.id),
                                 ('model', '=', 'crm.lead')
                             ]
                         )
-                        if len(mail_message_without_parent_ids)>0:
+                        if len(mail_message_ids)>0:
                             #create mail_message
                             mail_message_obj = self.env['mail.message'].sudo(return_object.user_id).create({
-                                'parent_id': mail_message_without_parent_ids[0].id,
+                                'parent_id': mail_message_ids[0].id,
                                 'subtype_id': mail_message_subtype_ids[0].id,
-                                'res_id': return_object.lead_id,
+                                'res_id': return_object.lead_id.id,
                                 'record_name': return_object.lead_id.name,
                                 'date': return_object.date,
                                 'model': 'crm.lead',
