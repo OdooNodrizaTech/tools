@@ -76,8 +76,6 @@ class PhoneCallLogFile(models.Model):
                     #change duration
                     if call_item_array['duration']!=None:
                         call_item_array['duration'] = "{0:.2f}".format((float(call_item_array['duration'])/60))
-                        _logger.info('Duracion')
-                        _logger.info(call_item_array['duration'])
                     #change presentation
                     if call_item_array['presentation'] != None:
                         call_item_array['presentation'] = int(call_item_array['presentation'])
