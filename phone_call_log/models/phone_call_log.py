@@ -120,7 +120,8 @@ class PhoneCallLog(models.Model):
                 #search_lead_id
                 crm_lead_ids = self.env['crm.lead'].search(
                     [
-                        ('partner_id', '=', return_object.partner_id.id)
+                        ('partner_id', '=', return_object.partner_id.id),
+                        ('create_date', '>=', return_object.date)
                     ]
                 )
                 if len(crm_lead_ids)>0:
