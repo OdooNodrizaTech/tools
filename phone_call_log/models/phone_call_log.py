@@ -84,13 +84,15 @@ class PhoneCallLog(models.Model):
             if phone_is_mobile:
                 res_partner_ids = self.env['res.partner'].search(
                     [
-                        ('mobile', '=', number_need_check)
+                        ('mobile', '=', number_need_check),
+                        ('create_date', '>=', return_object.date)
                     ]
                 )
             else:
                 res_partner_ids = self.env['res.partner'].search(
                     [
-                        ('phone', '=', number_need_check)
+                        ('phone', '=', number_need_check),
+                        ('create_date', '>=', return_object.date)
                     ]
                 )
             # items
