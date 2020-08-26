@@ -1,17 +1,11 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-from odoo import api, fields, models, tools
-
 import logging
-_logger = logging.getLogger(__name__)
+from odoo import api, fields, models, tools
 
 import pytz
 from datetime import datetime
 import xml.etree.ElementTree as ET
-
-try:
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import urlopen
+_logger = logging.getLogger(__name__)
 
 
 class PhoneCallLogFile(models.Model):
