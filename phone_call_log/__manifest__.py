@@ -1,5 +1,3 @@
-# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-
 {
     "name": "Phone Call Log",
     "version": "12.0.1.0.0",
@@ -10,14 +8,18 @@
     "license": "AGPL-3",
     "depends": [
         "base",
-        "mail_activity_done"  # https://github.com/OCA/social
+        "crm",
+        "mail",
+        "phone_code"
     ],
     "data": [
         "data/ir_cron.xml",
-        "views/mail_activity_type_view.xml",
+        "views/mail_message_subtype_view.xml",
         "views/phone_call_log_view.xml",
+        "views/crm_lead_view.xml",
         "views/res_partner_view.xml",
         "security/ir.model.access.csv"
     ],
-    'installable': True
+    "installable": True,
+    "auto_install": False,
 }

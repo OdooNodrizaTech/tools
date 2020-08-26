@@ -3,7 +3,7 @@ Lee los archivos .xml definidos para realizar el registro de llamadas y la auto-
 ## Crones
 
 ### Cron Phone Call Log Files
-Frecuencia: 1 vez al día
+Frecuencia: 1 vez cada hora
 
 Descripción:
 
