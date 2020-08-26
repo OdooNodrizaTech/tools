@@ -3,3 +3,5 @@ access_phone_call_log_admin,phone.call.log,model_phone_call_log,,1,1,1,1
 access_phone_call_log_group_user,phone.call.log.user,model_phone_call_log,base.group_user,1,1,1,1
 access_phone_call_log_file_admin,phone.call.log.file,model_phone_call_log_file,,1,1,1,1
 access_phone_call_log_file_group_user,phone.call.log.file.user,model_phone_call_log_file,base.group_user,1,1,1,1
+access_phone_call_log_phone_admin,phone.call.log.phone,model_phone_call_log_phone,,1,1,1,1
+access_phone_call_log_phone_group_user,phone.call.log.phone.user,model_phone_call_log_phone,base.group_user,1,1,1,1
