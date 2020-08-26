@@ -8,13 +8,11 @@
     "license": "AGPL-3",
     "depends": [
         "base",
-        "crm",
-        "mail",
-        "phone_code"
+        "mail_activity_done"  # https://github.com/OCA/social
     ],
     "data": [
         "data/ir_cron.xml",
-        "views/mail_message_subtype_view.xml",
+        "views/mail_activity_type_view.xml",
         "views/phone_call_log_view.xml",
         "views/crm_lead_view.xml",
         "views/res_partner_view.xml",

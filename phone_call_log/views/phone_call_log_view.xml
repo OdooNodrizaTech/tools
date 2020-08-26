@@ -17,7 +17,7 @@
                         <field name="contact_name"/>
                         <field name="partner_id" options='{"no_create": True, "no_create_edit": True}' />
                         <field name="lead_id" options='{"no_create": True, "no_create_edit": True}' />
-                        <field name="mail_message_id" options='{"no_create": True, "no_create_edit": True}' />
+                        <field name="mail_activity_id" options='{"no_create": True, "no_create_edit": True}' />
                     </group>
                 </sheet>
             </form>

@@ -54,9 +54,9 @@ class PhoneCallLog(models.Model):
         comodel_name='crm.lead',
         string='Lead Id'
     )
-    mail_message_id = fields.Many2one(
-        comodel_name='mail.message',
-        string='Mail Message id'
+    mail_activity_id = fields.Many2one(
+        comodel_name='mail.activity',
+        string='Mail Activity id'
     )
 
     @api.model
@@ -133,54 +133,52 @@ class PhoneCallLog(models.Model):
     @api.model
     def check_mail_activity_id(self):
         if self.lead_id:
-            subtype_ids = self.env['mail.message.subtype'].search(
+            activity_type_ids = self.env['mail.activity.type'].search(
                 [
                     ('is_phone_call', '=', True)
                 ]
             )
-            if subtype_ids:
-                parent_message_ids = self.env['mail.message'].search(
+            if activity_type_ids:
+                # model (crm.lead)
+                ir_model_ids = self.env['ir.model'].sudo().search(
                     [
-                        ('parent_id', '=', False),
-                        ('res_id', '=', self.lead_id.id),
                         ('model', '=', 'crm.lead')
                     ]
                 )
-                if parent_message_ids:
+                if ir_model_ids:
                     # search
-                    message_ids = self.env['mail.message'].search(
+                    mail_activity_ids = self.env['mail.activity'].search(
                         [
-                            ('subtype_id', '=', subtype_ids[0].id),
+                            ('activity_type_id', '=', activity_type_ids[0].id),
+                            ('res_model_id', '=', ir_model_ids[0].id),
                             ('res_id', '=', self.lead_id.id),
-                            ('model', '=', 'crm.lead'),
-                            ('date', '=', self.date),
-                            ('duration', '>', 0)
+                            ('date_done', '=', self.date)
                         ]
                     )
-                    if message_ids:
-                        self.mail_message_id = message_ids[0].id
+                    if mail_activity_ids:
+                        self.mail_activity_id = mail_activity_ids[0].id
                     else:
                         # vals
                         vals = {
-                            'parent_id': parent_message_ids[0].id,
-                            'subtype_id': subtype_ids[0].id,
+                            'activity_type_id': activity_type_ids[0].id,
+                            'date_deadline': self.date,
+                            'date_done': self.date,
+                            'user_id': self.user_id.id,
+                            'res_model_id': ir_model_ids[0].id,
                             'res_id': self.lead_id.id,
-                            'record_name': self.lead_id.name,
-                            'date': self.date,
-                            'model': 'crm.lead',
-                            'message_type': 'notification',
+                            'res_name': self.lead_id.name,
                             'duration': self.duration,
-                            'body': '<div><b>%s</b>: %s</div><p><br></p>' % (
-                                'Actividad realizada', 'Llamada'
-                            ),
+                            'automated': True,
+                            'done': True,
+                            'active': False,
                             'phone_call_type': self.type
                         }
                         # create
-                        message_obj = self.env['mail.message'].sudo(
+                        activity_obj = self.env['mail.activity'].sudo(
                             self.user_id
                         ).create(vals)
                         # update mail_message_id
-                        self.mail_message_id = message_obj.id
+                        self.mail_activity_id = activity_obj.id
 
     @api.model
     def operations_item(self):

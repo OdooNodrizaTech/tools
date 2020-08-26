@@ -1,9 +1,10 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+
 from odoo import fields, models
 
 
-class MailMessage(models.Model):
-    _inherit = 'mail.message'
+class MailActivity(models.Model):
+    _inherit = 'mail.activity'
 
     phone_call_type = fields.Selection(
         selection=[
