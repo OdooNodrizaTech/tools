@@ -8,6 +8,7 @@
     "license": "AGPL-3",
     "depends": [
         "base",
+        "crm",
         "mail_activity_done"  # https://github.com/OCA/social
     ],
     "data": [
