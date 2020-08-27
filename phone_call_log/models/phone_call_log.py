@@ -122,13 +122,29 @@ class PhoneCallLog(models.Model):
                     [
                         ('type', '=', 'opportunity'),
                         ('partner_id', '=', self.partner_id.id),
-                        ('create_date', '>=', self.date)
-                    ]
+                        ('create_date', '<=', self.date),
+                        ('date_closed', '!=', False)
+                    ],
+                    order="date_closed desc"
                 )
                 if lead_ids:
                     self.lead_id = lead_ids[0].id
                     # check_mail_activity_id()
                     self.check_mail_activity_id()
+                else:
+                    lead_ids = self.env['crm.lead'].search(
+                        [
+                            ('type', '=', 'opportunity'),
+                            ('partner_id', '=', self.partner_id.id),
+                            ('create_date', '<=', self.date),
+                            ('date_closed', '=', False)
+                        ],
+                        order="create_date desc"
+                    )
+                    if lead_ids:
+                        self.lead_id = lead_ids[0].id
+                        # check_mail_activity_id()
+                        self.check_mail_activity_id()
 
     @api.model
     def check_mail_activity_id(self):
