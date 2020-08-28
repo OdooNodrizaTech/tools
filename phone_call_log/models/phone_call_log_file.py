@@ -176,14 +176,15 @@ class PhoneCallLogFile(models.Model):
     @api.multi
     def cron_phone_call_log_files(self, cr=None, uid=False, context=None):
         _logger.info('cron_phone_call_log_files')
-        # all
+        # draft
         file_ids = self.env['phone.call.log.file'].search(
             [
-                ('state', '=', 'draft')
+                ('state', 'in', ('draft', 'assign'))
             ]
         )
         if file_ids:
             file_ids.action_assign_multi()
+            # items
             for file_id in file_ids:
                 if file_id.state == 'assign':
                     file_id.action_read_file()
